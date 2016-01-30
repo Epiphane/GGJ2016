@@ -24,7 +24,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 409008}
-  - 212: {fileID: 21247604}
   - 50: {fileID: 5050274}
   - 58: {fileID: 5834512}
   - 114: {fileID: 11422994}
@@ -32,6 +31,22 @@ GameObject:
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &191988
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 477790}
+  - 212: {fileID: 21251500}
+  m_Layer: 0
+  m_Name: player_img
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -58,10 +73,11 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 160828}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.99, y: 0.05, z: 0}
+  m_LocalPosition: {x: 3.38, y: 0.05, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children:
   - {fileID: 418978}
+  - {fileID: 477790}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &418978
@@ -89,6 +105,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 418978}
   m_RootOrder: 0
+--- !u!4 &477790
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 191988}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 409008}
+  m_RootOrder: 1
 --- !u!50 &5050274
 Rigidbody2D:
   serializedVersion: 2
@@ -136,9 +164,15 @@ MonoBehaviour:
   particles: {fileID: 124334, guid: c4465c324cded4bc89b2ecddfbd38108, type: 2}
   related_device_id: 0
   cooldown: 0
+  dashAnim: 0
+  DASH_ANIM_LENGTH: 0.2
+  fireballSprite: {fileID: 21300000, guid: 4771273e64f9040c6b2e1dd7d01b6542, type: 3}
+  wizardSprite: {fileID: 21300000, guid: a7eff72e893d447f2ade106a19c80366, type: 3}
   dashing: 0
   playerColor: {r: 1, g: 1, b: 1, a: 1}
+  player_img: {fileID: 0}
   captive: {fileID: 0}
+  debug_wizz: 1
 --- !u!114 &11485254
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -183,12 +217,12 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
---- !u!212 &21247604
+--- !u!212 &21251500
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 160828}
+  m_GameObject: {fileID: 191988}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -269,6 +303,11 @@ Prefab:
       propertyPath: m_Color.b
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fireballSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4771273e64f9040c6b2e1dd7d01b6542,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 160828}

@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e37d83ebce05ad74683fd3228dde9e7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  browserStartMode: 0
+  browserStartMode: 2
   controllerHtml: {fileID: 4900000, guid: 7c5fcdd6f83f347ce82b82eb8323bb9e, type: 3}
   autoScaleCanvas: 1
 --- !u!4 &24631762
@@ -1393,11 +1393,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 409008, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 12.973782
+      value: 8.66
       objectReference: {fileID: 0}
     - target: {fileID: 409008, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -0.21689816
+      value: -0.1
       objectReference: {fileID: 0}
     - target: {fileID: 409008, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
       propertyPath: m_LocalPosition.z
@@ -1424,9 +1424,10 @@ Prefab:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11422994, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
-      propertyPath: speed
-      value: 14
-      objectReference: {fileID: 0}
+      propertyPath: wizardSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a7eff72e893d447f2ade106a19c80366,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
   m_IsPrefabParent: 0

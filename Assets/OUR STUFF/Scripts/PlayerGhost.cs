@@ -17,7 +17,7 @@ public class PlayerGhost : MonoBehaviour {
 		Color c = GetComponent<PlayerMovement>().playerColor;
 		c.a = 0.5f;
 
-		GetComponent<SpriteRenderer> ().color = c;
+		GetComponent<PlayerMovement>().player_img.GetComponent<SpriteRenderer> ().color = c;
 	}
 	
 	// Update is called once per frame

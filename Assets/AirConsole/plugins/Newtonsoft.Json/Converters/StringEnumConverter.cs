@@ -149,14 +149,14 @@ namespace Newtonsoft.Json.Converters
             string n1 = f.Name;
             string n2;
             
-#if !NET20
-            n2 = f.GetCustomAttributes(typeof (EnumMemberAttribute), true)
-                          .Cast<EnumMemberAttribute>()
-                          .Select(a => a.Value)
-                          .SingleOrDefault() ?? f.Name;
-#else
+//#if !NET20
+//            n2 = f.GetCustomAttributes(typeof (EnumMemberAttribute), true)
+//                          .Cast<EnumMemberAttribute>()
+//                          .Select(a => a.Value)
+//                          .SingleOrDefault() ?? f.Name;
+//#else
             n2 = f.Name;
-#endif
+//#endif
 
             string s;
             if (map.TryGetBySecond(n2, out s))

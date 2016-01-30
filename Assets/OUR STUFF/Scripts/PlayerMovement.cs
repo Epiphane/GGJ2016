@@ -11,6 +11,13 @@ public class PlayerMovement : MonoBehaviour {
 
 	public float cooldown = 0.0f;
 
+	// Keep track of the janky system I use to animate the transition to being a fireball
+	public float dashAnim = 0.0f;
+	public float DASH_ANIM_LENGTH = 0.2f;
+
+	public Sprite fireballSprite;
+	public Sprite wizardSprite;
+
 	public bool dashing = false;
 
 	private bool wantsToDash = false;
@@ -18,11 +25,15 @@ public class PlayerMovement : MonoBehaviour {
 	public Color playerColor = new Color(1.0f, 1.0f, 1.0f);
 
 	private GameObject arrow;
+	public GameObject player_img;
 
 	public PlayerGhost captive;
 
+	public bool debug_wizz = false;
+
 	void Start() {
 		arrow = transform.Find ("arrow_parent").gameObject;
+		player_img = transform.Find ("player_img").gameObject;
 	}
 
 	public void Unlock() {
@@ -46,28 +57,61 @@ public class PlayerMovement : MonoBehaviour {
 		wantsToDash = false;
 	}
 
-	public void Dash() {
+	public float GetArrowAngle(out Vector3 outVec) {
 		float angle;
-		Vector3 outVec;
 
 		arrow.transform.rotation.ToAngleAxis (out angle, out outVec);
 
-//		if (cooldown <= 0.0f) {
-			angle = Mathf.Deg2Rad * angle;
+		angle = Mathf.Deg2Rad * angle;
 
-			var vel = GetComponent<Rigidbody2D> ().velocity;
-			vel.x = Mathf.Sin (angle) * speed * outVec.z;
-			vel.y = Mathf.Cos (angle) * -speed;
+		return angle;
+	}
 
-			GetComponent<Rigidbody2D> ().velocity = vel;
+	public void Dash() {
+		if (!dashing) {
+			dashAnim = DASH_ANIM_LENGTH;
+			player_img.transform.rotation = new Quaternion (0, 0, 0, 0);
+		}
 
-			cooldown = 0.3f;
-			dashing = true;
-//		}
+		float angle;
+		Vector3 outVec;
+
+		angle = GetArrowAngle (out outVec);
+
+		var vel = GetComponent<Rigidbody2D> ().velocity;
+		vel.x = Mathf.Sin (angle) *  speed * outVec.z;
+		vel.y = Mathf.Cos (angle) * -speed;
+
+		GetComponent<Rigidbody2D> ().velocity = vel;
+
+		cooldown = 0.3f;
+		dashing = true;
+	}
+
+	// Scales the wiz down along the axis they're facing towards
+	void ScaleAlongFacingAxis(float howMuch) {
+		Vector3 outVec;
+		var angle = GetArrowAngle (out outVec) * Mathf.Rad2Deg;
+
+//		var squishQuaternion = Quaternion.AngleAxis (howMuch, new Vector3 (Mathf.Sin (angle), Mathf.Cos (angle), 0.0f).normalized);
+//		var squishQuaternion = Quaternion.AngleAxis (howMuch, Vector3.right);
+		var flipQuat = Quaternion.AngleAxis(180.0f, Vector3.right);
+
+		var newQuat = Quaternion.Slerp (new Quaternion (0, 0, 0, 0), arrow.transform.rotation * flipQuat, howMuch);
+
+		player_img.transform.rotation = newQuat;
+
+		print ("How much " + howMuch);
 	}
 
 	// Update is called once per frame
 	void Update () {
+
+		if (debug_wizz) {
+			if (Input.GetKey (movementKey)) {
+				Dash ();
+			}
+		}
 
 		if (wantsToDash) {
 			Dash();
@@ -78,16 +122,20 @@ public class PlayerMovement : MonoBehaviour {
 		}
 
 		if (GetComponent<Rigidbody2D> ().velocity.sqrMagnitude < 20) {
+			if (dashing) {
+				// Going from dashingTRUE => dashingFALSE
+				dashAnim = DASH_ANIM_LENGTH;
+			}
 			dashing = false;
 		}
 	
 		playerColor.a = 1.0f;
-		GetComponent<SpriteRenderer> ().color = playerColor;
+		player_img.GetComponent<SpriteRenderer> ().color = playerColor;
 
 		cooldown -= Time.deltaTime;
 
 		if (cooldown >= 0.0f && !dashing) {
-			GetComponent<SpriteRenderer> ().color = new Color (0.0f, 0.0f, 1.0f);
+			player_img.GetComponent<SpriteRenderer> ().color = new Color (0.0f, 0.0f, 1.0f);
 		}
 			
 		if (dashing) {
@@ -95,6 +143,28 @@ public class PlayerMovement : MonoBehaviour {
 		} else {
 			GetComponent<CircleCollider2D> ().isTrigger = true;
 		}
+
+
+		if (dashAnim >= 0.0f && dashing) { // Transitioning TO a fireball
+			if (dashAnim <= DASH_ANIM_LENGTH / 2.0f) {
+				player_img.GetComponent<SpriteRenderer> ().sprite = fireballSprite;
+			}
+			ScaleAlongFacingAxis ((DASH_ANIM_LENGTH - dashAnim) / DASH_ANIM_LENGTH);
+
+			dashAnim -= Time.deltaTime;
+		} else if (dashAnim >= 0.0f && !dashing) {    // Transitioning FROM a fireball
+			if (dashAnim <= DASH_ANIM_LENGTH / 2.0f) {
+				player_img.GetComponent<SpriteRenderer> ().sprite = wizardSprite;
+			}
+			ScaleAlongFacingAxis ((DASH_ANIM_LENGTH - dashAnim) / DASH_ANIM_LENGTH);
+
+			dashAnim -= Time.deltaTime;
+		} else if (dashing) { // I am a fireball. Hear me roar!
+
+		} else { // Normal, non-dashing wizard. reset rotation.
+			player_img.transform.rotation = new Quaternion(0, 0, 0, 0);
+		}
+
 	}
 
 	public void CollectPoints() {
