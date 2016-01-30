@@ -46,6 +46,8 @@ public class PlayerGhost : MonoBehaviour {
 		captor = null;
 
 		transform.position = spawn.position;
+
+		GameObject.Find ("AirConsoleLogic").GetComponent<AirconsoleLogic> ().Unlock (movement);
 	}
 
 }
