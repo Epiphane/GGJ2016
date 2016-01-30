@@ -12,6 +12,13 @@ public class PlayerGhost : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 	}
+
+	void Update() {
+		Color c = GetComponent<PlayerMovement>().playerColor;
+		c.a = 0.5f;
+
+		GetComponent<SpriteRenderer> ().color = c;
+	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {

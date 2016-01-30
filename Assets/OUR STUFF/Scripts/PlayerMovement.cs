@@ -49,6 +49,7 @@ public class PlayerMovement : MonoBehaviour {
 			GetComponent<Rigidbody2D> ().velocity = vel;
 
 			cooldown = 0.3f;
+			dashing = true;
 		}
 	}
 
@@ -62,18 +63,13 @@ public class PlayerMovement : MonoBehaviour {
 		if (cooldown <= 0.0f) {
 			arrow.transform.RotateAround (arrow.transform.position, Vector3.forward, 3.0f);
 		}
-
-		float redness = (GetComponent<Rigidbody2D> ().velocity.sqrMagnitude) / 1000.0f;
-		GetComponent<SpriteRenderer> ().color = new Color (1.0f, 1.0f - redness, 1.0f - redness);
 			
-		if (redness > 0.02f) {
-			GetComponent<SpriteRenderer> ().color = new Color (1.0f, 0.0f, 0.0f);
-			dashing = true;
-		} else {
-			playerColor.a = 1.0f;
-			GetComponent<SpriteRenderer> ().color = playerColor;
+		if (GetComponent<Rigidbody2D> ().velocity.sqrMagnitude < 20) {
 			dashing = false;
 		}
+	
+		playerColor.a = 1.0f;
+		GetComponent<SpriteRenderer> ().color = playerColor;
 
 		cooldown -= Time.deltaTime;
 
