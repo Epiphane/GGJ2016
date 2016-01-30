@@ -979,7 +979,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-=======
 --- !u!1001 &1839596370
 Prefab:
   m_ObjectHideFlags: 0
