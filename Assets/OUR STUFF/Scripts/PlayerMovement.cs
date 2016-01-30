@@ -11,6 +11,9 @@ public class PlayerMovement : MonoBehaviour {
 
 	public float cooldown = 0.0f;
 
+	// Keep track of the janky system I use to animate the transition to being a fireball
+	public float dashAnim = 0.0f;
+
 	public bool dashing = false;
 
 	private bool wantsToDash = false;
@@ -50,6 +53,8 @@ public class PlayerMovement : MonoBehaviour {
 
 			cooldown = 0.3f;
 			dashing = true;
+
+			dashAnim = 0.2f;
 		}
 	}
 
@@ -82,6 +87,17 @@ public class PlayerMovement : MonoBehaviour {
 		} else {
 			GetComponent<CircleCollider2D> ().isTrigger = true;
 		}
+
+		if (dashAnim >= 0.0f && dashing) { // Transitioning TO a fireball
+			
+
+			dashAnim -= Time.deltaTime;
+		} else if (dashAnim >= 0.0f && !dashing) {    // Transitioning FROM a fireball
+
+		} else if (dashing) { // I am a fireball. Hear me roar!
+
+		}
+
 	}
 
 	void OnTriggerEnter2D(Collider2D coll) {
