@@ -4,7 +4,7 @@ using System.Collections;
 public class PlayerMovement : MonoBehaviour {
 
 	public KeyCode movementKey;
-	public float speed = 20.0f;
+	public float speed = 12.0f;
 	public GameObject particles;
 
 	public int related_device_id = 0;
@@ -25,6 +25,20 @@ public class PlayerMovement : MonoBehaviour {
 		arrow = transform.Find ("arrow_parent").gameObject;
 	}
 
+	public void Unlock() {
+		enabled = true;
+
+		PlayerGhost ghost = GetComponent<PlayerGhost>();
+		ghost.enabled = false;
+
+		if (captive) {
+			ghost.captor.GetComponent<PlayerMovement>().captive = captive;
+		}
+
+		captive = null;
+		ghost.captor = null;
+	}
+
 	public void StartDashing() {
 		wantsToDash = true;
 	}
@@ -39,7 +53,7 @@ public class PlayerMovement : MonoBehaviour {
 
 		arrow.transform.rotation.ToAngleAxis (out angle, out outVec);
 
-		if (cooldown <= 0.0f) {
+//		if (cooldown <= 0.0f) {
 			angle = Mathf.Deg2Rad * angle;
 
 			var vel = GetComponent<Rigidbody2D> ().velocity;
@@ -50,20 +64,20 @@ public class PlayerMovement : MonoBehaviour {
 
 			cooldown = 0.3f;
 			dashing = true;
-		}
+//		}
 	}
 
 	// Update is called once per frame
 	void Update () {
 
 		if (wantsToDash) {
-			Dash (); 
+			Dash();
 		}
 
 		if (cooldown <= 0.0f) {
 			arrow.transform.RotateAround (arrow.transform.position, Vector3.forward, 3.0f);
 		}
-			
+
 		if (GetComponent<Rigidbody2D> ().velocity.sqrMagnitude < 20) {
 			dashing = false;
 		}
@@ -113,6 +127,8 @@ public class PlayerMovement : MonoBehaviour {
 						captive.captor = ghost.gameObject;
 					}
 					captive = ghost;
+
+					GameObject.Find("AirConsoleLogic").GetComponent<AirconsoleLogic>().Lock(captiveMovement);
 				}
 			}
 		}

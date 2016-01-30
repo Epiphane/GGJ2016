@@ -64,6 +64,10 @@ public class AirconsoleLogic : MonoBehaviour {
 		ResetButton();
 	}
 
+	public void Lock(PlayerMovement victim) {
+		AirConsole.instance.Message (victim.related_device_id, "{\"lock\":200}");
+	}
+
 	public void ResetButton() {
 		int x = 1;
 		foreach(KeyValuePair<int, PlayerMovement> entry in activePlayers) {
@@ -114,6 +118,15 @@ public class AirconsoleLogic : MonoBehaviour {
 		}
 		if (data["dash"] != null) {
 			activePlayers [device_id].Dash ();
+		}
+		if (data["start_dash"] != null) {
+			activePlayers [device_id].StartDashing ();
+		}
+		if (data["stop_dash"] != null) {
+			activePlayers [device_id].StopDashing ();
+		}
+		if (data["unlock"] != null) {
+			activePlayers [device_id].Unlock ();
 		}
 	}
 
