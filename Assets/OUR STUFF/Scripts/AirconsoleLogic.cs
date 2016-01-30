@@ -9,12 +9,23 @@ public class AirconsoleLogic : MonoBehaviour {
 
 	public GameObject playerTemplate;
 
+	public List<Color> possibleColors = new List<Color>();
+	private List<Color> usedColors = new List<Color>();
+
 	Dictionary<int, PlayerMovement> activePlayers = new Dictionary<int, PlayerMovement>();
 
 	void Awake() {
 		AirConsole.instance.onMessage += OnMessage;
 		AirConsole.instance.onConnect += OnConnect;
 		AirConsole.instance.onDisconnect += OnDisconnect;
+	}
+
+	string ColorToRGB(Color c) {
+		return Mathf.Floor(255 * c.r) + ", " + Mathf.Floor(255 * c.g) + ",  " + Mathf.Floor(255 * c.b);
+	}
+
+	string ColorToJSONMessage(Color c) {
+		return "{\"color\":\"" + ColorToRGB (c) + "\"}";
 	}
 
 	/// <summary>
@@ -31,7 +42,12 @@ public class AirconsoleLogic : MonoBehaviour {
 		var newPlayer = newFriend.GetComponent<PlayerMovement> ();
 
 		activePlayers [device_id] = newPlayer;
-		newFriend.GetComponent<PlayerMovement> ().related_device_id = device_id;
+		newPlayer.related_device_id = device_id;
+		newPlayer.playerColor = possibleColors[0];
+		usedColors.Add (possibleColors [0]);
+
+		AirConsole.instance.Message (device_id, ColorToJSONMessage(possibleColors[0]));
+		possibleColors.RemoveAt (0);
 
 //		if (AirConsole.instance.GetControllerDeviceIds ().Count == 1) {
 //			newFriend.transform.position = GameObject.Find ("start_1").transform.position;
@@ -88,11 +104,15 @@ public class AirconsoleLogic : MonoBehaviour {
 	/// <param name="data">Data.</param>
 	void OnMessage(int device_id, JToken data) {
 		int active_player = AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id);
-		print ("HERE WE GO!");
-		var move = (float)data ["move"];
 
-		if (Mathf.Abs (move) > 1.0f) {
-			activePlayers [device_id].Dash ();
+		if (data ["color"] != null) {
+			AirConsole.instance.Message (device_id, ColorToJSONMessage(activePlayers [device_id].playerColor));
+		}
+		if (data["move"] != null) {
+			activePlayers [device_id].StartDashing ();
+		}
+		if (data["stop"] != null) {
+			activePlayers [device_id].StopDashing ();
 		}
 	}
 

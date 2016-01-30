@@ -13,13 +13,25 @@ public class PlayerMovement : MonoBehaviour {
 
 	public bool dashing = false;
 
+	private bool wantsToDash = false;
+
+	public Color playerColor = new Color(1.0f, 1.0f, 1.0f);
+
 	private GameObject arrow;
 
 	void Start() {
 		arrow = transform.Find ("arrow_parent").gameObject;
 	}
 
-	public void Dash() {
+	public void StartDashing() {
+		wantsToDash = true;
+	}
+
+	public void StopDashing() {
+		wantsToDash = false;
+	}
+
+	private void Dash() {
 		float angle;
 		Vector3 outVec;
 
@@ -41,6 +53,10 @@ public class PlayerMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		if (wantsToDash) {
+			Dash (); 
+		}
+
 		if (cooldown <= 0.0f) {
 			arrow.transform.RotateAround (arrow.transform.position, Vector3.forward, 3.0f);
 		}
@@ -52,7 +68,8 @@ public class PlayerMovement : MonoBehaviour {
 			GetComponent<SpriteRenderer> ().color = new Color (1.0f, 0.0f, 0.0f);
 			dashing = true;
 		} else {
-			GetComponent<SpriteRenderer> ().color = new Color (1.0f, 1.0f, 1.0f);
+			playerColor.a = 1.0f;
+			GetComponent<SpriteRenderer> ().color = playerColor;
 			dashing = false;
 		}
 
