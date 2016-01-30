@@ -41,7 +41,9 @@ public class PlayerMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		arrow.transform.RotateAround (arrow.transform.position, Vector3.forward, 3.0f);
+		if (cooldown <= 0.0f) {
+			arrow.transform.RotateAround (arrow.transform.position, Vector3.forward, 3.0f);
+		}
 
 		float redness = (GetComponent<Rigidbody2D> ().velocity.sqrMagnitude) / 1000.0f;
 		GetComponent<SpriteRenderer> ().color = new Color (1.0f, 1.0f - redness, 1.0f - redness);
