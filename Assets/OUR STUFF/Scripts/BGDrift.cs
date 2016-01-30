@@ -12,9 +12,9 @@ public class BGDrift : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		var newX = Mathf.Sin (Time.time + offset);
-		var newY = Mathf.Cos (Time.time + offset);
+		var newX = Mathf.Sin (Time.time * 0.08f * offset + offset * 0.1f);
+		var newY = Mathf.Cos (Time.time * 0.08f * offset + offset * 0.1f);
 		transform.localPosition = new Vector3 (newX, newY, 8.0f) + basePosn;
-		transform.RotateAround (transform.position, Vector3.forward, offset * 0.1f);
+		transform.RotateAround (transform.position, Vector3.forward, offset * 0.05f);
 	}
 }
