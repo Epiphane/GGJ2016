@@ -31,11 +31,10 @@ public class PlayerMovement : MonoBehaviour {
 		PlayerGhost ghost = GetComponent<PlayerGhost>();
 		ghost.enabled = false;
 
-		if (captive) {
-			ghost.captor.GetComponent<PlayerMovement>().captive = captive;
+		if (ghost.captor) {
+			ghost.captor.GetComponent<PlayerMovement>().captive = null;
 		}
 
-		captive = null;
 		ghost.captor = null;
 	}
 
