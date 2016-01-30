@@ -73,7 +73,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 160828}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.99, y: 0.05, z: 0}
+  m_LocalPosition: {x: 3.38, y: 0.05, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children:
   - {fileID: 418978}
@@ -165,9 +165,13 @@ MonoBehaviour:
   related_device_id: 0
   cooldown: 0
   dashAnim: 0
+  DASH_ANIM_LENGTH: 0.2
+  fireballSprite: {fileID: 21300000, guid: 4771273e64f9040c6b2e1dd7d01b6542, type: 3}
   dashing: 0
   playerColor: {r: 1, g: 1, b: 1, a: 1}
+  player_img: {fileID: 0}
   captive: {fileID: 0}
+  debug_wizz: 1
 --- !u!114 &11485254
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -298,6 +302,11 @@ Prefab:
       propertyPath: m_Color.b
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fireballSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4771273e64f9040c6b2e1dd7d01b6542,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 160828}
