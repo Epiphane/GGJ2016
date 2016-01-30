@@ -76,31 +76,37 @@ public class PlayerMovement : MonoBehaviour {
 		if (cooldown >= 0.0f && !dashing) {
 			GetComponent<SpriteRenderer> ().color = new Color (0.0f, 0.0f, 1.0f);
 		}
+			
+		if (dashing) {
+			GetComponent<CircleCollider2D> ().isTrigger = false;
+		} else {
+			GetComponent<CircleCollider2D> ().isTrigger = true;
+		}
 	}
 
-	void OnCollisionEnter2D(Collision2D coll) {
-		if (coll.collider.tag == "Player") {
+	void OnTriggerEnter2D(Collider2D coll) {
+		if (coll.tag == "Player") {
 			if (dashing) {
 
 				// Collided with player...
-				if (coll.collider.GetComponent<PlayerMovement> ().dashing) {
+				if (coll.GetComponent<PlayerMovement> ().dashing) {
 					// They were dashing! Bounce away.
-					var diffX = coll.collider.transform.position.x - transform.position.x;
-					var diffY = coll.collider.transform.position.y - transform.position.y;
+					var diffX = coll.transform.position.x - transform.position.x;
+					var diffY = coll.transform.position.y - transform.position.y;
 
 					GetComponent<Rigidbody2D>().velocity = new Vector2 (diffX, diffY) * speed;
-					coll.collider.GetComponent<Rigidbody2D>().velocity = new Vector2 (diffX, diffY) * -speed;
+					coll.GetComponent<Rigidbody2D>().velocity = new Vector2 (diffX, diffY) * -speed;
 				} else {
 					// They weren't dashing! DESTROY THEM
 					var new_particles = GameObject.Instantiate(particles);
-					new_particles.transform.position = coll.collider.transform.position;
+					new_particles.transform.position = coll.transform.position;
 
-					PlayerMovement captiveMovement = coll.collider.GetComponent<PlayerMovement> ();
+					PlayerMovement captiveMovement = coll.GetComponent<PlayerMovement> ();
 						
 					// Disable movement
 					captiveMovement.enabled = false;
 
-					PlayerGhost ghost = coll.collider.GetComponent<PlayerGhost> ();
+					PlayerGhost ghost = coll.GetComponent<PlayerGhost> ();
 					ghost.enabled = true;
 					if (ghost.captor != null) {
 						ghost.captor.GetComponent<PlayerMovement> ().captive = captiveMovement.captive;
