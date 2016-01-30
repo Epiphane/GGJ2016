@@ -227,9 +227,9 @@ namespace Newtonsoft.Json.Serialization
     /// <returns>The serializable members for the type.</returns>
     protected virtual List<MemberInfo> GetSerializableMembers(Type objectType)
     {
-#if !PocketPC && !NET20
-      DataContractAttribute dataContractAttribute = JsonTypeReflector.GetDataContractAttribute(objectType);
-#endif
+//#if !PocketPC && !NET20
+//      DataContractAttribute dataContractAttribute = JsonTypeReflector.GetDataContractAttribute(objectType);
+//#endif
 
       List<MemberInfo> defaultMembers = ReflectionUtils.GetFieldsAndProperties(objectType, DefaultMembersSearchFlags)
         .Where(m => !ReflectionUtils.IsIndexedProperty(m)).ToList();
@@ -252,10 +252,10 @@ namespace Newtonsoft.Json.Serialization
             // add members that are explicitly marked with JsonProperty/DataMember attribute
             if (JsonTypeReflector.GetAttribute<JsonPropertyAttribute>(member) != null)
               serializableMembers.Add(member);
-#if !PocketPC && !NET20
-            else if (dataContractAttribute != null && JsonTypeReflector.GetAttribute<DataMemberAttribute>(member) != null)
-              serializableMembers.Add(member);
-#endif
+//#if !PocketPC && !NET20
+//            else if (dataContractAttribute != null && JsonTypeReflector.GetAttribute<DataMemberAttribute>(member) != null)
+//              serializableMembers.Add(member);
+//#endif
           }
         }
       }
@@ -423,9 +423,9 @@ namespace Newtonsoft.Json.Serialization
       return JsonTypeReflector.ReflectionDelegateFactory.CreateDefaultConstructor<object>(createdType);
     }
 
-#if !PocketPC && !NET20
-   [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Portability", "CA1903:UseOnlyApiFromTargetedFramework", MessageId = "System.Runtime.Serialization.DataContractAttribute.#get_IsReference()")]
-#endif
+//#if !PocketPC && !NET20
+//   [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Portability", "CA1903:UseOnlyApiFromTargetedFramework", MessageId = "System.Runtime.Serialization.DataContractAttribute.#get_IsReference()")]
+//#endif
     private void InitializeContract(JsonContract contract)
     {
       JsonContainerAttribute containerAttribute = JsonTypeReflector.GetJsonContainerAttribute(contract.UnderlyingType);
@@ -433,15 +433,15 @@ namespace Newtonsoft.Json.Serialization
       {
         contract.IsReference = containerAttribute._isReference;
       }
-#if !PocketPC && !NET20
-      else
-      {
-        DataContractAttribute dataContractAttribute = JsonTypeReflector.GetDataContractAttribute(contract.UnderlyingType);
-        // doesn't have a null value
-        if (dataContractAttribute != null && dataContractAttribute.IsReference)
-          contract.IsReference = true;
-      }
-#endif
+//#if !PocketPC && !NET20
+//      else
+//      {
+//        DataContractAttribute dataContractAttribute = JsonTypeReflector.GetDataContractAttribute(contract.UnderlyingType);
+//        // doesn't have a null value
+//        if (dataContractAttribute != null && dataContractAttribute.IsReference)
+//          contract.IsReference = true;
+//      }
+//#endif
 
       contract.Converter = ResolveContractConverter(contract.UnderlyingType);
 
@@ -817,15 +817,15 @@ namespace Newtonsoft.Json.Serialization
     {
       hasExplicitAttribute = false;
 
-#if !PocketPC && !NET20
-      DataContractAttribute dataContractAttribute = JsonTypeReflector.GetDataContractAttribute(declaringType);
-
-      DataMemberAttribute dataMemberAttribute;
-      if (dataContractAttribute != null && attributeProvider is MemberInfo)
-        dataMemberAttribute = JsonTypeReflector.GetDataMemberAttribute((MemberInfo)attributeProvider);
-      else
-        dataMemberAttribute = null;
-#endif
+//#if !PocketPC && !NET20
+//      DataContractAttribute dataContractAttribute = JsonTypeReflector.GetDataContractAttribute(declaringType);
+//
+//      DataMemberAttribute dataMemberAttribute;
+//      if (dataContractAttribute != null && attributeProvider is MemberInfo)
+//        dataMemberAttribute = JsonTypeReflector.GetDataMemberAttribute((MemberInfo)attributeProvider);
+//      else
+//        dataMemberAttribute = null;
+//#endif
 
       JsonPropertyAttribute propertyAttribute = JsonTypeReflector.GetAttribute<JsonPropertyAttribute>(attributeProvider);
       if (propertyAttribute != null)
@@ -836,10 +836,10 @@ namespace Newtonsoft.Json.Serialization
       string mappedName;
       if (propertyAttribute != null && propertyAttribute.PropertyName != null)
         mappedName = propertyAttribute.PropertyName;
-#if !PocketPC && !NET20
-      else if (dataMemberAttribute != null && dataMemberAttribute.Name != null)
-        mappedName = dataMemberAttribute.Name;
-#endif
+//#if !PocketPC && !NET20
+//      else if (dataMemberAttribute != null && dataMemberAttribute.Name != null)
+//        mappedName = dataMemberAttribute.Name;
+//#endif
       else
         mappedName = name;
 
@@ -851,13 +851,13 @@ namespace Newtonsoft.Json.Serialization
         property.Required = propertyAttribute.Required;
         property.Order = propertyAttribute._order;
       }
-#if !PocketPC && !NET20
-      else if (dataMemberAttribute != null)
-      {
-        property.Required = (dataMemberAttribute.IsRequired) ? Required.AllowNull : Required.Default;
-        property.Order = (dataMemberAttribute.Order != -1) ? (int?) dataMemberAttribute.Order : null;
-      }
-#endif
+//#if !PocketPC && !NET20
+//      else if (dataMemberAttribute != null)
+//      {
+//        property.Required = (dataMemberAttribute.IsRequired) ? Required.AllowNull : Required.Default;
+//        property.Order = (dataMemberAttribute.Order != -1) ? (int?) dataMemberAttribute.Order : null;
+//      }
+//#endif
       else
       {
         property.Required = Required.Default;
@@ -866,9 +866,9 @@ namespace Newtonsoft.Json.Serialization
       property.Ignored = (hasIgnoreAttribute ||
                       (memberSerialization == MemberSerialization.OptIn
                        && propertyAttribute == null
-#if !PocketPC && !NET20
-                       && dataMemberAttribute == null
-#endif
+//#if !PocketPC && !NET20
+//                       && dataMemberAttribute == null
+//#endif
 ));
 
       // resolve converter for property
@@ -892,13 +892,13 @@ namespace Newtonsoft.Json.Serialization
       if (propertyAttribute != null)
         allowNonPublicAccess = true;
 
-#if !PocketPC && !NET20
-      if (dataMemberAttribute != null)
-      {
-        allowNonPublicAccess = true;
-        hasExplicitAttribute = true;
-      }
-#endif
+//#if !PocketPC && !NET20
+//      if (dataMemberAttribute != null)
+//      {
+//        allowNonPublicAccess = true;
+//        hasExplicitAttribute = true;
+//      }
+//#endif
     }
 
     private Predicate<object> CreateShouldSerializeTest(MemberInfo member)

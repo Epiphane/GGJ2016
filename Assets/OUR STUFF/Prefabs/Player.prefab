@@ -167,6 +167,7 @@ MonoBehaviour:
   dashAnim: 0
   DASH_ANIM_LENGTH: 0.2
   fireballSprite: {fileID: 21300000, guid: 4771273e64f9040c6b2e1dd7d01b6542, type: 3}
+  wizardSprite: {fileID: 21300000, guid: a7eff72e893d447f2ade106a19c80366, type: 3}
   dashing: 0
   playerColor: {r: 1, g: 1, b: 1, a: 1}
   player_img: {fileID: 0}

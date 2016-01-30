@@ -58,9 +58,8 @@ public class PlayerMovement : MonoBehaviour {
 		wantsToDash = false;
 	}
 
-	public float GetArrowAngle() {
+	public float GetArrowAngle(out Vector3 outVec) {
 		float angle;
-		Vector3 outVec;
 
 		arrow.transform.rotation.ToAngleAxis (out angle, out outVec);
 
@@ -78,9 +77,7 @@ public class PlayerMovement : MonoBehaviour {
 		float angle;
 		Vector3 outVec;
 
-		arrow.transform.rotation.ToAngleAxis (out angle, out outVec);
-
-		angle = Mathf.Deg2Rad * angle;
+		angle = GetArrowAngle (out outVec);
 
 		var vel = GetComponent<Rigidbody2D> ().velocity;
 		vel.x = Mathf.Sin (angle) *  speed * outVec.z;
@@ -94,13 +91,18 @@ public class PlayerMovement : MonoBehaviour {
 
 	// Scales the wiz down along the axis they're facing towards
 	void ScaleAlongFacingAxis(float howMuch) {
-		var angle = GetArrowAngle ();
+		Vector3 outVec;
+		var angle = GetArrowAngle (out outVec) * Mathf.Rad2Deg;
 
 //		var squishQuaternion = Quaternion.AngleAxis (howMuch, new Vector3 (Mathf.Sin (angle), Mathf.Cos (angle), 0.0f).normalized);
-		var squishQuaternion = Quaternion.AngleAxis (howMuch, Vector3.right);
-		var facingQuaternion = Quaternion.AngleAxis (GetArrowAngle (), Vector3.forward);
+//		var squishQuaternion = Quaternion.AngleAxis (howMuch, Vector3.right);
+		var flipQuat = Quaternion.AngleAxis(180.0f, Vector3.right);
 
-		player_img.transform.rotation = squishQuaternion * facingQuaternion;
+		var newQuat = Quaternion.Slerp (new Quaternion (0, 0, 0, 0), arrow.transform.rotation * flipQuat, howMuch);
+
+		player_img.transform.rotation = newQuat;
+
+		print ("How much " + howMuch);
 	}
 
 	// Update is called once per frame
@@ -148,14 +150,14 @@ public class PlayerMovement : MonoBehaviour {
 			if (dashAnim <= DASH_ANIM_LENGTH / 2.0f) {
 				player_img.GetComponent<SpriteRenderer> ().sprite = fireballSprite;
 			}
-			ScaleAlongFacingAxis ((dashAnim - DASH_ANIM_LENGTH) / DASH_ANIM_LENGTH * 180.0f);
+			ScaleAlongFacingAxis ((DASH_ANIM_LENGTH - dashAnim) / DASH_ANIM_LENGTH);
 
 			dashAnim -= Time.deltaTime;
 		} else if (dashAnim >= 0.0f && !dashing) {    // Transitioning FROM a fireball
 			if (dashAnim <= DASH_ANIM_LENGTH / 2.0f) {
 				player_img.GetComponent<SpriteRenderer> ().sprite = wizardSprite;
 			}
-			ScaleAlongFacingAxis ((dashAnim - DASH_ANIM_LENGTH) / DASH_ANIM_LENGTH * 180.0f);
+			ScaleAlongFacingAxis ((DASH_ANIM_LENGTH - dashAnim) / DASH_ANIM_LENGTH);
 
 			dashAnim -= Time.deltaTime;
 		} else if (dashing) { // I am a fireball. Hear me roar!

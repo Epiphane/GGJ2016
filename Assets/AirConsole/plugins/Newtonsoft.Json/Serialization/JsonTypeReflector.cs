@@ -94,52 +94,52 @@ namespace Newtonsoft.Json.Serialization
       return GetJsonContainerAttribute(type) as JsonArrayAttribute;
     }
 
-#if !PocketPC && !NET20
-    public static DataContractAttribute GetDataContractAttribute(Type type)
-    {
-      // DataContractAttribute does not have inheritance
-      DataContractAttribute result = null;
-      Type currentType = type;
-      while (result == null && currentType != null)
-      {
-        result = CachedAttributeGetter<DataContractAttribute>.GetAttribute(currentType);
-        currentType = currentType.BaseType;
-      }
-
-      return result;
-    }
-
-    public static DataMemberAttribute GetDataMemberAttribute(MemberInfo memberInfo)
-    {
-      // DataMemberAttribute does not have inheritance
-
-      // can't override a field
-      if (memberInfo.MemberType == MemberTypes.Field)
-        return CachedAttributeGetter<DataMemberAttribute>.GetAttribute(memberInfo);
-
-      // search property and then search base properties if nothing is returned and the property is virtual
-      PropertyInfo propertyInfo = (PropertyInfo) memberInfo;
-      DataMemberAttribute result = CachedAttributeGetter<DataMemberAttribute>.GetAttribute(propertyInfo);
-      if (result == null)
-      {
-        if (propertyInfo.IsVirtual())
-        {
-          Type currentType = propertyInfo.DeclaringType;
-
-          while (result == null && currentType != null)
-          {
-            PropertyInfo baseProperty = (PropertyInfo)ReflectionUtils.GetMemberInfoFromType(currentType, propertyInfo);
-            if (baseProperty != null && baseProperty.IsVirtual())
-              result = CachedAttributeGetter<DataMemberAttribute>.GetAttribute(baseProperty);
-
-            currentType = currentType.BaseType;
-          }
-        }
-      }
-
-      return result;
-    }
-#endif
+//#if !PocketPC && !NET20
+//    public static DataContractAttribute GetDataContractAttribute(Type type)
+//    {
+//      // DataContractAttribute does not have inheritance
+//      DataContractAttribute result = null;
+//      Type currentType = type;
+//      while (result == null && currentType != null)
+//      {
+//        result = CachedAttributeGetter<DataContractAttribute>.GetAttribute(currentType);
+//        currentType = currentType.BaseType;
+//      }
+//
+//      return result;
+//    }
+//
+//    public static DataMemberAttribute GetDataMemberAttribute(MemberInfo memberInfo)
+//    {
+//      // DataMemberAttribute does not have inheritance
+//
+//      // can't override a field
+//      if (memberInfo.MemberType == MemberTypes.Field)
+//        return CachedAttributeGetter<DataMemberAttribute>.GetAttribute(memberInfo);
+//
+//      // search property and then search base properties if nothing is returned and the property is virtual
+//      PropertyInfo propertyInfo = (PropertyInfo) memberInfo;
+//      DataMemberAttribute result = CachedAttributeGetter<DataMemberAttribute>.GetAttribute(propertyInfo);
+//      if (result == null)
+//      {
+//        if (propertyInfo.IsVirtual())
+//        {
+//          Type currentType = propertyInfo.DeclaringType;
+//
+//          while (result == null && currentType != null)
+//          {
+//            PropertyInfo baseProperty = (PropertyInfo)ReflectionUtils.GetMemberInfoFromType(currentType, propertyInfo);
+//            if (baseProperty != null && baseProperty.IsVirtual())
+//              result = CachedAttributeGetter<DataMemberAttribute>.GetAttribute(baseProperty);
+//
+//            currentType = currentType.BaseType;
+//          }
+//        }
+//      }
+//
+//      return result;
+//    }
+//#endif
 
     public static MemberSerialization GetObjectMemberSerialization(Type objectType)
     {
@@ -147,12 +147,12 @@ namespace Newtonsoft.Json.Serialization
 
       if (objectAttribute == null)
       {
-#if !PocketPC && !NET20
-        DataContractAttribute dataContractAttribute = GetDataContractAttribute(objectType);
-
-        if (dataContractAttribute != null)
-          return MemberSerialization.OptIn;
-#endif
+//#if !PocketPC && !NET20
+//        DataContractAttribute dataContractAttribute = GetDataContractAttribute(objectType);
+//
+//        if (dataContractAttribute != null)
+//          return MemberSerialization.OptIn;
+//#endif
 
         return MemberSerialization.OptOut;
       }
