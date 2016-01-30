@@ -68,6 +68,10 @@ public class AirconsoleLogic : MonoBehaviour {
 		AirConsole.instance.Message (victim.related_device_id, "{\"lock\":200}");
 	}
 
+	public void Unlock(PlayerMovement player) {
+		AirConsole.instance.Message (player.related_device_id, "{\"unlock\":true}");
+	}
+
 	public void ResetButton() {
 		int x = 1;
 		foreach(KeyValuePair<int, PlayerMovement> entry in activePlayers) {

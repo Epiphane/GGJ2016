@@ -34,6 +34,10 @@
                     controlLock = controlMaxLock = data.lock;
                     unlock(0);
                 }
+                if (data.unlock) {
+                    controlLock = 0;
+                    unlock(0);
+                }
 			}
 		}
 		airconsole.onActivePlayersChange = function(player_number) {
