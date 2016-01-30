@@ -41,9 +41,9 @@ public class PlayerGhost : MonoBehaviour {
 			movement.captive.captor = captor;
 		}
 
-
 		captor.GetComponent<PlayerMovement> ().captive = movement.captive;
 		captor = null;
+		movement.captive = null;
 
 		transform.position = spawn.position;
 

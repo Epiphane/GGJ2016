@@ -42,11 +42,10 @@ public class PlayerMovement : MonoBehaviour {
 		PlayerGhost ghost = GetComponent<PlayerGhost>();
 		ghost.enabled = false;
 
-		if (captive) {
-			ghost.captor.GetComponent<PlayerMovement>().captive = captive;
+		if (ghost.captor) {
+			ghost.captor.GetComponent<PlayerMovement>().captive = null;
 		}
 
-		captive = null;
 		ghost.captor = null;
 	}
 
@@ -168,6 +167,16 @@ public class PlayerMovement : MonoBehaviour {
 
 	}
 
+	public void CollectPoints() {
+		while (captive != null) {
+			/* Get them sweet points duuuuude */
+			Debug.Log ("Point!");
+
+			captive.Respawn ();
+			// This will set captive to something else
+		}
+	}
+
 	void OnTriggerEnter2D(Collider2D coll) {
 		if (coll.tag == "Player") {
 			if (dashing) {
@@ -182,29 +191,32 @@ public class PlayerMovement : MonoBehaviour {
 					coll.GetComponent<Rigidbody2D>().velocity = new Vector2 (diffX, diffY) * -speed;
 				} else {
 					// They weren't dashing! DESTROY THEM
-					var new_particles = GameObject.Instantiate(particles);
-					new_particles.transform.position = coll.transform.position;
 
-					PlayerMovement captiveMovement = coll.GetComponent<PlayerMovement> ();
+					// Go to the last element in the list
+					PlayerMovement cursor = this;
+					while (cursor.captive != null) {
+						cursor = cursor.captive.GetComponent<PlayerMovement> ();
+
+						// Abort if we already have this guy captive
+						if (cursor == coll.GetComponent<PlayerMovement> ()) {
+							return;
+						}
+					}
 						
-					// Disable movement
-					captiveMovement.enabled = false;
-
 					PlayerGhost ghost = coll.GetComponent<PlayerGhost> ();
-					ghost.enabled = true;
+					cursor.captive = ghost;
 					if (ghost.captor != null) {
-						ghost.captor.GetComponent<PlayerMovement> ().captive = captiveMovement.captive;
+						ghost.captor.GetComponent<PlayerMovement> ().captive = null;
 					}
-					ghost.captor = gameObject;
+					ghost.captor = cursor.gameObject;
 
-					// Make the "linked list" work
-					captiveMovement.captive = captive;
-					if (captive != null) {
-						captive.captor = ghost.gameObject;
-					}
-					captive = ghost;
+					ghost.enabled = true;
 
-					GameObject.Find("AirConsoleLogic").GetComponent<AirconsoleLogic>().Lock(captiveMovement);
+					// Disable movement
+					GameObject.Find("AirConsoleLogic").GetComponent<AirconsoleLogic>().Lock(coll.GetComponent<PlayerMovement> ());
+
+					var new_particles = GameObject.Instantiate(particles);
+					new_particles.transform.position = coll.transform.position;;
 				}
 			}
 		}
