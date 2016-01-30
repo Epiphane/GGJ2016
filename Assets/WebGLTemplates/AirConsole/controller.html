@@ -23,7 +23,6 @@
 		airconsole.onMessage = function(from, data) {
 			data = JSON.parse(data);
 			if (from == AirConsole.SCREEN) {
-				document.getElementById('myButton').innerHTML = JSON.stringify(data);
 				if (data.vibrate) {
 					navigator.vibrate(data.vibrate);
 					console.log("Vibrating: " + data.vibrate);
@@ -50,8 +49,13 @@
         });
         myShakeEvent.start();
 
+        document.getElementById('output').innerHTML = 'Shake initialized!';
+
         window.addEventListener('shake', function() {
             unlock(10);
+
+
+        document.getElementById('output').innerHTML = 'Shake!';
         });
     }
 
@@ -66,7 +70,8 @@
 			obj['color'] = true;
 		}
 
-		airconsole.message(AirConsole.SCREEN, obj);
+        if (airconsole)
+    		airconsole.message(AirConsole.SCREEN, obj);
 	}
 
     setInterval(function() {
@@ -164,6 +169,7 @@
     </style>
 </head>
 <body onload="init()">
+    <div id="output">abc</div>
     <div id="controls">
         <button ontouchstart="move()" ontouchend="stop()" onmousedown="move()" onmouseup="stop()">
         <div id="lock"></div>
