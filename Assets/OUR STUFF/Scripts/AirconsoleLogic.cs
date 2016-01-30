@@ -70,15 +70,19 @@ public class AirconsoleLogic : MonoBehaviour {
 			var newFriend = entry.Value;
 			if (x == 1) {
 				newFriend.transform.position = GameObject.Find ("start_1").transform.position;
+				newFriend.GetComponent<PlayerGhost> ().spawn = GameObject.Find ("start_1").transform;
 			}
 			else if (x == 2) {
 				newFriend.transform.position = GameObject.Find ("start_2").transform.position;
+				newFriend.GetComponent<PlayerGhost> ().spawn = GameObject.Find ("start_2").transform;
 			}
 			else if (x == 3) {
 				newFriend.transform.position = GameObject.Find ("start_3").transform.position;
+				newFriend.GetComponent<PlayerGhost> ().spawn = GameObject.Find ("start_3").transform;
 			}
 			else if (x >= 4) {
 				newFriend.transform.position = GameObject.Find ("start_4").transform.position;
+				newFriend.GetComponent<PlayerGhost> ().spawn = GameObject.Find ("start_4").transform;
 			}
 
 			x++;

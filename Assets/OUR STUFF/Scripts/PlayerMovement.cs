@@ -19,6 +19,8 @@ public class PlayerMovement : MonoBehaviour {
 
 	private GameObject arrow;
 
+	public PlayerGhost captive;
+
 	void Start() {
 		arrow = transform.Find ("arrow_parent").gameObject;
 	}
@@ -96,7 +98,25 @@ public class PlayerMovement : MonoBehaviour {
 					// They weren't dashing! DESTROY THEM
 					var new_particles = GameObject.Instantiate(particles);
 					new_particles.transform.position = coll.collider.transform.position;
-					coll.collider.transform.position = new Vector2 (100.0f, 100.0f);
+
+					PlayerMovement captiveMovement = coll.collider.GetComponent<PlayerMovement> ();
+						
+					// Disable movement
+					captiveMovement.enabled = false;
+
+					PlayerGhost ghost = coll.collider.GetComponent<PlayerGhost> ();
+					ghost.enabled = true;
+					if (ghost.captor != null) {
+						ghost.captor.GetComponent<PlayerMovement> ().captive = captiveMovement.captive;
+					}
+					ghost.captor = gameObject;
+
+					// Make the "linked list" work
+					captiveMovement.captive = captive;
+					if (captive != null) {
+						captive.captor = ghost.gameObject;
+					}
+					captive = ghost;
 				}
 			}
 		}
