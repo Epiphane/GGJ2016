@@ -7,6 +7,8 @@ public class PlayerMovement : MonoBehaviour {
 	public float speed = 20.0f;
 	public GameObject particles;
 
+	public int related_device_id = 0;
+
 	public float cooldown = 0.0f;
 
 	public bool dashing = false;
@@ -17,16 +19,13 @@ public class PlayerMovement : MonoBehaviour {
 		arrow = transform.Find ("arrow_parent").gameObject;
 	}
 
-	public float angle;
-	public Vector3 outVec;
+	public void Dash() {
+		float angle;
+		Vector3 outVec;
 
-	// Update is called once per frame
-	void Update () {
-
-		arrow.transform.RotateAround (arrow.transform.position, Vector3.forward, 3.0f);
 		arrow.transform.rotation.ToAngleAxis (out angle, out outVec);
 
-		if (Input.GetKeyDown (movementKey) && cooldown <= 0.0f) {
+		if (cooldown <= 0.0f) {
 			angle = Mathf.Deg2Rad * angle;
 
 			var vel = GetComponent<Rigidbody2D> ().velocity;
@@ -37,6 +36,12 @@ public class PlayerMovement : MonoBehaviour {
 
 			cooldown = 0.5f;
 		}
+	}
+
+	// Update is called once per frame
+	void Update () {
+
+		arrow.transform.RotateAround (arrow.transform.position, Vector3.forward, 3.0f);
 
 		float redness = (GetComponent<Rigidbody2D> ().velocity.sqrMagnitude) / 1000.0f;
 		GetComponent<SpriteRenderer> ().color = new Color (1.0f, 1.0f - redness, 1.0f - redness);
@@ -50,6 +55,10 @@ public class PlayerMovement : MonoBehaviour {
 		}
 
 		cooldown -= Time.deltaTime;
+
+		if (cooldown >= 0.0f && !dashing) {
+			GetComponent<SpriteRenderer> ().color = new Color (0.0f, 0.0f, 1.0f);
+		}
 	}
 
 	void OnCollisionEnter2D(Collision2D coll) {
@@ -68,7 +77,7 @@ public class PlayerMovement : MonoBehaviour {
 					// They weren't dashing! DESTROY THEM
 					var new_particles = GameObject.Instantiate(particles);
 					new_particles.transform.position = coll.collider.transform.position;
-					Destroy (coll.collider.gameObject);
+					coll.collider.transform.position = new Vector2 (100.0f, 100.0f);
 				}
 			}
 		}
