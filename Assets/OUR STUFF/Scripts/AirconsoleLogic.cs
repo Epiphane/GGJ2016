@@ -112,11 +112,8 @@ public class AirconsoleLogic : MonoBehaviour {
 		if (data ["color"] != null) {
 			AirConsole.instance.Message (device_id, ColorToJSONMessage(activePlayers [device_id].playerColor));
 		}
-		if (data["move"] != null) {
-			activePlayers [device_id].StartDashing ();
-		}
-		if (data["stop"] != null) {
-			activePlayers [device_id].StopDashing ();
+		if (data["dash"] != null) {
+			activePlayers [device_id].Dash ();
 		}
 	}
 

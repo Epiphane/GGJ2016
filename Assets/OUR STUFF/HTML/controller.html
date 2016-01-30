@@ -11,6 +11,8 @@
 
     var airconsole;
     var playerColor;
+    var isDashing;
+
     /**
      * Sets up the communication to the screen.
      */
@@ -49,12 +51,18 @@
 		airconsole.message(AirConsole.SCREEN, obj);
 	}
 
+    setInterval(function() {
+        if (isDashing) {
+            sendMessage('dash');
+        }
+    }, 1000/60);
+
     /**
      * Tells the screen to move the paddle of this player.
      * @param amount
      */
     function move() {
-    	sendMessage('move');
+        isDashing = true;
     }
 
     /**
@@ -62,7 +70,7 @@
      * @param amount
      */
     function stop() {
-    	sendMessage('stop');
+        isDashing = false;
     }
 
     </script>

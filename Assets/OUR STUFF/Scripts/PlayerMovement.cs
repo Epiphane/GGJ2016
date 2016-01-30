@@ -33,7 +33,7 @@ public class PlayerMovement : MonoBehaviour {
 		wantsToDash = false;
 	}
 
-	private void Dash() {
+	public void Dash() {
 		float angle;
 		Vector3 outVec;
 
