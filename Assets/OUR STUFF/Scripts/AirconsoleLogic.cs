@@ -12,6 +12,9 @@ public class AirconsoleLogic : MonoBehaviour {
 	public List<Color> possibleColors = new List<Color>();
 	private List<Color> usedColors = new List<Color>();
 
+	public List<Transform> possibleSpawns = new List<Transform>();
+	private List<Transform> usedSpawns = new List<Transform>();
+
 	Dictionary<int, PlayerMovement> activePlayers = new Dictionary<int, PlayerMovement>();
 
 	void Awake() {
@@ -49,52 +52,22 @@ public class AirconsoleLogic : MonoBehaviour {
 		AirConsole.instance.Message (device_id, ColorToJSONMessage(possibleColors[0]));
 		possibleColors.RemoveAt (0);
 
-//		if (AirConsole.instance.GetControllerDeviceIds ().Count == 1) {
-//			newFriend.transform.position = GameObject.Find ("start_1").transform.position;
-//		}
-//		else if (AirConsole.instance.GetControllerDeviceIds ().Count == 2) {
-//			newFriend.transform.position = GameObject.Find ("start_2").transform.position;
-//		}
-//		else if (AirConsole.instance.GetControllerDeviceIds ().Count == 3) {
-//			newFriend.transform.position = GameObject.Find ("start_3").transform.position;
-//		}
-//		else if (AirConsole.instance.GetControllerDeviceIds ().Count == 4) {
-//			newFriend.transform.position = GameObject.Find ("start_4").transform.position;
-//		}
-		ResetButton();
+		Transform spawn = possibleSpawns [0];
+		possibleSpawns.RemoveAt (0);
+		newFriend.transform.position = spawn.position;
+		newFriend.GetComponent<PlayerGhost> ().spawn = spawn;
 	}
 
 	public void Lock(PlayerMovement victim) {
 		AirConsole.instance.Message (victim.related_device_id, "{\"lock\":200}");
+
+		victim.enabled = false;
 	}
 
 	public void Unlock(PlayerMovement player) {
 		AirConsole.instance.Message (player.related_device_id, "{\"unlock\":true}");
-	}
 
-	public void ResetButton() {
-		int x = 1;
-		foreach(KeyValuePair<int, PlayerMovement> entry in activePlayers) {
-			var newFriend = entry.Value;
-			if (x == 1) {
-				newFriend.transform.position = GameObject.Find ("start_1").transform.position;
-				newFriend.GetComponent<PlayerGhost> ().spawn = GameObject.Find ("start_1").transform;
-			}
-			else if (x == 2) {
-				newFriend.transform.position = GameObject.Find ("start_2").transform.position;
-				newFriend.GetComponent<PlayerGhost> ().spawn = GameObject.Find ("start_2").transform;
-			}
-			else if (x == 3) {
-				newFriend.transform.position = GameObject.Find ("start_3").transform.position;
-				newFriend.GetComponent<PlayerGhost> ().spawn = GameObject.Find ("start_3").transform;
-			}
-			else if (x >= 4) {
-				newFriend.transform.position = GameObject.Find ("start_4").transform.position;
-				newFriend.GetComponent<PlayerGhost> ().spawn = GameObject.Find ("start_4").transform;
-			}
-
-			x++;
-		}
+		player.enabled = true;
 	}
 
 	/// <summary>
