@@ -48,7 +48,7 @@ public class PlayerMovement : MonoBehaviour {
 
 			GetComponent<Rigidbody2D> ().velocity = vel;
 
-			cooldown = 0.5f;
+			cooldown = 0.3f;
 		}
 	}
 

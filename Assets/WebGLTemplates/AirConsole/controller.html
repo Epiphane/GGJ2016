@@ -10,44 +10,59 @@
                          navigator.msVibrate);
 
     var airconsole;
+    var playerColor;
     /**
      * Sets up the communication to the screen.
      */
-    function init() {
-      airconsole = new AirConsole({"orientation": "portrait"});
-      airconsole.onMessage = function(from, data) {
-        if (from == AirConsole.SCREEN && data.vibrate) {
-          navigator.vibrate(data.vibrate);
-          console.log("Vibrating: " + data.vibrate);
-        }
-      }
-      airconsole.onActivePlayersChange = function(player_number) {
-        updateText(player_number);
-      }
-      airconsole.onReady = function() {
-        updateText();
-      }
-    }
+	function init() {
+		airconsole = new AirConsole({"orientation": "portrait"});
+		airconsole.onMessage = function(from, data) {
+			data = JSON.parse(data);
+			if (from == AirConsole.SCREEN) {
+				document.getElementById('myButton').innerHTML = JSON.stringify(data);
+				if (data.vibrate) {
+					navigator.vibrate(data.vibrate);
+					console.log("Vibrating: " + data.vibrate);
+				}
+				if (data.color) {
+					document.body.style.background = playerColor = 'rgb(' + data.color + ')';
+				}
+			}
+		}
+		airconsole.onActivePlayersChange = function(player_number) {
+		}
+		airconsole.onReady = function() {
+		}
+	}
 
-	function updateText(player_number) {
-	  var div = document.getElementById("player_id");
-      if (airconsole.getActivePlayerDeviceIds().length == 0) {
-        div.innerHTML = "Waiting for more players.";
-      } else if (player_number == undefined) {
-        div.innerHTML = "This is a 2 player game";
-      } else if (player_number == 0) {
-        div.innerHTML = "You are the player on the left";
-      } else if (player_number == 1) {
-        div.innerHTML = "You are the player on the right";
-      };
+	function sendMessage(obj) {
+		if (typeof(obj) === 'string') {
+			var newObj = {};
+			newObj[obj] = true;
+			obj = newObj;
+		}
+
+		if (!playerColor) {
+			obj['color'] = true;
+		}
+
+		airconsole.message(AirConsole.SCREEN, obj);
 	}
 
     /**
      * Tells the screen to move the paddle of this player.
      * @param amount
      */
-    function move(amount) {
-      airconsole.message(AirConsole.SCREEN, {move: amount})
+    function move() {
+    	sendMessage('move');
+    }
+
+    /**
+     * Tells the screen to move the paddle of this player.
+     * @param amount
+     */
+    function stop() {
+    	sendMessage('stop');
     }
 
     </script>
@@ -93,13 +108,8 @@
 </head>
 <body onload="init()">
     <div style="height: 1%"></div>
-    <div class=button ontouchstart="move(5)" ontouchend="move(0)" onmousedown="move(5)" onmouseup="move(0)">
-        <div class="button_label">UP</div>
+    <div class=button ontouchstart="move()" ontouchend="stop()" onmousedown="move()" onmouseup="stop()">
+        <div id=myButton class="button_label">GO</div>
     </div>
-    <div style="height: 8%"></div>
-    <div class=button ontouchstart="move(-5)" ontouchend="move(0)" onmousedown="move(-5)" onmouseup="move(0)">
-        <div class="button_label">DOWN</div>
-    </div>
-    <div id="player_id"></div>
 </body>
 </html>
