@@ -100,8 +100,6 @@ public class PlayerMovement : MonoBehaviour {
 		var newQuat = Quaternion.Slerp (new Quaternion (0, 0, 0, 0), arrow.transform.rotation * flipQuat, howMuch);
 
 		player_img.transform.rotation = newQuat;
-
-		print ("How much " + howMuch);
 	}
 
 	// Update is called once per frame
@@ -118,7 +116,7 @@ public class PlayerMovement : MonoBehaviour {
 		}
 
 		if (cooldown <= 0.0f) {
-			arrow.transform.RotateAround (arrow.transform.position, Vector3.forward, 3.0f);
+			arrow.transform.RotateAround (arrow.transform.position, Vector3.forward, 4.0f);
 		}
 
 		if (GetComponent<Rigidbody2D> ().velocity.sqrMagnitude < 20) {
@@ -169,8 +167,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	public void CollectPoints() {
 		while (captive != null) {
-			/* Get them sweet points duuuuude */
-			Debug.Log ("Point!");
+			GetComponent<PlayerScore> ().GainPoint ();
 
 			captive.Respawn ();
 			// This will set captive to something else
@@ -187,8 +184,8 @@ public class PlayerMovement : MonoBehaviour {
 					var diffX = coll.transform.position.x - transform.position.x;
 					var diffY = coll.transform.position.y - transform.position.y;
 
-					GetComponent<Rigidbody2D>().velocity = new Vector2 (diffX, diffY) * speed;
-					coll.GetComponent<Rigidbody2D>().velocity = new Vector2 (diffX, diffY) * -speed;
+					GetComponent<Rigidbody2D> ().velocity = new Vector2 (diffX, diffY) * speed;
+					coll.GetComponent<Rigidbody2D> ().velocity = new Vector2 (diffX, diffY) * -speed;
 				} else {
 					// They weren't dashing! DESTROY THEM
 
@@ -213,12 +210,20 @@ public class PlayerMovement : MonoBehaviour {
 					ghost.enabled = true;
 
 					// Disable movement
-					GameObject.Find("AirConsoleLogic").GetComponent<AirconsoleLogic>().Lock(coll.GetComponent<PlayerMovement> ());
+					GameObject.Find ("AirConsoleLogic").GetComponent<AirconsoleLogic> ().Lock (coll.GetComponent<PlayerMovement> ());
 
-					var new_particles = GameObject.Instantiate(particles);
-					new_particles.transform.position = coll.transform.position;;
+					var new_particles = GameObject.Instantiate (particles);
+					new_particles.transform.position = coll.transform.position;
+					;
 				}
 			}
+		}
+	}
+
+	void OnCollisionEnter2D(Collision2D coll) {
+		Debug.Log ("AUBD");
+		if (coll.collider.tag == "Wall") {
+			arrow.transform.RotateAround (arrow.transform.position, Vector3.forward, 180.0f);
 		}
 	}
 }
