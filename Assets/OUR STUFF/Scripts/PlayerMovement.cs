@@ -163,45 +163,16 @@ public class PlayerMovement : MonoBehaviour {
 		}
 
 		// Move according to input
-		if (!dashing) {
-			dashAnim = DASH_ANIM_LENGTH;
-			player_img.transform.rotation = new Quaternion (0, 0, 0, 0);
-			buttParticles.Play ();
-		}
-
-//		float angle;
-//		Vector3 outVec;
-//
-//		angle = GetArrowAngle (out outVec);
-//
 		var vel = GetComponent<Rigidbody2D> ().velocity;
 		vel.x = input.x * speed;// * outVec.z;
 		vel.y = input.y * -speed;
 
 		GetComponent<Rigidbody2D> ().velocity = vel;
+		// End moving
 
 		if (vel.sqrMagnitude > 5) {
 			dashing = true;
 		}
-
-		if (debug_wizz) {
-			if (Input.GetKey (movementKey)) {
-				Dash ();
-			}
-		}
-
-		if (wantsToDash) {
-			Dash ();
-		}
-
-//		if (cooldown <= 0.0f) {
-			if (turningLeft) {
-				arrow.transform.RotateAround (arrow.transform.position, Vector3.forward, 4.0f);
-			}
-			if (turningRight) {
-				arrow.transform.RotateAround (arrow.transform.position, Vector3.forward, -4.0f);
-			}
-//		}
 
 		if (GetComponent<Rigidbody2D> ().velocity.sqrMagnitude < 20) {
 			if (dashing) {

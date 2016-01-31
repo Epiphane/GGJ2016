@@ -156,39 +156,7 @@ public class AirconsoleLogic : MonoBehaviour {
 			}
 
 			activePlayers [device_id].input = direction;
-
-//			Debug.Log (data ["joystick-right"] ["message"] ["x"]);
-//			Debug.Log (data ["joystick-right"] ["message"] ["y"]);
-//			Debug.Log ();
 		}
-		/*
-		if (data ["color"] != null) {
-			AirConsole.instance.Message (device_id, ColorToJSONMessage(activePlayers [device_id].playerColor));
-		}
-		if (data["dash"] != null) {
-			activePlayers [device_id].Dash ();
-		}
-		if (data["start_dash"] != null) {
-			activePlayers [device_id].StartDashing ();
-		}
-		if (data["stop_dash"] != null) {
-			activePlayers [device_id].StopDashing ();
-		}
-		if (data["unlock"] != null) {
-			activePlayers [device_id].Unlock ();
-		}
-		if (data ["start_left"] != null) {
-			activePlayers [device_id].turningLeft = true;
-		}
-		if (data ["start_right"] != null) {
-			activePlayers [device_id].turningRight = true;
-		}
-		if (data ["stop_left"] != null) {
-			activePlayers [device_id].turningLeft = false;
-		}
-		if (data ["stop_right"] != null) {
-			activePlayers [device_id].turningRight = false;
-		}*/
 	}
 
 	void StartGame() {
