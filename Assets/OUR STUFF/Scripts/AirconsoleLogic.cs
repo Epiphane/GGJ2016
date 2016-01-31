@@ -83,7 +83,7 @@ public class AirconsoleLogic : MonoBehaviour {
 	public static void ReorderScoreList() {
 		List<PlayerMovement> scoreList = FindObjectOfType<AirconsoleLogic>().activePlayers.Values.ToList ();
 
-		scoreList = scoreList.OrderBy (score => -score.GetComponent<PlayerScore> ().score).ToList ();
+		scoreList = scoreList.OrderByDescending (score => score.GetComponent<PlayerScore> ().score).ToList ();
 
 		float increment = 1.0f / 8.0f;
 		float top = 1.0f;
@@ -130,11 +130,17 @@ public class AirconsoleLogic : MonoBehaviour {
 		var oldFriend = activePlayers [device_id];
 		if (oldFriend) {
 			activePlayers.Remove (device_id);
+
+			GameObject oldScore = activeScoreUI [device_id];
+			activeScoreUI.Remove (device_id);
+			Destroy (oldScore);
 		}
 		usedColors.Remove (oldFriend.playerColor);
 		usedSpawns.Remove (oldFriend.GetComponent<PlayerGhost>().spawn);
 		possibleColors.Add (oldFriend.playerColor);
 		possibleSpawns.Add (oldFriend.GetComponent<PlayerGhost>().spawn);
+
+		ReorderScoreList ();
 
 		GameObject.Destroy (oldFriend.gameObject);
 	}
