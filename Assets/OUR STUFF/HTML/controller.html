@@ -998,6 +998,22 @@ function init() {
 
   randomRune();
 
+  var pollColor = setInterval(function() {
+    if (airconsole) {
+      airconsole.message(AirConsole.SCREEN, {
+        color: true
+      });
+    }
+  }, 1000);
+
+  var pollState = setInterval(function() {
+    if (airconsole) {
+      airconsole.message(AirConsole.SCREEN, {
+        state: true
+      });
+    }
+  }, 1000);
+
   // Custom Thomas Script begins here
   airconsole.onMessage = function(from, data) {
     if (from == AirConsole.SCREEN) {
@@ -1008,19 +1024,19 @@ function init() {
       if (data.color) {
         document.body.style.background = playerColor = 'rgb(' + data.color + ')';
 
-        hasReceivedColor = true;
+        clearInterval(pollColor);
       }
       if (data.lobby) {
         randomRune();
 
         lobby.style.display = 'block';
         controller.style.display = 'none';
-        hasReceivedState = true;
+        clearInterval(pollState);
       }
       if (data.controller) {
         lobby.style.display = 'none';
         controller.style.display = 'block';
-        hasReceivedState = true;
+        clearInterval(pollState);
       }
     }
   }
@@ -1028,19 +1044,6 @@ function init() {
   }
   airconsole.onReady = function() {
   }
-
-  var pollColor = setInterval(function() {
-    if (airconsole) {
-      airconsole.message(AirConsole.SCREEN, {
-        color: true,
-        state: true
-      });
-    }
-
-    if (hasReceivedColor && hasReceivedState) {
-      clearInterval(pollColor);
-    }
-  });
 }
 
 </script></body></html>

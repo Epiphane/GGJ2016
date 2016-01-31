@@ -36,10 +36,14 @@ public class AirconsoleLogic : MonoBehaviour {
 		if (AirConsole.instance.IsAirConsoleUnityPluginReady ()) {
 			List<int> ids = AirConsole.instance.GetControllerDeviceIds ();
 
-			Debug.Log (ids.Count);
 			ids.ForEach ((device_id) => {
-				Debug.Log(device_id);
 				OnConnect (device_id);
+				if (activePlayers.ContainsKey(device_id)) {
+					AirConsole.instance.Message(device_id, "{\"controller\":true}");
+				}
+				else {
+					AirConsole.instance.Message(device_id, "{\"lobby\":true}");
+				}
 			});
 		}
 	}
@@ -65,6 +69,7 @@ public class AirconsoleLogic : MonoBehaviour {
 		if (possibleColors.Count == 0) {
 			// No more space! Gotta wait brooooo
 //			AirConsole.instance.Message (device_id, "{\"lobby\":true}");
+			return;
 		}
 
 		Color coolColor = possibleColors [0];
@@ -80,8 +85,8 @@ public class AirconsoleLogic : MonoBehaviour {
 //		newPlayer.buttParticles.startColor = possibleColors [0];
 		usedColors.Add (possibleColors [0]);
 
-//		AirConsole.instance.Message (device_id, ColorToJSONMessage(possibleColors[0]));
-//		AirConsole.instance.Message (device_id, "{\"controller\":true}");
+		AirConsole.instance.Message (device_id, ColorToJSONMessage(possibleColors[0]));
+		AirConsole.instance.Message (device_id, "{\"controller\":true}");
 		possibleColors.RemoveAt (0);
 
 		Transform spawn = possibleSpawns [0];
@@ -169,6 +174,18 @@ public class AirconsoleLogic : MonoBehaviour {
 		ReorderScoreList ();
 
 		GameObject.Destroy (oldFriend.gameObject);
+
+		// Add a new player maybe
+		List<int> ids = AirConsole.instance.GetControllerDeviceIds ();
+
+		if (ids.Count >= 16) {
+			for (int i = 0; i < ids.Count; i++) {
+				if (!activePlayers.ContainsKey(ids[i])) {
+					OnConnect (ids [i]);
+					return;
+				}
+			}
+		}
 	}
 
 	/// <summary>
