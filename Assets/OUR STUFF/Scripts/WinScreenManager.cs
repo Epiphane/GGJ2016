@@ -72,11 +72,16 @@ public class WinScreenManager : MonoBehaviour {
 				var size = GetGUY("third").GetComponent<RectTransform>().sizeDelta;
 				size.y += 20.0f;
 				GetGUY("third").GetComponent<RectTransform> ().sizeDelta = size;
+
+				GetComponent<AudioSource> ().Play ();
+				GetComponent<AudioSource> ().pitch++;
 			}
 
 			if (third_score == 0) {
 				cur_cool = max_cool;
 				currState = "grow2";
+
+				GetComponent<AudioSource> ().pitch = 0;
 			}
 		}
 
@@ -94,11 +99,15 @@ public class WinScreenManager : MonoBehaviour {
 				var size = GetGUY("second").GetComponent<RectTransform>().sizeDelta;
 				size.y += 20.0f;
 				GetGUY("second").GetComponent<RectTransform> ().sizeDelta = size;
+
+				GetComponent<AudioSource> ().Play ();
+				GetComponent<AudioSource> ().pitch++;
 			}
 
 			if (second_score == 0) {
 				cur_cool = max_cool;
 				currState = "grow1";
+				GetComponent<AudioSource> ().pitch = 0;
 			}
 		}
 
@@ -116,12 +125,16 @@ public class WinScreenManager : MonoBehaviour {
 				var size = GetGUY("first").GetComponent<RectTransform>().sizeDelta;
 				size.y += 20.0f;
 				GetGUY("first").GetComponent<RectTransform> ().sizeDelta = size;
+
+				GetComponent<AudioSource> ().Play ();
+				GetComponent<AudioSource> ().pitch++;
 			}
 
 			if (first_score == 0) {
 				cur_cool = max_cool;
 				currState = "confetti";
 				confetti.Play ();
+				GetComponent<AudioSource> ().pitch = 0;
 			}
 		}
 
