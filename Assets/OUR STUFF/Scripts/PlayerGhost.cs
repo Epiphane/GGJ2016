@@ -60,6 +60,9 @@ public class PlayerGhost : MonoBehaviour {
 		transform.position = spawn.position;
 
 		GetComponent<PlayerMovement> ().tether.GetComponent<SpriteRenderer> ().enabled = false;
+		GetComponent<PlayerMovement> ().bubble.GetComponent<SpriteRenderer> ().enabled = false;
+		GetComponent<PlayerMovement> ().transform.Find ("player_img").transform.localScale = new Vector3 (1.0f, 1.0f, 1.0f);
+
 
 		GameObject.Find ("AirConsoleLogic").GetComponent<AirconsoleLogic> ().Unlock (movement);
 	}

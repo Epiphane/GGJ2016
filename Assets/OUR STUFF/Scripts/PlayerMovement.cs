@@ -92,6 +92,7 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	public GameObject tether;
+	public GameObject bubble;
 
 	public void Unlock() {
 		enabled = true;
@@ -99,6 +100,8 @@ public class PlayerMovement : MonoBehaviour {
 		PlayerGhost ghost = GetComponent<PlayerGhost>();
 		ghost.enabled = false;
 		ghost.GetComponent<PlayerMovement> ().tether.GetComponent<SpriteRenderer> ().enabled = false;
+		ghost.GetComponent<PlayerMovement> ().bubble.GetComponent<SpriteRenderer> ().enabled = false;
+		ghost.GetComponent<PlayerMovement> ().transform.Find ("player_img").transform.localScale = new Vector3 (1.0f, 1.0f, 1.0f);
 
 		if (ghost.captor) {
 			ghost.captor.GetComponent<PlayerMovement>().captive = null;
@@ -255,6 +258,8 @@ public class PlayerMovement : MonoBehaviour {
 
 		ghost.enabled = true;
 		victim.GetComponent<PlayerMovement> ().tether.GetComponent<SpriteRenderer> ().enabled = true;
+		ghost.GetComponent<PlayerMovement> ().bubble.GetComponent<SpriteRenderer> ().enabled = true;
+		ghost.GetComponent<PlayerMovement> ().transform.Find ("player_img").transform.localScale = new Vector3 (0.6f, 0.6f, 0.6f);
 
 		// Disable movement
 		GameObject.Find ("AirConsoleLogic").GetComponent<AirconsoleLogic> ().Lock (victim.GetComponent<PlayerMovement> ());
