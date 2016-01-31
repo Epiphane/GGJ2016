@@ -17,22 +17,17 @@ public class PlayerMovement : MonoBehaviour {
 
 	public Sprite fireballSprite;
 	public Sprite wizardSprite;
+	public Sprite soulSprite; // Unimplemented so far
 
 	public bool dashing = false;
-
-	private bool wantsToDash = false;
-	public bool turningLeft = false;
-	public bool turningRight = false;
 
 	public Vector2 input = new Vector2(0, 0);
 
 	public Color playerColor = new Color(1.0f, 1.0f, 1.0f);
 
-	private GameObject arrow;
 	public GameObject player_img;
 
 	public PlayerGhost captive;
-
 
 	public bool debug_wizz = false;
 
@@ -60,7 +55,6 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	void Start() {
-		arrow = transform.Find ("arrow_parent").gameObject;
 		player_img = transform.Find ("player_img").gameObject;
 		buttParticles = transform.Find ("player_img/particle_poop").gameObject.GetComponent<ParticleSystem>();
 		playerColor.a = 1.0f;
@@ -88,58 +82,13 @@ public class PlayerMovement : MonoBehaviour {
 		dashing = false;
 	}
 
-	public void StartDashing() {
-		wantsToDash = true;
-	}
-
-	public void StopDashing() {
-		wantsToDash = false;
-	}
-
-	public float GetArrowAngle(out Vector3 outVec) {
-		float angle;
-
-		arrow.transform.rotation.ToAngleAxis (out angle, out outVec);
-
-		angle = Mathf.Deg2Rad * angle;
-
-		return angle;
-	}
-
-	public void Dash() {
-		if (!dashing) {
-			dashAnim = DASH_ANIM_LENGTH;
-			player_img.transform.rotation = new Quaternion (0, 0, 0, 0);
-			buttParticles.Play ();
-		}
-
-		float angle;
-		Vector3 outVec;
-
-		angle = GetArrowAngle (out outVec);
-
-		var vel = GetComponent<Rigidbody2D> ().velocity;
-		vel.x = Mathf.Sin (angle) *  speed * outVec.z;
-		vel.y = Mathf.Cos (angle) * -speed;
-
-		GetComponent<Rigidbody2D> ().velocity = vel;
-
-		cooldown = 0.05f;
-		dashing = true;
-	}
-
 	// Scales the wiz down along the axis they're facing towards
 	void ScaleAlongFacingAxis(float howMuch) {
-		Vector3 outVec;
-		var angle = GetArrowAngle (out outVec) * Mathf.Rad2Deg;
+		var angle = -Mathf.Atan2(input.x, -input.y) * howMuch;
 
-//		var squishQuaternion = Quaternion.AngleAxis (howMuch, new Vector3 (Mathf.Sin (angle), Mathf.Cos (angle), 0.0f).normalized);
-//		var squishQuaternion = Quaternion.AngleAxis (howMuch, Vector3.right);
-		var flipQuat = Quaternion.AngleAxis (180.0f, Vector3.right);
+		Debug.Log (howMuch);
 
-		var newQuat = Quaternion.Slerp (new Quaternion (0, 0, 0, 0), arrow.transform.rotation * flipQuat, howMuch);
-
-		player_img.transform.rotation = newQuat;
+		player_img.transform.rotation = Quaternion.AngleAxis (angle * 180 / Mathf.PI, Vector3.forward);
 	}
 
 	// Update is called once per frame
@@ -170,44 +119,49 @@ public class PlayerMovement : MonoBehaviour {
 		GetComponent<Rigidbody2D> ().velocity = vel;
 		// End moving
 
-		if (vel.sqrMagnitude > 5) {
-			dashing = true;
-		}
+		// dashing = (vel.sqrMagnitude >= 20);
 
-		if (GetComponent<Rigidbody2D> ().velocity.sqrMagnitude < 20) {
+		if (GetComponent<Rigidbody2D> ().velocity.sqrMagnitude < 5) {
 			if (dashing) {
 				// Going from dashingTRUE => dashingFALSE
 				dashAnim = DASH_ANIM_LENGTH;
 				buttParticles.Stop ();
+
+				player_img.GetComponent<SpriteRenderer> ().sprite = wizardSprite;
 			}
 			dashing = false;
+		} else {
+			if (!dashing) {
+				dashAnim = 0;
+
+				player_img.GetComponent<SpriteRenderer> ().sprite = fireballSprite;
+			}
+
+			dashing = true;
 		}
 	
 		playerColor.a = 1.0f;
 		player_img.GetComponent<SpriteRenderer> ().color = playerColor;
 
-		cooldown -= Time.deltaTime;
+//		TODO Bring quaternions back
+//		if (dashAnim >= 0.0f && dashing) { // Transitioning TO a fireball
+//			if (dashAnim <= DASH_ANIM_LENGTH / 2.0f) {
+//				player_img.GetComponent<SpriteRenderer> ().sprite = fireballSprite;
+//			}
+//			ScaleAlongFacingAxis ((DASH_ANIM_LENGTH - dashAnim) / DASH_ANIM_LENGTH);
+//
+//			dashAnim -= Time.deltaTime;
+//		} else if (dashAnim >= 0.0f && !dashing) {    // Transitioning FROM a fireball
+//			if (dashAnim <= DASH_ANIM_LENGTH / 2.0f) {
+//				player_img.GetComponent<SpriteRenderer> ().sprite = wizardSprite;
+//			}
+//			ScaleAlongFacingAxis (1 - (DASH_ANIM_LENGTH - dashAnim) / DASH_ANIM_LENGTH);
+//
+//			dashAnim -= Time.deltaTime;
+		if (dashing) { // I am a fireball. Hear me roar!
+			var angle = -Mathf.Atan2(input.x, -input.y);
 
-		if (cooldown >= 0.0f && !dashing) {
-			player_img.GetComponent<SpriteRenderer> ().color = new Color (0.0f, 0.0f, 1.0f);
-		}
-
-		if (dashAnim >= 0.0f && dashing) { // Transitioning TO a fireball
-			if (dashAnim <= DASH_ANIM_LENGTH / 2.0f) {
-				player_img.GetComponent<SpriteRenderer> ().sprite = fireballSprite;
-			}
-			ScaleAlongFacingAxis ((DASH_ANIM_LENGTH - dashAnim) / DASH_ANIM_LENGTH);
-
-			dashAnim -= Time.deltaTime;
-		} else if (dashAnim >= 0.0f && !dashing) {    // Transitioning FROM a fireball
-			if (dashAnim <= DASH_ANIM_LENGTH / 2.0f) {
-				player_img.GetComponent<SpriteRenderer> ().sprite = wizardSprite;
-			}
-			ScaleAlongFacingAxis ((DASH_ANIM_LENGTH - dashAnim) / DASH_ANIM_LENGTH);
-
-			dashAnim -= Time.deltaTime;
-		} else if (dashing) { // I am a fireball. Hear me roar!
-
+			player_img.transform.rotation = Quaternion.AngleAxis (angle * 180 / Mathf.PI, Vector3.forward);
 		} else { // Normal, non-dashing wizard. reset rotation.
 			player_img.transform.rotation = new Quaternion(0, 0, 0, 0);
 		}
@@ -255,26 +209,15 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D coll) {
-		if (coll.tag == "Player") {
-			if (dashing) {
-
-				// Collided with player...
-				if (!coll.GetComponent<PlayerMovement> ().dashing) {
-					// They weren't dashing! DESTROY THEM
-
-					ClaimSoul (coll.gameObject);
-				}
-			}
+		if (dashing && coll.tag == "Player" && !coll.GetComponent<PlayerMovement> ().dashing) {
+			// They weren't dashing! DESTROY THEM
+			ClaimSoul (coll.gameObject);
 		}
 	}
 
 	void OnCollisionEnter2D(Collision2D coll) {
-//		if (coll.collider.tag == "Wall") {
-//			arrow.transform.RotateAround (arrow.transform.position, Vector3.forward, 180.0f);
-//		}
-
 		if (coll.collider.tag == "Player" && dashing) {
-			// Collided wi;th player...
+			// Collided with player...
 			PlayerMovement movement = coll.collider.GetComponent<PlayerMovement> ();
 			if (movement.dashing) {
 				movement.Stun (1);
@@ -283,36 +226,7 @@ public class PlayerMovement : MonoBehaviour {
 				collision.Play ();
 			} else {
 				// They weren't dashing! DESTROY THEM
-
 				ClaimSoul (coll.collider.gameObject);
-				return;
-				// Go to the last element in the list
-				PlayerMovement cursor = this;
-				while (cursor.captive != null) {
-					cursor = cursor.captive.GetComponent<PlayerMovement> ();
-
-					// Abort if we already have this guy captive
-					if (cursor == coll.collider.GetComponent<PlayerMovement> ()) {
-						return;
-					}
-				}
-
-				PlayerGhost ghost = coll.collider.GetComponent<PlayerGhost> ();
-				cursor.captive = ghost;
-				if (ghost.captor != null) {
-					ghost.captor.GetComponent<PlayerMovement> ().captive = null;
-				}
-				ghost.captor = cursor.gameObject;
-
-				ghost.enabled = true;
-
-				// Disable movement
-				GameObject.Find ("AirConsoleLogic").GetComponent<AirconsoleLogic> ().Lock (coll.collider.GetComponent<PlayerMovement> ());
-
-				var new_particles = GameObject.Instantiate (particles);
-				new_particles.transform.position = coll.transform.position;
-
-				death.Play ();
 			}
 		}
 	}
