@@ -233,7 +233,7 @@ public class PlayerMovement : MonoBehaviour {
 			kill8.Play ();
 		else if (count == 9)
 			kill9.Play ();
-		else if (count == 10)
+		else if (count >= 10)
 			kill10.Play ();
 	}
 
