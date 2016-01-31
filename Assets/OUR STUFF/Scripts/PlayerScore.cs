@@ -20,6 +20,10 @@ public class PlayerScore : MonoBehaviour {
 		}
 	}
 
+	public void LosePoint() {
+		score--;
+	}
+
 	// Use this for initialization
 	void Start () {
 	

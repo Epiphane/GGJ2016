@@ -12,6 +12,7 @@
     var airconsole;
     var playerColor;
     var isDashing;
+    var score;
     var controlLock = 0;
     var controlMaxLock = controlLock;
 
@@ -38,6 +39,9 @@
                     controlLock = 0;
                     unlock(0);
                 }
+                if (data.score) {
+                	setScore(data.score);
+                }
 			}
 		}
 		airconsole.onActivePlayersChange = function(player_number) {
@@ -53,13 +57,9 @@
         });
         myShakeEvent.start();
 
-        document.getElementById('output').innerHTML = 'Shake initialized!';
-
         window.addEventListener('shake', function() {
             unlock(10);
 
-
-        document.getElementById('output').innerHTML = 'Shake!';
         });
     }
 
@@ -89,6 +89,10 @@
 
         if (controlLock <= 0)  {
             sendMessage('unlock');
+        	document.getElementById('shake_it').style.opacity = 0;
+        }
+        else {
+        	document.getElementById('shake_it').style.opacity = 1;
         }
 
         document.getElementById('lock').style.width = (100 * controlLock / controlMaxLock) + '%';
@@ -115,6 +119,10 @@
     function stop() {
         // isDashing = false;
         sendMessage('stop_dash');
+    }
+
+    function setScore(s) {
+    	score = s;
     }
 
     </script>
@@ -144,9 +152,11 @@
             image-rendering: crisp-edges;
             image-rendering: pixelated;
             -ms-interpolation-mode: nearest-neighbor;  /* IE (non-standard property) */
+
+            border: none;
         }
 
-        button:active {
+        body:active button {
             background-position: 100% 0;
         }
 
@@ -162,6 +172,10 @@
             transform: translate3d(-50%, -50%, 0);
         }
 
+        #controls button {
+        	position: relative;
+        }
+
         #controls #lock {
             height: 100%;
             position: absolute;
@@ -170,14 +184,28 @@
             right: 0;
             top: 0;
         }
+
+        #shake_it {
+        	    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAACYUlEQVRoQ+2Z0bXCMAiG0zlcwllcwT360D1cwVlcwjl6Dz3ipQkQSEmt5+iT1iTy/RAIZkhf/hq+3P70A5A8eL/f58fjkc7nc7pcLt2E6rIwGk/hLCBzSjOdM6R6hIQDoPHP5zPdbrfFnnEc33ZZQHAwAmkg3QCmaSqiqwdIKACqzxlPaWognPKSNz4CgDAaiGQwPKchFQZgVZ/LWl4QCnEIAKtHUPlwAEF9EGeVFq1VX/IINRzfh3iAAcjXLUCu1+vCg6lWCy1MvV0ADMbntq1gaiDw/el0StM0DUcBIHXqn00C6QrQoD4XKeI+QeO7hVAQAOsReEjVh8+hIRRsPPXM4pFc/RwAJzRnob0AYPNq6bcJYC/jpZPr5kI2juNMj8vJcG43FrFV+NTUhzXdHuitPvYP1r7BDdBJ/XcqzTNPzXMugN7qc5knFOBo6rv2wBHVLwDybidrA3tknubYLwqZZrxy3q+FaO17serWJqoAOQwT+5srOW12vJmHwi1ZKDeYfjb2uq5s9jJgs/rvPcCd8pBSUT/3sgdic+yvQkACMKrfAhKiftUDVvWFbkrySJj64QCwINOksw1+S9XlMlOxibkNnJ08i3XQAwIAmxG3ZB41C+UZif5VroHU/l2gPxqlPhtCXFqFZ1YQSwGKUn91lNBqATVqK0ik+ioAeuI1qMgorSCR6q8ApNCh1z7cTYkHJFr9AkCCsMR1fi/GXXJEq88C1EKnBgMgMAZuKOGFID3UFwHQSO2I7QWB8dZGvbZ2UQc8E7xj0SMwr8d9secE6bV9l/E/gF1kVn7k6z3wB6olOE9qQ7nxAAAAAElFTkSuQmCC');
+			    width: 256px;
+			    background-size: 100%;
+			    height: 256px;
+			    margin-top: 40px;
+			    opacity: 0;
+			    image-rendering: -moz-crisp-edges;
+			    image-rendering: -o-crisp-edges;
+			    image-rendering: -webkit-optimize-contrast;
+			    image-rendering: crisp-edges;
+			    image-rendering: pixelated;
+			    -ms-interpolation-mode: nearest-neighbor;
+        }
     </style>
 </head>
-<body onload="init()">
-    <div id="output">abc</div>
+<body onload="init()" ontouchstart="move()" ontouchend="stop()" onmousedown="move()" onmouseup="stop()">
+    <div id="output"></div>
     <div id="controls">
-        <button ontouchstart="move()" ontouchend="stop()" onmousedown="move()" onmouseup="stop()">
-        <div id="lock"></div>
-        </button>
+        <button><div id="lock"></div></button>
+    	<div id="shake_it"></div>
     </div>
 
     <script type="text/javascript">
