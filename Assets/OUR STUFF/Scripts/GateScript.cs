@@ -3,6 +3,8 @@ using System.Collections;
 
 public class GateScript : MonoBehaviour {
 
+
+
 	void OnTriggerEnter2D (Collider2D other) {
 		if (other.tag == "Player" && other.GetComponent<PlayerMovement>().enabled) {
 			// Give the captor some sweet points dude
