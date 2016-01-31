@@ -124,7 +124,7 @@ public class PlayerMovement : MonoBehaviour {
 
 //		var squishQuaternion = Quaternion.AngleAxis (howMuch, new Vector3 (Mathf.Sin (angle), Mathf.Cos (angle), 0.0f).normalized);
 //		var squishQuaternion = Quaternion.AngleAxis (howMuch, Vector3.right);
-		var flipQuat = Quaternion.AngleAxis(180.0f, Vector3.right);
+		var flipQuat = Quaternion.AngleAxis (180.0f, Vector3.right);
 
 		var newQuat = Quaternion.Slerp (new Quaternion (0, 0, 0, 0), arrow.transform.rotation * flipQuat, howMuch);
 
@@ -133,11 +133,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-//		if (dashing) {
-			GetComponent<CircleCollider2D> ().isTrigger = false;
-//		} else {
-//			GetComponent<CircleCollider2D> ().isTrigger = true;
-//		}
+		GetComponent<CircleCollider2D> ().isTrigger = false;
 
 		if (stunned > 0) {
 			stunned -= Time.deltaTime;
@@ -211,9 +207,54 @@ public class PlayerMovement : MonoBehaviour {
 	public void CollectPoints() {
 		while (captive != null) {
 			GetComponent<PlayerScore> ().GainPoint ();
+			captive.GetComponent<PlayerScore> ().LosePoint ();
 
 			captive.Respawn ();
 			// This will set captive to something else
+		}
+	}
+
+	void ClaimSoul(GameObject victim) {
+		// Go to the last element in the list
+		PlayerMovement cursor = this;
+		while (cursor.captive != null) {
+			cursor = cursor.captive.GetComponent<PlayerMovement> ();
+
+			// Abort if we already have this guy captive
+			if (cursor == victim.GetComponent<PlayerMovement> ()) {
+				return;
+			}
+		}
+
+		PlayerGhost ghost = victim.GetComponent<PlayerGhost> ();
+		cursor.captive = ghost;
+		if (ghost.captor != null) {
+			ghost.captor.GetComponent<PlayerMovement> ().captive = null;
+		}
+		ghost.captor = cursor.gameObject;
+
+		ghost.enabled = true;
+
+		// Disable movement
+		GameObject.Find ("AirConsoleLogic").GetComponent<AirconsoleLogic> ().Lock (victim.GetComponent<PlayerMovement> ());
+
+		var new_particles = GameObject.Instantiate (particles);
+		new_particles.transform.position = victim.transform.position;
+
+		death.Play ();
+	}
+
+	void OnTriggerEnter2D(Collider2D coll) {
+		if (coll.tag == "Player") {
+			if (dashing) {
+
+				// Collided with player...
+				if (!coll.GetComponent<PlayerMovement> ().dashing) {
+					// They weren't dashing! DESTROY THEM
+
+					ClaimSoul (coll.gameObject);
+				}
+			}
 		}
 	}
 
@@ -233,6 +274,8 @@ public class PlayerMovement : MonoBehaviour {
 			} else {
 				// They weren't dashing! DESTROY THEM
 
+				ClaimSoul (coll.collider.gameObject);
+				return;
 				// Go to the last element in the list
 				PlayerMovement cursor = this;
 				while (cursor.captive != null) {
