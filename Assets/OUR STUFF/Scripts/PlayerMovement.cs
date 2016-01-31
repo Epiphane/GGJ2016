@@ -37,6 +37,7 @@ public class PlayerMovement : MonoBehaviour {
 		arrow = transform.Find ("arrow_parent").gameObject;
 		player_img = transform.Find ("player_img").gameObject;
 		buttParticles = transform.Find ("player_img/particle_poop").gameObject.GetComponent<ParticleSystem>();
+		playerColor.a = 1.0f;
 		buttParticles.startColor = playerColor;
 		buttParticles.Stop ();
 	}
