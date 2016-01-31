@@ -211,7 +211,7 @@ public class PlayerMovement : MonoBehaviour {
 			count++;
 			captive.GetComponent<PlayerScore> ().LosePoint ();
 
-			captive.Respawn ();
+			captive.Sacrifice ();
 			// This will set captive to something else
 		}
 
@@ -273,7 +273,8 @@ public class PlayerMovement : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D coll) {
 		if (dashing && coll.tag == "Player" && !coll.GetComponent<PlayerMovement> ().dashing) {
 			// They weren't dashing! DESTROY THEM
-			ClaimSoul (coll.gameObject);
+			if (!coll.GetComponent<PlayerGhost> ().sacrificing)
+				ClaimSoul (coll.gameObject);
 		}
 	}
 
@@ -290,7 +291,8 @@ public class PlayerMovement : MonoBehaviour {
 				collision.Play ();
 			} else {
 				// They weren't dashing! DESTROY THEM
-				ClaimSoul (coll.collider.gameObject);
+				if (!coll.collider.GetComponent<PlayerGhost> ().sacrificing)
+					ClaimSoul (coll.collider.gameObject);
 			}
 		}
 	}

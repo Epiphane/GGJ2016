@@ -276,6 +276,7 @@ MonoBehaviour:
   captor: {fileID: 0}
   spawn: {fileID: 0}
   leashLength: 0.8
+  runeDude: {fileID: 0}
 --- !u!114 &11494086
 MonoBehaviour:
   m_ObjectHideFlags: 1

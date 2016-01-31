@@ -9,22 +9,44 @@ public class PlayerGhost : MonoBehaviour {
 
 	public float leashLength = 0.8f;
 
+	public Transform runeDude;
+	public bool sacrificing = false;
+	private float shakeTime = 0;
+	private float shakeSeed = 0;
+
 	// Use this for initialization
 	void Start () {
+		runeDude = GameObject.Find ("Gate").transform;
+
+		shakeSeed = Random.value * 100;
 	}
 
 	void Update() {
 		GetComponent<CircleCollider2D> ().isTrigger = true;
-
-//		Color c = GetComponent<PlayerMovement>().playerColor;
-////		c.a = 0.5f;
-//
-//		GetComponent<PlayerMovement>().player_img.GetComponent<SpriteRenderer> ().color = c;
 	}
 
 	// Update is called once per frame
 	void FixedUpdate () {
-		if (captor) {
+		if (sacrificing) {
+			PlayerMovement movement = GetComponent<PlayerMovement> ();
+			movement.tether.GetComponent<SpriteRenderer> ().enabled = false;
+			movement.bubble.GetComponent<SpriteRenderer> ().enabled = false;
+
+			Vector3 distToRuneDude = runeDude.position - transform.position;
+
+			if (distToRuneDude.magnitude > 2) {
+				transform.position = transform.position + distToRuneDude / 2;
+			} else if (shakeTime < 2) {
+				shakeTime += Time.fixedDeltaTime;
+
+				transform.position = runeDude.position + (2 - shakeTime) / 3 * (new Vector3 (Mathf.Cos (shakeSeed + shakeTime * 60), Mathf.Sin (shakeSeed + shakeTime * 73), 0));
+			} else {
+				Respawn ();
+
+				sacrificing = false;
+			}
+		}
+		else if (captor) {
 			Vector3 distToCaptor = transform.position - captor.transform.position;
 
 			Quaternion pointToDad = Quaternion.FromToRotation (Vector3.left, distToCaptor);
@@ -43,11 +65,13 @@ public class PlayerGhost : MonoBehaviour {
 		}
 	}
 
-	public void Respawn() {
-		PlayerMovement movement = GetComponent<PlayerMovement> ();
+	public void Sacrifice() {
+		sacrificing = true;
+		transform.Find ("player_img").transform.localScale = Vector3.one;
 
-		movement.enabled = true;
-		enabled = false;
+		PlayerMovement movement = GetComponent<PlayerMovement> ();
+		movement.tether.GetComponent<SpriteRenderer> ().enabled = false;
+		movement.bubble.GetComponent<SpriteRenderer> ().enabled = false;
 
 		if (movement.captive) {
 			movement.captive.captor = captor;
@@ -57,12 +81,16 @@ public class PlayerGhost : MonoBehaviour {
 		captor = null;
 		movement.captive = null;
 
+		shakeTime = 0;
+	}
+
+	public void Respawn() {
+		PlayerMovement movement = GetComponent<PlayerMovement> ();
+
+		movement.enabled = true;
+		enabled = false;
+
 		transform.position = spawn.position;
-
-		GetComponent<PlayerMovement> ().tether.GetComponent<SpriteRenderer> ().enabled = false;
-		GetComponent<PlayerMovement> ().bubble.GetComponent<SpriteRenderer> ().enabled = false;
-		GetComponent<PlayerMovement> ().transform.Find ("player_img").transform.localScale = new Vector3 (1.0f, 1.0f, 1.0f);
-
 
 		GameObject.Find ("AirConsoleLogic").GetComponent<AirconsoleLogic> ().Unlock (movement);
 	}
