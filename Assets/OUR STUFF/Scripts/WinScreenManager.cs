@@ -29,24 +29,24 @@ public class WinScreenManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		confetti.Stop ();
-//		colors = AirconsoleLogic.winningColors; //players = FindObjectOfType<AirconsoleLogic> ().activePlayers.Values.ToList();
-//		scores = AirconsoleLogic.winningScores; //players = players.OrderByDescending(score => -score.SCORE_LOL).ToList ();
-//
-//		first_score = scores [0];
-//		SetDudeColor (GetGUY("first"), colors[0]);
-//		SetDudeColor (GetGUY("first/viking"), colors[0]);
-//
-//		if (scores.Count >= 2) {
-//			second_score = scores[1];
-//			SetDudeColor (GetGUY("second"), colors[1]);
-//			SetDudeColor (GetGUY("second/viking"), colors[1]);
-//		}
-//
-//		if (scores.Count >= 3) {
-//			third_score = scores[2];
-//			SetDudeColor (GetGUY("third"), colors[2]);
-//			SetDudeColor (GetGUY("third/viking"), colors[2]);
-//		}
+		colors = AirconsoleLogic.winningColors; //players = FindObjectOfType<AirconsoleLogic> ().activePlayers.Values.ToList();
+		scores = AirconsoleLogic.winningScores; //players = players.OrderByDescending(score => -score.SCORE_LOL).ToList ();
+
+		first_score = scores [0];
+		SetDudeColor (GetGUY("first"), colors[0]);
+		SetDudeColor (GetGUY("first/viking"), colors[0]);
+
+		if (scores.Count >= 2) {
+			second_score = scores[1];
+			SetDudeColor (GetGUY("second"), colors[1]);
+			SetDudeColor (GetGUY("second/viking"), colors[1]);
+		}
+
+		if (scores.Count >= 3) {
+			third_score = scores[2];
+			SetDudeColor (GetGUY("third"), colors[2]);
+			SetDudeColor (GetGUY("third/viking"), colors[2]);
+		}
 	}
 
 	GameObject GetGUY(string name) {
