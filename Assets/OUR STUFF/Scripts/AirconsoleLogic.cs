@@ -125,6 +125,10 @@ public class AirconsoleLogic : MonoBehaviour {
 		player.enabled = true;
 	}
 
+	public void Message(PlayerMovement player, string message) {
+		AirConsole.instance.Message (player.related_device_id, message);
+	}
+
 	/// <summary>
 	/// If the game is running and one of the active players leaves, we reset the game.
 	/// </summary>

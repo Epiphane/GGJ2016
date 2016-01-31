@@ -223,6 +223,8 @@ public class PlayerMovement : MonoBehaviour {
 				movement.Stun (1);
 				Stun (1);
 
+				GameObject.Find ("AirConsoleLogic").GetComponent<AirconsoleLogic> ().Message (movement, "{\"vibrate\":1000}");
+
 				collision.Play ();
 			} else {
 				// They weren't dashing! DESTROY THEM

@@ -42,7 +42,9 @@ body {
 </style>
 <!-- <link rel="stylesheet" href="airconsole-controls/ctrl-generator/controller.css"> -->
 </head>
-<body>
+<body onload="init()">
+
+    <span id="output">output</span>
 
     <div class="gamepad_container">
       <div id="left" class="left"></div>
@@ -929,4 +931,35 @@ var CtrlGenerator = (function() {
 var airconsole = new AirConsole({orientation: AirConsole.ORIENTATION_PORTRAIT});
 CtrlGenerator.setAirConsole(airconsole);
 CtrlGenerator.generate({"left":null,"middle":[],"right":{"type":{"label":"Joystick","class_name":"Joystick"}}});
+
+function init() {
+  var output = document.getElementById('output');
+  output.innerHTML = '';
+
+  // Custom Thomas Script begins here
+  airconsole.onMessage = function(from, data) {
+    // output.innerHTML = output.innerHTML + ' | From ' + from;
+    if (from == AirConsole.SCREEN) {
+      output.innerHTML = output.innerHTML + ' | ' + data;
+      data = JSON.parse(data);
+      if (data.vibrate) {
+        output.innerHTML = output.innerHTML + ' | Vibrate ' + data.vibrate;
+        navigator.vibrate(data.vibrate);
+        navigator.vibrate(1000);
+      }
+      if (data.color) {
+        document.body.style.background = playerColor = 'rgb(' + data.color + ')';
+      }
+    }
+  }
+  airconsole.onActivePlayersChange = function(player_number) {
+  }
+  airconsole.onReady = function() {
+  }
+}
+
+setInterval(function() {
+        navigator.vibrate(1000);
+}, 1000);
+
 </script></body></html>
