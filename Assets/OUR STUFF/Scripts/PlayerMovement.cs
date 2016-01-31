@@ -33,6 +33,26 @@ public class PlayerMovement : MonoBehaviour {
 
 	private float stunned = 0;
 
+	public AudioSource collision;
+	public AudioSource death;
+
+	public AudioClip collisionClip;
+	public AudioClip deathClip;
+
+	public AudioSource AddAudio(AudioClip clip, bool loop, bool playAwake, float vol) { 
+		AudioSource newAudio = gameObject.AddComponent<AudioSource>();
+		newAudio.clip = clip; 
+		newAudio.loop = loop;
+		newAudio.playOnAwake = playAwake;
+		newAudio.volume = vol; 
+		return newAudio; 
+	}
+
+	void Awake () {
+		collision = AddAudio (collisionClip, false, false, 1.0f);
+		death = AddAudio (deathClip, false, false, 1.0f);
+	}
+
 	void Start() {
 		arrow = transform.Find ("arrow_parent").gameObject;
 		player_img = transform.Find ("player_img").gameObject;
@@ -93,7 +113,7 @@ public class PlayerMovement : MonoBehaviour {
 
 		GetComponent<Rigidbody2D> ().velocity = vel;
 
-		cooldown = 0.3f;
+		cooldown = 0.05f;
 		dashing = true;
 	}
 
@@ -113,11 +133,11 @@ public class PlayerMovement : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (dashing) {
+//		if (dashing) {
 			GetComponent<CircleCollider2D> ().isTrigger = false;
-		} else {
-			GetComponent<CircleCollider2D> ().isTrigger = true;
-		}
+//		} else {
+//			GetComponent<CircleCollider2D> ().isTrigger = true;
+//		}
 
 		if (stunned > 0) {
 			stunned -= Time.deltaTime;
@@ -197,54 +217,6 @@ public class PlayerMovement : MonoBehaviour {
 		}
 	}
 
-	void OnTriggerEnter2D(Collider2D coll) {
-		if (coll.tag == "Player") {
-			if (dashing) {
-
-				// Collided with player...
-				if (coll.GetComponent<PlayerMovement> ().dashing) {
-					// They were dashing! Bounce away.
-					var diffX = coll.transform.position.x - transform.position.x;
-					var diffY = coll.transform.position.y - transform.position.y;
-
-					GetComponent<Rigidbody2D> ().velocity = new Vector2 (diffX, diffY) * speed;
-					coll.GetComponent<Rigidbody2D> ().velocity = new Vector2 (diffX, diffY) * -speed;
-
-					Debug.Log("Oh noooo");
-				} else {
-					// They weren't dashing! DESTROY THEM
-
-					// Go to the last element in the list
-					PlayerMovement cursor = this;
-					while (cursor.captive != null) {
-						cursor = cursor.captive.GetComponent<PlayerMovement> ();
-
-						// Abort if we already have this guy captive
-						if (cursor == coll.GetComponent<PlayerMovement> ()) {
-							return;
-						}
-					}
-						
-					PlayerGhost ghost = coll.GetComponent<PlayerGhost> ();
-					cursor.captive = ghost;
-					if (ghost.captor != null) {
-						ghost.captor.GetComponent<PlayerMovement> ().captive = null;
-					}
-					ghost.captor = cursor.gameObject;
-
-					ghost.enabled = true;
-
-					// Disable movement
-					GameObject.Find ("AirConsoleLogic").GetComponent<AirconsoleLogic> ().Lock (coll.GetComponent<PlayerMovement> ());
-
-					var new_particles = GameObject.Instantiate (particles);
-					new_particles.transform.position = coll.transform.position;
-					;
-				}
-			}
-		}
-	}
-
 	void OnCollisionEnter2D(Collision2D coll) {
 		if (coll.collider.tag == "Wall") {
 			arrow.transform.RotateAround (arrow.transform.position, Vector3.forward, 180.0f);
@@ -256,6 +228,38 @@ public class PlayerMovement : MonoBehaviour {
 			if (movement.dashing) {
 				movement.Stun (1);
 				Stun (1);
+
+				collision.Play ();
+			} else {
+				// They weren't dashing! DESTROY THEM
+
+				// Go to the last element in the list
+				PlayerMovement cursor = this;
+				while (cursor.captive != null) {
+					cursor = cursor.captive.GetComponent<PlayerMovement> ();
+
+					// Abort if we already have this guy captive
+					if (cursor == coll.collider.GetComponent<PlayerMovement> ()) {
+						return;
+					}
+				}
+
+				PlayerGhost ghost = coll.collider.GetComponent<PlayerGhost> ();
+				cursor.captive = ghost;
+				if (ghost.captor != null) {
+					ghost.captor.GetComponent<PlayerMovement> ().captive = null;
+				}
+				ghost.captor = cursor.gameObject;
+
+				ghost.enabled = true;
+
+				// Disable movement
+				GameObject.Find ("AirConsoleLogic").GetComponent<AirconsoleLogic> ().Lock (coll.collider.GetComponent<PlayerMovement> ());
+
+				var new_particles = GameObject.Instantiate (particles);
+				new_particles.transform.position = coll.transform.position;
+
+				death.Play ();
 			}
 		}
 	}
