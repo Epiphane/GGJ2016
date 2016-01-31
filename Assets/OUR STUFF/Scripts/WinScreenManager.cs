@@ -42,8 +42,14 @@ public class WinScreenManager : MonoBehaviour {
 		return FindObjectOfType<Canvas> ().transform.Find (name).gameObject;
 	}
 
-	void SetWinningColor() {
+	void SetDudeColor(GameObject dude, Color color) {
+		if (dude.GetComponent<Image> ()) {
 
+		}
+
+		if (dude.GetComponent<SpriteRenderer> ()) {
+
+		}
 	}
 
 	// Update is called once per frame
@@ -57,7 +63,7 @@ public class WinScreenManager : MonoBehaviour {
 		if (currState == "grow3") {
 			if (third_score > 0) {
 				cooldown = cur_cool;
-				cur_cool *= 0.95f;
+				cur_cool *= 0.9f;
 				third_score--;
 				displayed_third++;
 
@@ -66,11 +72,16 @@ public class WinScreenManager : MonoBehaviour {
 				var size = GetGUY("third").GetComponent<RectTransform>().sizeDelta;
 				size.y += 20.0f;
 				GetGUY("third").GetComponent<RectTransform> ().sizeDelta = size;
+
+				GetComponent<AudioSource> ().Play ();
+				GetComponent<AudioSource> ().pitch++;
 			}
 
 			if (third_score == 0) {
 				cur_cool = max_cool;
 				currState = "grow2";
+
+				GetComponent<AudioSource> ().pitch = 0;
 			}
 		}
 
@@ -79,7 +90,7 @@ public class WinScreenManager : MonoBehaviour {
 		if (currState == "grow2") {
 			if (second_score > 0) {
 				cooldown = cur_cool;
-				cur_cool *= 0.95f;
+				cur_cool *= 0.9f;
 				second_score--;
 				displayed_second++;
 
@@ -88,11 +99,15 @@ public class WinScreenManager : MonoBehaviour {
 				var size = GetGUY("second").GetComponent<RectTransform>().sizeDelta;
 				size.y += 20.0f;
 				GetGUY("second").GetComponent<RectTransform> ().sizeDelta = size;
+
+				GetComponent<AudioSource> ().Play ();
+				GetComponent<AudioSource> ().pitch++;
 			}
 
 			if (second_score == 0) {
 				cur_cool = max_cool;
 				currState = "grow1";
+				GetComponent<AudioSource> ().pitch = 0;
 			}
 		}
 
@@ -101,7 +116,7 @@ public class WinScreenManager : MonoBehaviour {
 		if (currState == "grow1") {
 			if (first_score > 0) {
 				cooldown = cur_cool;
-				cur_cool *= 0.95f;
+				cur_cool *= 0.9f;
 				first_score--;
 				displayed_first++;
 
@@ -110,12 +125,16 @@ public class WinScreenManager : MonoBehaviour {
 				var size = GetGUY("first").GetComponent<RectTransform>().sizeDelta;
 				size.y += 20.0f;
 				GetGUY("first").GetComponent<RectTransform> ().sizeDelta = size;
+
+				GetComponent<AudioSource> ().Play ();
+				GetComponent<AudioSource> ().pitch++;
 			}
 
 			if (first_score == 0) {
 				cur_cool = max_cool;
 				currState = "confetti";
 				confetti.Play ();
+				GetComponent<AudioSource> ().pitch = 0;
 			}
 		}
 
