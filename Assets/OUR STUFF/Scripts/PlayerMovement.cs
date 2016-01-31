@@ -91,11 +91,14 @@ public class PlayerMovement : MonoBehaviour {
 		buttParticles.Stop ();
 	}
 
+	public GameObject tether;
+
 	public void Unlock() {
 		enabled = true;
 
 		PlayerGhost ghost = GetComponent<PlayerGhost>();
 		ghost.enabled = false;
+		ghost.GetComponent<PlayerMovement> ().tether.GetComponent<SpriteRenderer> ().enabled = false;
 
 		if (ghost.captor) {
 			ghost.captor.GetComponent<PlayerMovement>().captive = null;
@@ -251,6 +254,7 @@ public class PlayerMovement : MonoBehaviour {
 		ghost.captor = cursor.gameObject;
 
 		ghost.enabled = true;
+		victim.GetComponent<PlayerMovement> ().tether.GetComponent<SpriteRenderer> ().enabled = true;
 
 		// Disable movement
 		GameObject.Find ("AirConsoleLogic").GetComponent<AirconsoleLogic> ().Lock (victim.GetComponent<PlayerMovement> ());

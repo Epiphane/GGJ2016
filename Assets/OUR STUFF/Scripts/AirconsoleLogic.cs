@@ -36,10 +36,14 @@ public class AirconsoleLogic : MonoBehaviour {
 		if (AirConsole.instance.IsAirConsoleUnityPluginReady ()) {
 			List<int> ids = AirConsole.instance.GetControllerDeviceIds ();
 
-			Debug.Log (ids.Count);
 			ids.ForEach ((device_id) => {
-				Debug.Log(device_id);
 				OnConnect (device_id);
+				if (activePlayers.ContainsKey(device_id)) {
+					AirConsole.instance.Message(device_id, "{\"controller\":true}");
+				}
+				else {
+					AirConsole.instance.Message(device_id, "{\"lobby\":true}");
+				}
 			});
 		}
 	}
@@ -62,6 +66,12 @@ public class AirconsoleLogic : MonoBehaviour {
 	/// </summary>
 	/// <param name="device_id">The device_id that connected</param>
 	void OnConnect(int device_id) {
+		if (possibleColors.Count == 0) {
+			// No more space! Gotta wait brooooo
+//			AirConsole.instance.Message (device_id, "{\"lobby\":true}");
+			return;
+		}
+
 		Color coolColor = possibleColors [0];
 
 		var newFriend = GameObject.Instantiate (playerTemplate);
@@ -76,6 +86,7 @@ public class AirconsoleLogic : MonoBehaviour {
 		usedColors.Add (possibleColors [0]);
 
 		AirConsole.instance.Message (device_id, ColorToJSONMessage(possibleColors[0]));
+		AirConsole.instance.Message (device_id, "{\"controller\":true}");
 		possibleColors.RemoveAt (0);
 
 		Transform spawn = possibleSpawns [0];
@@ -163,6 +174,18 @@ public class AirconsoleLogic : MonoBehaviour {
 		ReorderScoreList ();
 
 		GameObject.Destroy (oldFriend.gameObject);
+
+		// Add a new player maybe
+		List<int> ids = AirConsole.instance.GetControllerDeviceIds ();
+
+		if (ids.Count >= 16) {
+			for (int i = 0; i < ids.Count; i++) {
+				if (!activePlayers.ContainsKey(ids[i])) {
+					OnConnect (ids [i]);
+					return;
+				}
+			}
+		}
 	}
 
 	/// <summary>
@@ -182,6 +205,23 @@ public class AirconsoleLogic : MonoBehaviour {
 			}
 
 			activePlayers [device_id].input = direction;
+		}
+		if (data ["color"] != null) {
+			
+			if (activePlayers.ContainsKey(device_id)) {
+				AirConsole.instance.Message (device_id, ColorToJSONMessage(activePlayers[device_id].playerColor));
+			}
+			else {
+				AirConsole.instance.Message (device_id, "{\"color\":\"153, 13, 226\"}");
+			}
+		}
+		if (data ["state"] != null) {
+			if (activePlayers.ContainsKey(device_id)) {
+				AirConsole.instance.Message (device_id, "{\"controller\":true}");
+			}
+			else {
+				AirConsole.instance.Message (device_id, "{\"lobby\":true}");
+			}
 		}
 	}
 
@@ -204,6 +244,8 @@ public class AirconsoleLogic : MonoBehaviour {
 		// unregister airconsole events on scene change
 		if (AirConsole.instance != null) {
 			AirConsole.instance.onMessage -= OnMessage;
+			AirConsole.instance.onDisconnect -= OnDisconnect;
+			AirConsole.instance.onConnect -= OnConnect;
 		}
 	}
 

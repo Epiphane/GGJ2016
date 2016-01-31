@@ -65,6 +65,7 @@ public class WinScreenManager : MonoBehaviour {
 
 	int loserNum = 3;
 	float cd = 0.2f;
+	public Text LOSER;
 
 	// Update is called once per frame
 	void Update () {
@@ -149,6 +150,7 @@ public class WinScreenManager : MonoBehaviour {
 				currState = "confetti";
 				confetti.Play ();
 				GetComponent<AudioSource> ().pitch = 0;
+				LOSER.gameObject.SetActive (true);
 			}
 		}
 

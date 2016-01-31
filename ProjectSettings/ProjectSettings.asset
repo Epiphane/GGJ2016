@@ -15,8 +15,8 @@ PlayerSettings:
   cursorHotspot: {x: 0, y: 0}
   m_ShowUnitySplashScreen: 1
   m_VirtualRealitySplashScreen: {fileID: 0}
-  defaultScreenWidth: 1200
-  defaultScreenHeight: 800
+  defaultScreenWidth: 1050
+  defaultScreenHeight: 700
   defaultScreenWidthWeb: 1050
   defaultScreenHeightWeb: 700
   m_RenderingPath: 1
