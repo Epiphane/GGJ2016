@@ -18,7 +18,7 @@ public class AirconsoleLogic : MonoBehaviour {
 	private List<Transform> usedSpawns = new List<Transform>();
 
 	Dictionary<int, PlayerMovement> activePlayers = new Dictionary<int, PlayerMovement>();
-	Dictionary<int, GameObject> activeScoreUI = new Dictionary<int, GameObject>();
+	public static Dictionary<int, GameObject> activeScoreUI = new Dictionary<int, GameObject>();
 
 	void Awake() {
 		AirConsole.instance.onMessage += OnMessage;
@@ -67,9 +67,10 @@ public class AirconsoleLogic : MonoBehaviour {
 
 		coolColor.a = 1.0f;
 		newUI.GetComponent<Image> ().color = coolColor;
-		activeScoreUI [device_id] = newUI;
+		AirconsoleLogic.activeScoreUI [device_id] = newUI;
 
 		newUI.transform.parent = FindObjectOfType<Canvas> ().transform;
+		newUI.transform.Find ("player_name").GetComponent<Text> ().text = AirConsole.instance.GetNickname (device_id);
 
 		ReorderScoreList ();
 	}
@@ -86,7 +87,7 @@ public class AirconsoleLogic : MonoBehaviour {
 
 		foreach (var score in scoreList) {
 			var device_id = score.GetComponent<PlayerMovement> ().related_device_id;
-			var rect_transform = activeScoreUI [device_id].GetComponent<RectTransform> ();
+			var rect_transform = AirconsoleLogic.activeScoreUI [device_id].GetComponent<RectTransform> ();
 			rect_transform.offsetMin = Vector2.zero;
 			rect_transform.offsetMax = Vector2.zero;
 
