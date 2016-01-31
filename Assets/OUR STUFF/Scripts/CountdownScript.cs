@@ -17,7 +17,7 @@ public class CountdownScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		time -= Time.deltaTime;
+		time -= Time.fixedDeltaTime;
 
 		if (text != null) {
 			text.text = "" + Mathf.Ceil (time);
