@@ -38,14 +38,14 @@ public class WinScreenManager : MonoBehaviour {
 
 		if (scores.Count >= 2) {
 			second_score = scores[1];
-			SetDudeColor (GetGUY("first"), colors[1]);
-			SetDudeColor (GetGUY("first/viking"), colors[1]);
+			SetDudeColor (GetGUY("second"), colors[1]);
+			SetDudeColor (GetGUY("second/viking"), colors[1]);
 		}
 
 		if (scores.Count >= 3) {
 			third_score = scores[2];
-			SetDudeColor (GetGUY("first"), colors[2]);
-			SetDudeColor (GetGUY("first/viking"), colors[2]);
+			SetDudeColor (GetGUY("third"), colors[2]);
+			SetDudeColor (GetGUY("third/viking"), colors[2]);
 		}
 	}
 
@@ -91,7 +91,7 @@ public class WinScreenManager : MonoBehaviour {
 				GetComponent<AudioSource> ().pitch++;
 			}
 
-			if (third_score == 0) {
+			if (third_score <= 0) {
 				cur_cool = max_cool;
 				currState = "grow2";
 
@@ -118,7 +118,7 @@ public class WinScreenManager : MonoBehaviour {
 				GetComponent<AudioSource> ().pitch++;
 			}
 
-			if (second_score == 0) {
+			if (second_score <= 0) {
 				cur_cool = max_cool;
 				currState = "grow1";
 				GetComponent<AudioSource> ().pitch = 0;
@@ -144,7 +144,7 @@ public class WinScreenManager : MonoBehaviour {
 				GetComponent<AudioSource> ().pitch++;
 			}
 
-			if (first_score == 0) {
+			if (first_score <= 0) {
 				cur_cool = max_cool;
 				currState = "confetti";
 				confetti.Play ();
