@@ -26,15 +26,22 @@ public class AirconsoleLogic : MonoBehaviour {
 	public static List<int> winningScores;
 	public static List<Color> winningColors;
 
-
-	void Start() {
-		
-	}
-
 	void Awake() {
 		AirConsole.instance.onMessage += OnMessage;
 		AirConsole.instance.onConnect += OnConnect;
 		AirConsole.instance.onDisconnect += OnDisconnect;
+	}
+
+	void Start() {
+		if (AirConsole.instance.IsAirConsoleUnityPluginReady ()) {
+			List<int> ids = AirConsole.instance.GetControllerDeviceIds ();
+
+			Debug.Log (ids.Count);
+			ids.ForEach ((device_id) => {
+				Debug.Log(device_id);
+				OnConnect (device_id);
+			});
+		}
 	}
 
 	string ColorToRGB(Color c) {
