@@ -10,11 +10,14 @@ public class WinScreenManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		var players = FindObjectOfType<AirconsoleLogic> ().activePlayers.Values;
-		players = players.OrderByDescending(score => -score.GetComponent<PlayerScore> ().score).ToList ();
-		foreach (var player in players) {
-			
-		}
+//		var players = FindObjectOfType<AirconsoleLogic> ().activePlayers.Values;
+//		players = players.OrderByDescending(score => -score.GetComponent<PlayerScore> ().score).ToList ();
+
+
+
+//		foreach (var player in players) {
+////			first_score = 
+//		}
 
 	}
 	
