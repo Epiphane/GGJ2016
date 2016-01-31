@@ -795,7 +795,23 @@ MonoBehaviour:
   - {r: 1, g: 0.029411793, b: 0.933063, a: 0}
   - {r: 1, g: 0.6058824, b: 0.014705896, a: 0}
   - {r: 0, g: 1, b: 0.751724, a: 0}
+  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: 0.9862069, g: 1, b: 0, a: 0}
+  - {r: 0.3455882, g: 0.3771804, b: 1, a: 0}
+  - {r: 0.10147069, g: 0.6397059, b: 0, a: 0}
+  - {r: 0.9264706, g: 0.34061417, b: 0.34061417, a: 0}
+  - {r: 1, g: 0.7241379, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0.6689656, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
   possibleSpawns:
+  - {fileID: 960981178}
+  - {fileID: 1897870100}
+  - {fileID: 1163111482}
+  - {fileID: 224113806}
+  - {fileID: 967878971}
+  - {fileID: 727965911}
+  - {fileID: 688289538}
+  - {fileID: 1931097845}
   - {fileID: 960981178}
   - {fileID: 1897870100}
   - {fileID: 1163111482}
@@ -1285,22 +1301,6 @@ Prefab:
     - target: {fileID: 409008, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
       propertyPath: m_RootOrder
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8294460, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
-      propertyPath: Loop
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 21251500, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
-      propertyPath: m_SortingOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 477790, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -2
-      objectReference: {fileID: 0}
-    - target: {fileID: 477790, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: -0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}

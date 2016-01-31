@@ -127,6 +127,11 @@ public class AirconsoleLogic : MonoBehaviour {
 		if (oldFriend) {
 			activePlayers.Remove (device_id);
 		}
+		usedColors.Remove (oldFriend.playerColor);
+		usedSpawns.Remove (oldFriend.GetComponent<PlayerGhost>().spawn);
+		possibleColors.Add (oldFriend.playerColor);
+		possibleSpawns.Add (oldFriend.GetComponent<PlayerGhost>().spawn);
+
 		GameObject.Destroy (oldFriend.gameObject);
 	}
 
