@@ -7,7 +7,7 @@ public class PlayerGhost : MonoBehaviour {
 
 	public Transform spawn;
 
-	public float leashLength = 1.5f;
+	public float leashLength = 0.8f;
 
 	// Use this for initialization
 	void Start () {
@@ -16,10 +16,10 @@ public class PlayerGhost : MonoBehaviour {
 	void Update() {
 		GetComponent<CircleCollider2D> ().isTrigger = true;
 
-		Color c = GetComponent<PlayerMovement>().playerColor;
-		c.a = 0.5f;
-
-		GetComponent<PlayerMovement>().player_img.GetComponent<SpriteRenderer> ().color = c;
+//		Color c = GetComponent<PlayerMovement>().playerColor;
+////		c.a = 0.5f;
+//
+//		GetComponent<PlayerMovement>().player_img.GetComponent<SpriteRenderer> ().color = c;
 	}
 
 	// Update is called once per frame
