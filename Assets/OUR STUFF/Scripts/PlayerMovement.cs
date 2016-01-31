@@ -38,9 +38,27 @@ public class PlayerMovement : MonoBehaviour {
 
 	public AudioSource collision;
 	public AudioSource death;
+	public AudioSource kill2;
+	public AudioSource kill3;
+	public AudioSource kill4;
+	public AudioSource kill5;
+	public AudioSource kill6;
+	public AudioSource kill7;
+	public AudioSource kill8;
+	public AudioSource kill9;
+	public AudioSource kill10;
 
 	public AudioClip collisionClip;
 	public AudioClip deathClip;
+	public AudioClip kill2Clip;
+	public AudioClip kill3Clip;
+	public AudioClip kill4Clip;
+	public AudioClip kill5Clip;
+	public AudioClip kill6Clip;
+	public AudioClip kill7Clip;
+	public AudioClip kill8Clip;
+	public AudioClip kill9Clip;
+	public AudioClip kill10Clip;
 
 	public AudioSource AddAudio(AudioClip clip, bool loop, bool playAwake, float vol) { 
 		AudioSource newAudio = gameObject.AddComponent<AudioSource>();
@@ -54,6 +72,15 @@ public class PlayerMovement : MonoBehaviour {
 	void Awake () {
 		collision = AddAudio (collisionClip, false, false, 1.0f);
 		death = AddAudio (deathClip, false, false, 1.0f);
+		kill2 = AddAudio (kill2Clip, false, false, 1.0f);
+		kill3 = AddAudio (kill3Clip, false, false, 1.0f);
+		kill4 = AddAudio (kill4Clip, false, false, 1.0f);
+		kill5 = AddAudio (kill5Clip, false, false, 1.0f);
+		kill6 = AddAudio (kill6Clip, false, false, 1.0f);
+		kill7 = AddAudio (kill7Clip, false, false, 1.0f);
+		kill8 = AddAudio (kill8Clip, false, false, 1.0f);
+		kill9 = AddAudio (kill9Clip, false, false, 1.0f);
+		kill10 = AddAudio (kill10Clip, false, false, 1.0f);
 	}
 
 	void Start() {
@@ -171,13 +198,37 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	public void CollectPoints() {
+		var count = 0;
+
 		while (captive != null) {
 			GetComponent<PlayerScore> ().GainPoint ();
+			count++;
 			captive.GetComponent<PlayerScore> ().LosePoint ();
 
 			captive.Respawn ();
 			// This will set captive to something else
 		}
+
+		print ("Count is " + count);
+
+		if (count == 2)
+			kill2.Play ();
+		else if (count == 3)
+			kill3.Play ();
+		else if (count == 4)
+			kill4.Play ();
+		else if (count == 5)
+			kill5.Play ();
+		else if (count == 6)
+			kill6.Play ();
+		else if (count == 7)
+			kill7.Play ();
+		else if (count == 8)
+			kill8.Play ();
+		else if (count == 9)
+			kill9.Play ();
+		else if (count == 10)
+			kill10.Play ();
 	}
 
 	void ClaimSoul(GameObject victim) {
