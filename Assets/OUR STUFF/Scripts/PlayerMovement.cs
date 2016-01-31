@@ -29,8 +29,10 @@ public class PlayerMovement : MonoBehaviour {
 
 	public PlayerGhost captive;
 
+
 	public bool debug_wizz = false;
 
+	public ParticleSystem buttParticles;
 	private float stunned = 0;
 
 	public AudioSource collision;
@@ -56,6 +58,10 @@ public class PlayerMovement : MonoBehaviour {
 	void Start() {
 		arrow = transform.Find ("arrow_parent").gameObject;
 		player_img = transform.Find ("player_img").gameObject;
+		buttParticles = transform.Find ("player_img/particle_poop").gameObject.GetComponent<ParticleSystem>();
+		playerColor.a = 1.0f;
+		buttParticles.startColor = playerColor;
+		buttParticles.Stop ();
 	}
 
 	public void Unlock() {
@@ -100,6 +106,7 @@ public class PlayerMovement : MonoBehaviour {
 		if (!dashing) {
 			dashAnim = DASH_ANIM_LENGTH;
 			player_img.transform.rotation = new Quaternion (0, 0, 0, 0);
+			buttParticles.Play ();
 		}
 
 		float angle;
@@ -169,6 +176,7 @@ public class PlayerMovement : MonoBehaviour {
 			if (dashing) {
 				// Going from dashingTRUE => dashingFALSE
 				dashAnim = DASH_ANIM_LENGTH;
+				buttParticles.Stop ();
 			}
 			dashing = false;
 		}
