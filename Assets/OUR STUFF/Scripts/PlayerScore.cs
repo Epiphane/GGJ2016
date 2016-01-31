@@ -47,4 +47,13 @@ public class PlayerScore : MonoBehaviour {
 	void Update () {
 	
 	}
+
+	public static Color DarkenColor(Color c) {
+		var lol = c;
+		lol.r -= 0.2f;
+		lol.b -= 0.2f;
+		lol.g -= 0.2f;
+
+		return lol;
+	}
 }
