@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using NDream.AirConsole;
@@ -17,7 +18,7 @@ public class AirconsoleLogic : MonoBehaviour {
 	public List<Transform> possibleSpawns = new List<Transform>();
 	private List<Transform> usedSpawns = new List<Transform>();
 
-	Dictionary<int, PlayerMovement> activePlayers = new Dictionary<int, PlayerMovement>();
+	public Dictionary<int, PlayerMovement> activePlayers = new Dictionary<int, PlayerMovement>();
 	public static Dictionary<int, GameObject> activeScoreUI = new Dictionary<int, GameObject>();
 
 	public Transform playerParent;
@@ -77,13 +78,15 @@ public class AirconsoleLogic : MonoBehaviour {
 		newUI.transform.Find ("player_name").GetComponent<Text> ().text = AirConsole.instance.GetNickname (device_id);
 
 		AirconsoleLogic.ReorderScoreList ();
+
+		GameObject.DontDestroyOnLoad (this);
 	}
 
 	// Put the Score Tabs on the side in order of score
 	public static void ReorderScoreList() {
 		List<PlayerMovement> scoreList = FindObjectOfType<AirconsoleLogic>().activePlayers.Values.ToList ();
 
-		scoreList = scoreList.OrderBy (score => -score.GetComponent<PlayerScore> ().score).ToList ();
+		scoreList = scoreList.OrderByDescending (score => score.GetComponent<PlayerScore> ().score).ToList ();
 
 		float increment = 1.0f / 8.0f;
 		float top = 1.0f;
@@ -130,11 +133,17 @@ public class AirconsoleLogic : MonoBehaviour {
 		var oldFriend = activePlayers [device_id];
 		if (oldFriend) {
 			activePlayers.Remove (device_id);
+			GameObject oldScore = activeScoreUI [device_id];
+			activeScoreUI.Remove (device_id);
+			Destroy (oldScore);
+			ReorderScoreList ();
 		}
 		usedColors.Remove (oldFriend.playerColor);
 		usedSpawns.Remove (oldFriend.GetComponent<PlayerGhost>().spawn);
 		possibleColors.Add (oldFriend.playerColor);
 		possibleSpawns.Add (oldFriend.GetComponent<PlayerGhost>().spawn);
+
+		ReorderScoreList ();
 
 		GameObject.Destroy (oldFriend.gameObject);
 	}
@@ -168,6 +177,9 @@ public class AirconsoleLogic : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
+		if (Input.GetKeyDown (KeyCode.Z)) { 
+			SceneManager.LoadScene ("WINNER_WINNER_CHICKEN_DINER");
+		}
 	}
 
 	void OnDestroy() {
