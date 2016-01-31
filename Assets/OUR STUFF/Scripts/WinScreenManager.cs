@@ -23,28 +23,29 @@ public class WinScreenManager : MonoBehaviour {
 
 	public ParticleSystem confetti;
 
-	private List<PlayerMovement> players;
+	List<Color> colors;
+	List<int> scores;
 
 	// Use this for initialization
 	void Start () {
 		confetti.Stop ();
-		players = FindObjectOfType<AirconsoleLogic> ().activePlayers.Values.ToList();
-		players = players.OrderByDescending(score => -score.GetComponent<PlayerScore> ().score).ToList ();
+		colors = AirconsoleLogic.winningColors; //players = FindObjectOfType<AirconsoleLogic> ().activePlayers.Values.ToList();
+		scores = AirconsoleLogic.winningScores; //players = players.OrderByDescending(score => -score.SCORE_LOL).ToList ();
 
-		first_score = players [0].GetComponent<PlayerScore> ().score;
-		SetDudeColor (GetGUY("first"), players [0].GetComponent<PlayerMovement>().playerColor);
-		SetDudeColor (GetGUY("first/viking"), players [0].GetComponent<PlayerMovement>().playerColor);
+		first_score = scores [0];
+		SetDudeColor (GetGUY("first"), colors[0]);
+		SetDudeColor (GetGUY("first/viking"), colors[0]);
 
-		if (players.Count >= 2) {
-			second_score = players [1].GetComponent<PlayerScore> ().score;
-			SetDudeColor (GetGUY("first"), players [1].GetComponent<PlayerMovement>().playerColor);
-			SetDudeColor (GetGUY("first/viking"), players [1].GetComponent<PlayerMovement>().playerColor);
+		if (scores.Count >= 2) {
+			second_score = scores[1];
+			SetDudeColor (GetGUY("first"), colors[1]);
+			SetDudeColor (GetGUY("first/viking"), colors[1]);
 		}
 
-		if (players.Count >= 3) {
-			third_score = players [2].GetComponent<PlayerScore> ().score;
-			SetDudeColor (GetGUY("first"), players [2].GetComponent<PlayerMovement>().playerColor);
-			SetDudeColor (GetGUY("first/viking"), players [2].GetComponent<PlayerMovement>().playerColor);
+		if (scores.Count >= 3) {
+			third_score = scores[2];
+			SetDudeColor (GetGUY("first"), colors[2]);
+			SetDudeColor (GetGUY("first/viking"), colors[2]);
 		}
 	}
 
@@ -155,14 +156,14 @@ public class WinScreenManager : MonoBehaviour {
 			cd -= Time.deltaTime;
 
 			if (cd < 0.0f) {
-				if (losers.Length > loserNum && players.Count > loserNum) {
-					losers [loserNum].color = players[loserNum].playerColor;
+				if (losers.Length > loserNum-3 && scores.Count > loserNum) {
+					losers [loserNum - 3].gameObject.SetActive (true);
+					losers [loserNum-3].color = colors[loserNum-3];
 					cd = 0.2f;
 					loserNum++;
 				}
 			}
 		}
-
 
 		GetGUY ("third").transform.Find ("scoredisplay").GetComponent<Text> ().text = displayed_third.ToString();
 		GetGUY ("second").transform.Find ("scoredisplay").GetComponent<Text> ().text = displayed_second.ToString();

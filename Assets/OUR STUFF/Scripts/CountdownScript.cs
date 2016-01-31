@@ -24,6 +24,7 @@ public class CountdownScript : MonoBehaviour {
 		}
 
 		if (time <= 0 && nextScene != "") {
+			AirconsoleLogic.CreateFinalScoreTally ();
 			SceneManager.LoadScene (nextScene);
 		}
 	}

@@ -23,6 +23,14 @@ public class AirconsoleLogic : MonoBehaviour {
 
 	public Transform playerParent;
 
+	public static List<int> winningScores;
+	public static List<Color> winningColors;
+
+
+	void Start() {
+		
+	}
+
 	void Awake() {
 		AirConsole.instance.onMessage += OnMessage;
 		AirConsole.instance.onConnect += OnConnect;
@@ -78,8 +86,6 @@ public class AirconsoleLogic : MonoBehaviour {
 		newUI.transform.Find ("player_name").GetComponent<Text> ().text = AirConsole.instance.GetNickname (device_id);
 
 		AirconsoleLogic.ReorderScoreList ();
-
-		GameObject.DontDestroyOnLoad (this);
 	}
 
 	// Put the Score Tabs on the side in order of score
@@ -193,4 +199,22 @@ public class AirconsoleLogic : MonoBehaviour {
 			AirConsole.instance.onMessage -= OnMessage;
 		}
 	}
+
+	public static void CreateFinalScoreTally() {
+		var me_irl = FindObjectOfType<AirconsoleLogic> ();
+
+		winningScores = new List<int> ();
+		winningColors = new List<Color> ();
+
+		if (me_irl) {
+			List<PlayerMovement> scoreList = me_irl.activePlayers.Values.ToList ();
+			scoreList = scoreList.OrderByDescending (score => score.GetComponent<PlayerScore> ().score).ToList ();
+
+			foreach (var p in scoreList) {
+				winningScores.Add (p.GetComponent<PlayerScore>().score);
+				winningColors.Add (p.playerColor);
+			}
+		}
+	}
+
 }

@@ -31,6 +31,8 @@ public class PlayerMovement : MonoBehaviour {
 
 	public bool debug_wizz = false;
 
+	public int SCORE_LOL = 0;
+
 	public ParticleSystem buttParticles;
 	private float stunned = 0;
 
@@ -60,8 +62,6 @@ public class PlayerMovement : MonoBehaviour {
 		playerColor.a = 1.0f;
 		buttParticles.startColor = playerColor;
 		buttParticles.Stop ();
-
-		GameObject.DontDestroyOnLoad (this);
 	}
 
 	public void Unlock() {

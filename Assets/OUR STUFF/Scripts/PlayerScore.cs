@@ -20,6 +20,8 @@ public class PlayerScore : MonoBehaviour {
 		}
 
 		AirconsoleLogic.ReorderScoreList ();
+
+		GetComponent<PlayerMovement> ().SCORE_LOL = score;
 	}
 
 	public void LosePoint() {
@@ -36,11 +38,11 @@ public class PlayerScore : MonoBehaviour {
 		}
 
 		AirconsoleLogic.ReorderScoreList ();
+		GetComponent<PlayerMovement> ().SCORE_LOL = score;
 	}
 
 	// Use this for initialization
 	void Start () {
-	
 	}
 	
 	// Update is called once per frame
