@@ -37,4 +37,8 @@ public class HowManyPlayersLeft : MonoBehaviour {
 	void OnConnect(int device_id) {
 		Calculate ();
 	}
+
+	void OnDestroy() {
+		AirConsole.instance.onConnect -= OnConnect;
+	}
 }
