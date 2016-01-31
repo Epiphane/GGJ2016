@@ -47,6 +47,7 @@ public class AirconsoleLogic : MonoBehaviour {
 		activePlayers [device_id] = newPlayer;
 		newPlayer.related_device_id = device_id;
 		newPlayer.playerColor = possibleColors[0];
+//		newPlayer.buttParticles.startColor = possibleColors [0];
 		usedColors.Add (possibleColors [0]);
 
 		AirConsole.instance.Message (device_id, ColorToJSONMessage(possibleColors[0]));

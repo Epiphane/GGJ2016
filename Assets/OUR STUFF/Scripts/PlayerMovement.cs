@@ -31,9 +31,14 @@ public class PlayerMovement : MonoBehaviour {
 
 	public bool debug_wizz = false;
 
+	public ParticleSystem buttParticles;
+
 	void Start() {
 		arrow = transform.Find ("arrow_parent").gameObject;
 		player_img = transform.Find ("player_img").gameObject;
+		buttParticles = transform.Find ("player_img/particle_poop").gameObject.GetComponent<ParticleSystem>();
+		buttParticles.startColor = playerColor;
+		buttParticles.Stop ();
 	}
 
 	public void Unlock() {
@@ -71,6 +76,7 @@ public class PlayerMovement : MonoBehaviour {
 		if (!dashing) {
 			dashAnim = DASH_ANIM_LENGTH;
 			player_img.transform.rotation = new Quaternion (0, 0, 0, 0);
+			buttParticles.Play ();
 		}
 
 		float angle;
@@ -101,7 +107,7 @@ public class PlayerMovement : MonoBehaviour {
 
 		player_img.transform.rotation = newQuat;
 
-		print ("How much " + howMuch);
+//		print ("How much " + howMuch);
 	}
 
 	// Update is called once per frame
@@ -125,6 +131,7 @@ public class PlayerMovement : MonoBehaviour {
 			if (dashing) {
 				// Going from dashingTRUE => dashingFALSE
 				dashAnim = DASH_ANIM_LENGTH;
+				buttParticles.Stop ();
 			}
 			dashing = false;
 		}
