@@ -74,7 +74,7 @@ public class AirconsoleLogic : MonoBehaviour {
 		newUI.GetComponent<Image> ().color = coolColor;
 		AirconsoleLogic.activeScoreUI [device_id] = newUI;
 
-		newUI.transform.parent = FindObjectOfType<Canvas> ().transform;
+		newUI.transform.parent = GameObject.Find ("Scoreboard").transform;
 		newUI.transform.Find ("player_name").GetComponent<Text> ().text = AirConsole.instance.GetNickname (device_id);
 
 		AirconsoleLogic.ReorderScoreList ();
