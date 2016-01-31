@@ -1,0 +1,374 @@
+
+<html>
+<head>
+    <script type="text/javascript"
+            src="https://www.airconsole.com/api/airconsole-1.3.0.js"></script>
+    <script type="text/javascript">
+    navigator.vibrate = (navigator.vibrate ||
+                         navigator.webkitVibrate ||
+                         navigator.mozVibrate ||
+                         navigator.msVibrate);
+
+    var airconsole;
+    var playerColor;
+    var isDashing;
+    var score;
+    var controlLock = 0;
+    var controlMaxLock = controlLock;
+
+    /**
+     * Sets up the communication to the screen.
+     */
+	function init() {
+		airconsole = new AirConsole({"orientation": "portrait"});
+		airconsole.onMessage = function(from, data) {
+			data = JSON.parse(data);
+			if (from == AirConsole.SCREEN) {
+				if (data.vibrate) {
+					navigator.vibrate(data.vibrate);
+					console.log("Vibrating: " + data.vibrate);
+				}
+				if (data.color) {
+					document.body.style.background = playerColor = 'rgb(' + data.color + ')';
+				}
+                if (data.lock) {
+                    controlLock = controlMaxLock = data.lock;
+                    unlock(0);
+                }
+                if (data.unlock) {
+                    controlLock = 0;
+                    unlock(0);
+                }
+                if (data.score) {
+                	setScore(data.score);
+                }
+			}
+		}
+		airconsole.onActivePlayersChange = function(player_number) {
+		}
+		airconsole.onReady = function() {
+		}
+	}
+
+    function onShakeReady() {
+        var myShakeEvent = new Shake({
+            threshold: 15, // optional shake strength threshold
+            timeout: 10 // optional, determines the frequency of event generation
+        });
+        myShakeEvent.start();
+
+        window.addEventListener('shake', function() {
+            unlock(10);
+
+        });
+    }
+
+	function sendMessage(obj) {
+		if (typeof(obj) === 'string') {
+			var newObj = {};
+			newObj[obj] = true;
+			obj = newObj;
+		}
+
+		if (!playerColor) {
+			obj['color'] = true;
+		}
+
+        if (airconsole)
+    		airconsole.message(AirConsole.SCREEN, obj);
+	}
+
+    setInterval(function() {
+        if (controlLock > 0) {
+        	unlock(1);
+        }
+    }, 1000/10);
+
+    function unlock(amount) {
+        controlLock -= amount;
+
+        if (controlLock <= 0)  {
+            sendMessage('unlock');
+        	document.getElementById('shake_it').style.opacity = 0;
+        }
+        else {
+        	document.getElementById('shake_it').style.opacity = 1;
+        }
+
+        document.getElementById('lock').style.width = (100 * controlLock / controlMaxLock) + '%';
+    }
+
+    function move() {
+        // isDashing = true;
+        if (controlLock > 0) {
+            unlock(10);
+        }
+        else {
+            sendMessage('start_dash');
+        }
+    }
+
+    function stop() {
+        // isDashing = false;
+        sendMessage('stop_dash');
+    }
+
+    function start_left() {
+        if (controlLock > 0) {
+            unlock(10);
+        }
+        else {
+            sendMessage('start_left');
+        }
+    }
+
+    function stop_left() {
+        sendMessage('stop_left');
+    }
+
+    function start_right() {
+        if (controlLock > 0) {
+            unlock(10);
+        }
+        else {
+            sendMessage('start_right');
+        }
+    }
+
+    function stop_right() {
+        sendMessage('stop_right');
+    }
+
+    function setScore(s) {
+    	score = s;
+    }
+
+    </script>
+    <style type="text/css">
+        @font-face {
+            font-family: 'Arial';
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0px;
+            font-family: 'PressStart2P', sans-serif;
+            color: white;
+            text-align: center;
+            background-color: black;
+        }
+
+        button {
+            width: 84px;
+            height: 78px;
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFQAAAAnCAYAAACR3W+uAAALAElEQVRoQ9Waf2xWVx3GT1laOwiMwUqaoaYzwTUahChdyGItc9b5Y3VxGVnUEKMTFh2MbIMRFCXMCmGwLQpzEeb8g2kiLCEOo5uYzQ03ReZCbDStxEhCJA2dWSkyulbEPId9js97et/Stz8m3OTNve997z33e57zfJ/vj/tWhbe2HTt2nOvv7+drqK2tveCxLujt7S25lps0lsbI9/rdz02fPj3eonNF9yxbtqwqGXIJHCRjd+/efc7BKAdMDgig5Yuh74DFNXctvz88uv3BQpB9HC0Si7Vx48ZLC9Dm5uZzmsySJUvSJHQgMGAMk3U2ApjO6VquKbcQq+7fHF4f/E/44SNrI6sdbMDjmTxX1+3bty+OzbMBm2tzW91GHdfX18d5aMPr8u/uaX4Nz/VnuZMUeWCVANWDly5dGifZ3d0dGhoa0gQcVAcLwzWoy0M5r1y+9uFwpudoZKizkfud4T7hbdu2JTD0zBUrViSAHKThjt8Oadq5c2e0s6qpqSm6uhjKSmhftNIYxso7eFoI10N+A7z2jT+IDP3xYxsS83NmwD4Bevjw4bBo0aKwa9eucPTo0TT26tWr02PzRXDGjEWa3vvyR8Jfr3+xImk6dOhQtDMB2tbWVuIeuat40MgZJjC5HlABAbdp/+5PIkO/ue7eIe7u4AMynrFnz57oNXiBGMo1EyFN7++4IY7/57nPVyxNsjO6vIwVoGwCB5CcNbmuFrm3gEAjAWXVhu9HMB/a+kDyAhjkusli6Dc9X/cfOHAgjodLy86JlKa5/2gJMxdMDs/8fW9F0qSFl51Vra2t0eXdUAHqrAHcHMA81WHSefpDQHp00z0JGA80gAvjAFTPlSsxntvpQRH2uhTpeDTSdN1fPhMmX10TOht/W7E0yabIUK344sWLowE6qaDkkZbAAfNgjOtUHh0TOy26c72nVCyCJIJg6J6goMRYOt/U1DSh0tR69vYweOpseKb2yYqkSVofARVDBYYAReQFGKAyYQfTg08e4Z21YmaYMjVs33TvEHVw1rlEOPN0HpdnUVtbWydMmuYf/Vh44/hA+NMHfzVqaUoMlaEe5Z0xeWqj73lUB1j2y+/eEMEkVcoDj74rlQqnT4Xt31ufFtPTNNkgQFkk2YeduQxhk8sVzxypNDX986bIzt/X/7xiaero6DjP0KLE3o1S+vL4Ez+L4LSv+XJihwcQndTkNSlFc4GkFKl28PWYd7o0cLxu8xPpOqVSbER0xseVAFrp3URIk1Ilaefhhl8neyuRpuTyaCiGemDo7OyMrn/HPZsiOJfXNUQQBG65vRjZX31leGj9V1M0dubLSAdTlZPLhgc02SJDvWKZCGmSq1dPvSx0zH5h1NK0f//+aGdJUNJoAnH+/PmRvnnpplpcYAnccnulRkW6CuNwczFYUd8rLa+QCHwqPYtcHvaMVZre/dx1kZnaYCdxA3S5hsifB2OXpqq5c+eek4uLoRhOkl6UmggADaBrYI6uQyZ88l6z6zh3cwfQjaRK0+8q6XgOduraPCWSNC2pW1mige5tgIM0KZprm3x1dXjj+GA4NPPZQmla2H1zmLlgSujr6i9hcC5NW7ZsOc9QASq3lisxqbxJ4TkjtT7AkREwSS9bPZVSco+24uYOaH6MTsqVtPHc4aRJrlt/w9TQ1/VmjNba5Monu86kYx1cce3l4bVX/hV/e+lde8tK001X3BZOdvWHa74wI+x9afcFpUljDwGUlfcV0KpqE/C4mDOK1fdUyAEXs0juCUCulV6Dw368A4byXBZ+OGkiWitiCzTt5dY6rp46KYKkSD6cNKli0n3auNYJgiwgTaqUEkM1YQzFTZgYzCoKRKvuvDWJeFELjxJRjZE8HwVQZMHrde7TXom97MOet0Oamk/fksB03cyLl1yaZOeQoAQztNckv93+cNkA5FGflCrPWYU4tTytO9dWPYNNBmEkeWZRlJ9IaWp5x83htVdOR5PUIMF7YORw0pSivA5oMHsS7K7IpD2BvuMrd0ewr6yeFBm4df3XShoZLI43lwEjofhWMxuXhqkYnjeYvRFOE0c2ic3jIU2fuOaz4djTveFvTb8rCVK5RJWTplR60m3C3TQA5WeujdIvTYbIrjxVoK77+p0pDcoDEhWTG+YlLACW0ybOe1cMEGWH2m6kPwpIOpYG6vjF9+wekTQt6r0t3vfqtOfS9SOVJrQ+BSUZCqNIjbyeZ0IerABB+SnurzLStUVj5d2m/JVCnn/CPLFAJZ3bU5SNyKYbez4Xo7ciuvZEeYGqj84VlZW+kDdedUs4c3wwvFzzi5JigixjJNJUoqHuzrlWkLbgsrkLAKrcng1gyT9hMPe6pHjzhTxYz1TahC10xXIbLiRNjZ0fTpFe9yrn9B4rRLp+4FPRdAE6GmnSOKmW18p720wDevDQdzQKV807UPet+lZkqrpL3kECbD/vq06eS4aBHQJU6Qjeoetg6GikSYCJpfsv+2mhNOl3MVzBqFJpUvDUVtK+80iWpwh6gOegrKBfd9faR6KWbn1wzRCXUQAT2OtWfj4xDiZ6TgnbkBYAJS0bizShswJV6VAuTSoM9Nsf5/wyglOJNKkrVgKooqe/9nC2FiXsuLUDCkNxe1xVhn9j849SNgBTSZkaGxvjSzntXdN0LEDdFjF0LNIknfz3qbPhhTfPt+jwRI350Um3Ru39zfSnSv6kMRJpUjYiO6va2triP0Yw1AFiBSkn2cNOb+FpDBgqrXS5wKUBVY2R76z5UuoH6F6eRR4r1vIKxIuG8ZCmT7/z9tD9fF9MjVyaYKifr0SaIqDq2MtwvZ4lByXBRqc0KO5ZFAB8pQlA3jT2RaIVqK6Ub/miibG6T++UuB87xypNqoRUhhZFcwUwsfQP73u6ImkiX44M1SrJ5WFH/kqCBoizDvDzaBjLzBCijhI93a1gMs3n/Fl5CkXHHsD1Gnms0uSAuv2ypa36i7EDpXofnR2JNNFmjFFeg/LWU4FHWgYLcEU0Drawh2U89L4Nj0WtFEPdWIKMLxoL5cmzjv1atAmgfeEZv1Jp+sCrH495qaJ9kTQpp1WCr4ivooBW5UikKQHKu5rcpT0geN3tgPqxkvj2B1YmN0U/fSEwTHv/Q4Ub7LU8b0MFoP4yNB7SRGuuXPNDGcFVC6aEZ08+NSJpUr4sO5PLz5kzJ0VZDwI5cDkzS56WfaGnqdMewEiqYR1NX6I3YOr7kSNH0uKMpzSpwSzXVrQvJ00fOvLJyFQKAe8TF0mT7E0M1ftu3mTqRjFHe+p21y1KQwcJiXA3BN+8ZvexaDJov3DhwvQCjig/e/bsEukYL2miY897JADKpQkJyv+rkEtTSR4qi7u6ukrKMa9e+vr6wqxZs0qY4ivkVcXAwECYNm1a4Z9n8+jMfRpfm+7jWN9rampCS0tLyT84mpubS/4+icdUKk1KkbzJPFZpokROaZOaEBfaNEEBlm86z6bf9Z2JCiAA1qRPnDgRF8cjP6x2l5oxY0YEUgAyWbFHnkQBcDFJ07Fjx/731lMTEmUBQhPJgRMIXsUQvBxcgQfoul7gwTQHmGsENGDmzyOyStvdWy5maYoaqjxUB6Is75MIGjkTPQPwcjTXz/w3QCt3nS8UrCOgCUDO6fkHDx68KKVp3rx550tP/eFWgqutp6cn1NXVpcBAzpi7p7MzT7McnBxAr5hYLNiXl7E+LuBeCnamKJ/niT5hjj0B904MaYcHJwed8y78OWBF7M2DmF+TS46nc/9PO/8LZXWGoHDWaRwAAAAASUVORK5CYIIA');
+            background-size: 200% 100%;
+
+            image-rendering: -moz-crisp-edges;         /* Firefox */
+            image-rendering:   -o-crisp-edges;         /* Opera */
+            image-rendering: -webkit-optimize-contrast;/* Webkit (non-standard naming) */
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
+            -ms-interpolation-mode: nearest-neighbor;  /* IE (non-standard property) */
+
+            border: none;
+        }
+
+        button:active {
+            background-position: 100% 0;
+        }
+
+        button:focus {
+            border:none;
+            outline:none;
+        }
+
+        #controls {
+            position: absolute;
+            width: 100%;
+            top: 50%;
+            left: 50%;
+            transform: translate3d(-50%, -50%, 0);
+        }
+
+        #controls button {
+        	position: relative;
+        }
+
+        #controls #lock {
+            height: 100%;
+            position: absolute;
+            width: 0%;
+            background: rgba(0, 0, 0, 0.6);
+            right: 0;
+            top: 0;
+        }
+
+        #shake_it {
+        	    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAACYUlEQVRoQ+2Z0bXCMAiG0zlcwllcwT360D1cwVlcwjl6Dz3ipQkQSEmt5+iT1iTy/RAIZkhf/hq+3P70A5A8eL/f58fjkc7nc7pcLt2E6rIwGk/hLCBzSjOdM6R6hIQDoPHP5zPdbrfFnnEc33ZZQHAwAmkg3QCmaSqiqwdIKACqzxlPaWognPKSNz4CgDAaiGQwPKchFQZgVZ/LWl4QCnEIAKtHUPlwAEF9EGeVFq1VX/IINRzfh3iAAcjXLUCu1+vCg6lWCy1MvV0ADMbntq1gaiDw/el0StM0DUcBIHXqn00C6QrQoD4XKeI+QeO7hVAQAOsReEjVh8+hIRRsPPXM4pFc/RwAJzRnob0AYPNq6bcJYC/jpZPr5kI2juNMj8vJcG43FrFV+NTUhzXdHuitPvYP1r7BDdBJ/XcqzTNPzXMugN7qc5knFOBo6rv2wBHVLwDybidrA3tknubYLwqZZrxy3q+FaO17serWJqoAOQwT+5srOW12vJmHwi1ZKDeYfjb2uq5s9jJgs/rvPcCd8pBSUT/3sgdic+yvQkACMKrfAhKiftUDVvWFbkrySJj64QCwINOksw1+S9XlMlOxibkNnJ08i3XQAwIAmxG3ZB41C+UZif5VroHU/l2gPxqlPhtCXFqFZ1YQSwGKUn91lNBqATVqK0ik+ioAeuI1qMgorSCR6q8ApNCh1z7cTYkHJFr9AkCCsMR1fi/GXXJEq88C1EKnBgMgMAZuKOGFID3UFwHQSO2I7QWB8dZGvbZ2UQc8E7xj0SMwr8d9secE6bV9l/E/gF1kVn7k6z3wB6olOE9qQ7nxAAAAAElFTkSuQmCC');
+			    width: 256px;
+			    background-size: 100%;
+			    height: 256px;
+			    margin-top: 40px;
+			    opacity: 0;
+			    image-rendering: -moz-crisp-edges;
+			    image-rendering: -o-crisp-edges;
+			    image-rendering: -webkit-optimize-contrast;
+			    image-rendering: crisp-edges;
+			    image-rendering: pixelated;
+			    -ms-interpolation-mode: nearest-neighbor;
+        }
+    </style>
+</head>
+<body onload="init()">
+    <!--<div id="output"></div>
+    <div id="controls">
+        <button><div id="lock"></div></button>
+    	<div id="shake_it"></div>
+    </div>-->
+    <div id="controls">
+    	<button ontouchstart="start_left()" ontouchend="stop_left()" onmousedown="start_left()" onmouseup="stop_left()"></button>
+    	<button ontouchstart="start_right()" ontouchend="stop_right()" onmousedown="start_right()" onmouseup="stop_right()"></button>
+    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    	<button ontouchstart="move()" ontouchend="stop()" onmousedown="move()" onmouseup="stop()"></button>
+    </div>
+
+    <script type="text/javascript">
+    unlock(0);
+
+    /*
+     * Shake Events
+     *
+     * Author: Alex Gibson
+     * https://github.com/alexgibson/shake.js
+     * License: MIT license
+     */
+
+    (function(global, factory) {
+        if (typeof define === 'function' && define.amd) {
+            define(function() {
+                return factory(global, global.document);
+            });
+        } else if (typeof module !== 'undefined' && module.exports) {
+            module.exports = factory(global, global.document);
+        } else {
+            global.Shake = factory(global, global.document);
+        }
+
+        onShakeReady();
+    } (typeof window !== 'undefined' ? window : this, function (window, document) {
+
+        'use strict';
+
+        function Shake(options) {
+            //feature detect
+            this.hasDeviceMotion = 'ondevicemotion' in window;
+
+            this.options = {
+                threshold: 15, //default velocity threshold for shake to register
+                timeout: 1000 //default interval between events
+            };
+
+            if (typeof options === 'object') {
+                for (var i in options) {
+                    if (options.hasOwnProperty(i)) {
+                        this.options[i] = options[i];
+                    }
+                }
+            }
+
+            //use date to prevent multiple shakes firing
+            this.lastTime = new Date();
+
+            //accelerometer values
+            this.lastX = null;
+            this.lastY = null;
+            this.lastZ = null;
+
+            //create custom event
+            if (typeof document.CustomEvent === 'function') {
+                this.event = new document.CustomEvent('shake', {
+                    bubbles: true,
+                    cancelable: true
+                });
+            } else if (typeof document.createEvent === 'function') {
+                this.event = document.createEvent('Event');
+                this.event.initEvent('shake', true, true);
+            } else {
+                return false;
+            }
+        }
+
+        //reset timer values
+        Shake.prototype.reset = function () {
+            this.lastTime = new Date();
+            this.lastX = null;
+            this.lastY = null;
+            this.lastZ = null;
+        };
+
+        //start listening for devicemotion
+        Shake.prototype.start = function () {
+            this.reset();
+            if (this.hasDeviceMotion) {
+                window.addEventListener('devicemotion', this, false);
+            }
+        };
+
+        //stop listening for devicemotion
+        Shake.prototype.stop = function () {
+            if (this.hasDeviceMotion) {
+                window.removeEventListener('devicemotion', this, false);
+            }
+            this.reset();
+        };
+
+        //calculates if shake did occur
+        Shake.prototype.devicemotion = function (e) {
+            var current = e.accelerationIncludingGravity;
+            var currentTime;
+            var timeDifference;
+            var deltaX = 0;
+            var deltaY = 0;
+            var deltaZ = 0;
+
+            if ((this.lastX === null) && (this.lastY === null) && (this.lastZ === null)) {
+                this.lastX = current.x;
+                this.lastY = current.y;
+                this.lastZ = current.z;
+                return;
+            }
+
+            deltaX = Math.abs(this.lastX - current.x);
+            deltaY = Math.abs(this.lastY - current.y);
+            deltaZ = Math.abs(this.lastZ - current.z);
+
+            if (((deltaX > this.options.threshold) && (deltaY > this.options.threshold)) || ((deltaX > this.options.threshold) && (deltaZ > this.options.threshold)) || ((deltaY > this.options.threshold) && (deltaZ > this.options.threshold))) {
+                //calculate time in milliseconds since last shake registered
+                currentTime = new Date();
+                timeDifference = currentTime.getTime() - this.lastTime.getTime();
+
+                if (timeDifference > this.options.timeout) {
+                    window.dispatchEvent(this.event);
+                    this.lastTime = new Date();
+                }
+            }
+
+            this.lastX = current.x;
+            this.lastY = current.y;
+            this.lastZ = current.z;
+
+        };
+
+        //event handler
+        Shake.prototype.handleEvent = function (e) {
+            if (typeof (this[e.type]) === 'function') {
+                return this[e.type](e);
+            }
+        };
+
+        return Shake;
+    }));
+    </script>
+</body>
+</html>

@@ -590,6 +590,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9217755c762d14b478be8ba4d79fdc92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shakeAmp: 0
 --- !u!1 &960981177
 GameObject:
   m_ObjectHideFlags: 0
@@ -820,6 +821,7 @@ MonoBehaviour:
   - {fileID: 727965911}
   - {fileID: 688289538}
   - {fileID: 1931097845}
+  playerParent: {fileID: 483235650}
 --- !u!1001 &1246366192
 Prefab:
   m_ObjectHideFlags: 0
@@ -1301,6 +1303,10 @@ Prefab:
     - target: {fileID: 409008, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11422994, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
+      propertyPath: speed
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
