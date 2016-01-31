@@ -21,10 +21,18 @@ public class PlayerGhost : MonoBehaviour {
 
 		GetComponent<PlayerMovement>().player_img.GetComponent<SpriteRenderer> ().color = c;
 	}
-	
+
 	// Update is called once per frame
 	void FixedUpdate () {
 		Vector3 distToCaptor = transform.position - captor.transform.position;
+
+		Quaternion pointToDad = Quaternion.FromToRotation (Vector3.left, distToCaptor);
+		GetComponent<PlayerMovement>().tether.transform.rotation = pointToDad;
+
+		var shrinkMe = distToCaptor.magnitude / leashLength;
+		var meh = GetComponent<PlayerMovement> ().tether.transform.localScale;
+		meh.x = 0.4f * shrinkMe;
+		GetComponent<PlayerMovement> ().tether.transform.localScale = meh;
 
 		if (distToCaptor.magnitude > leashLength) {
 			Vector3 movement = distToCaptor * leashLength / distToCaptor.magnitude;
@@ -48,6 +56,8 @@ public class PlayerGhost : MonoBehaviour {
 		movement.captive = null;
 
 		transform.position = spawn.position;
+
+		GetComponent<PlayerMovement> ().tether.GetComponent<SpriteRenderer> ().enabled = false;
 
 		GameObject.Find ("AirConsoleLogic").GetComponent<AirconsoleLogic> ().Unlock (movement);
 	}
