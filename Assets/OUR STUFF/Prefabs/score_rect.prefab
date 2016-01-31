@@ -127,7 +127,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0 SOULS
+  m_Text: 5 SOULS
 --- !u!114 &11476448
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -292,7 +292,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 0}
       propertyPath: m_Text
-      value: 0 SOULS
+      value: 5 SOULS
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
