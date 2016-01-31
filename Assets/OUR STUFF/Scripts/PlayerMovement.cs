@@ -60,6 +60,8 @@ public class PlayerMovement : MonoBehaviour {
 		playerColor.a = 1.0f;
 		buttParticles.startColor = playerColor;
 		buttParticles.Stop ();
+
+		GameObject.DontDestroyOnLoad (this);
 	}
 
 	public void Unlock() {

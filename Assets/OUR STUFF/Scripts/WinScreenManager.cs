@@ -14,6 +14,8 @@ public class WinScreenManager : MonoBehaviour {
 	public int displayed_second = 0;
 	public int displayed_third = 0;
 
+	public SpriteRenderer[] losers;
+
 	public string currState = "grow3";
 	float cooldown = 2.0f;
 	float max_cool = 0.5f;
@@ -21,20 +23,28 @@ public class WinScreenManager : MonoBehaviour {
 
 	public ParticleSystem confetti;
 
+	private List<PlayerMovement> players;
+
 	// Use this for initialization
 	void Start () {
 		confetti.Stop ();
-		List<PlayerMovement> players = FindObjectOfType<AirconsoleLogic> ().activePlayers.Values.ToList();
+		players = FindObjectOfType<AirconsoleLogic> ().activePlayers.Values.ToList();
 		players = players.OrderByDescending(score => -score.GetComponent<PlayerScore> ().score).ToList ();
 
 		first_score = players [0].GetComponent<PlayerScore> ().score;
+		SetDudeColor (GetGUY("first"), players [0].GetComponent<PlayerMovement>().playerColor);
+		SetDudeColor (GetGUY("first/viking"), players [0].GetComponent<PlayerMovement>().playerColor);
 
 		if (players.Count >= 2) {
 			second_score = players [1].GetComponent<PlayerScore> ().score;
+			SetDudeColor (GetGUY("first"), players [1].GetComponent<PlayerMovement>().playerColor);
+			SetDudeColor (GetGUY("first/viking"), players [1].GetComponent<PlayerMovement>().playerColor);
 		}
 
 		if (players.Count >= 3) {
 			third_score = players [2].GetComponent<PlayerScore> ().score;
+			SetDudeColor (GetGUY("first"), players [2].GetComponent<PlayerMovement>().playerColor);
+			SetDudeColor (GetGUY("first/viking"), players [2].GetComponent<PlayerMovement>().playerColor);
 		}
 	}
 
@@ -44,13 +54,16 @@ public class WinScreenManager : MonoBehaviour {
 
 	void SetDudeColor(GameObject dude, Color color) {
 		if (dude.GetComponent<Image> ()) {
-
+			dude.GetComponent<Image> ().color = color;
 		}
 
 		if (dude.GetComponent<SpriteRenderer> ()) {
-
+			dude.GetComponent<SpriteRenderer> ().color = color;
 		}
 	}
+
+	int loserNum = 3;
+	float cd = 0.2f;
 
 	// Update is called once per frame
 	void Update () {
@@ -138,8 +151,16 @@ public class WinScreenManager : MonoBehaviour {
 			}
 		}
 
-		if (currState == "confetti") {
+		if (currState == "confetti") {			
+			cd -= Time.deltaTime;
 
+			if (cd < 0.0f) {
+				if (losers.Length > loserNum && players.Count > loserNum) {
+					losers [loserNum].color = players[loserNum].playerColor;
+					cd = 0.2f;
+					loserNum++;
+				}
+			}
 		}
 
 
