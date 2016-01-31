@@ -24,20 +24,22 @@ public class PlayerGhost : MonoBehaviour {
 
 	// Update is called once per frame
 	void FixedUpdate () {
-		Vector3 distToCaptor = transform.position - captor.transform.position;
+		if (captor) {
+			Vector3 distToCaptor = transform.position - captor.transform.position;
 
-		Quaternion pointToDad = Quaternion.FromToRotation (Vector3.left, distToCaptor);
-		GetComponent<PlayerMovement>().tether.transform.rotation = pointToDad;
+			Quaternion pointToDad = Quaternion.FromToRotation (Vector3.left, distToCaptor);
+			GetComponent<PlayerMovement> ().tether.transform.rotation = pointToDad;
 
-		var shrinkMe = distToCaptor.magnitude / leashLength;
-		var meh = GetComponent<PlayerMovement> ().tether.transform.localScale;
-		meh.x = 0.4f * shrinkMe;
-		GetComponent<PlayerMovement> ().tether.transform.localScale = meh;
+			var shrinkMe = distToCaptor.magnitude / leashLength;
+			var meh = GetComponent<PlayerMovement> ().tether.transform.localScale;
+			meh.x = 0.4f * shrinkMe;
+			GetComponent<PlayerMovement> ().tether.transform.localScale = meh;
 
-		if (distToCaptor.magnitude > leashLength) {
-			Vector3 movement = distToCaptor * leashLength / distToCaptor.magnitude;
+			if (distToCaptor.magnitude > leashLength) {
+				Vector3 movement = distToCaptor * leashLength / distToCaptor.magnitude;
 
-			transform.position = captor.transform.position + movement;
+				transform.position = captor.transform.position + movement;
+			}
 		}
 	}
 
