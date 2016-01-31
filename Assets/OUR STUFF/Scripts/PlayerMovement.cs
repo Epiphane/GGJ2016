@@ -31,6 +31,8 @@ public class PlayerMovement : MonoBehaviour {
 
 	public bool debug_wizz = false;
 
+	private float stunned = 0;
+
 	void Start() {
 		arrow = transform.Find ("arrow_parent").gameObject;
 		player_img = transform.Find ("player_img").gameObject;
@@ -47,6 +49,13 @@ public class PlayerMovement : MonoBehaviour {
 		}
 
 		ghost.captor = null;
+	}
+
+	public void Stun(float t) {
+		stunned = t;
+
+		player_img.GetComponent<SpriteRenderer> ().sprite = wizardSprite;
+		dashing = false;
 	}
 
 	public void StartDashing() {
@@ -104,6 +113,27 @@ public class PlayerMovement : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		if (dashing) {
+			GetComponent<CircleCollider2D> ().isTrigger = false;
+		} else {
+			GetComponent<CircleCollider2D> ().isTrigger = true;
+		}
+
+		if (stunned > 0) {
+			stunned -= Time.deltaTime;
+
+			player_img.transform.rotation = new Quaternion (0, 0, 0, 0);
+
+			if (Mathf.Ceil(stunned * 8) % 2 == 1) {
+				playerColor.a = 0.25f;
+			}
+			else {
+				playerColor.a = 1.0f;
+			}
+			player_img.GetComponent<SpriteRenderer> ().color = playerColor;
+
+			return;
+		}
 
 		if (debug_wizz) {
 			if (Input.GetKey (movementKey)) {
@@ -112,7 +142,7 @@ public class PlayerMovement : MonoBehaviour {
 		}
 
 		if (wantsToDash) {
-			Dash();
+			Dash ();
 		}
 
 		if (cooldown <= 0.0f) {
@@ -135,13 +165,6 @@ public class PlayerMovement : MonoBehaviour {
 		if (cooldown >= 0.0f && !dashing) {
 			player_img.GetComponent<SpriteRenderer> ().color = new Color (0.0f, 0.0f, 1.0f);
 		}
-			
-		if (dashing) {
-			GetComponent<CircleCollider2D> ().isTrigger = false;
-		} else {
-			GetComponent<CircleCollider2D> ().isTrigger = true;
-		}
-
 
 		if (dashAnim >= 0.0f && dashing) { // Transitioning TO a fireball
 			if (dashAnim <= DASH_ANIM_LENGTH / 2.0f) {
@@ -186,6 +209,8 @@ public class PlayerMovement : MonoBehaviour {
 
 					GetComponent<Rigidbody2D> ().velocity = new Vector2 (diffX, diffY) * speed;
 					coll.GetComponent<Rigidbody2D> ().velocity = new Vector2 (diffX, diffY) * -speed;
+
+					Debug.Log("Oh noooo");
 				} else {
 					// They weren't dashing! DESTROY THEM
 
@@ -223,6 +248,15 @@ public class PlayerMovement : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D coll) {
 		if (coll.collider.tag == "Wall") {
 			arrow.transform.RotateAround (arrow.transform.position, Vector3.forward, 180.0f);
+		}
+
+		if (coll.collider.tag == "Player" && dashing) {
+			// Collided wi;th player...
+			PlayerMovement movement = coll.collider.GetComponent<PlayerMovement> ();
+			if (movement.dashing) {
+				movement.Stun (1);
+				Stun (1);
+			}
 		}
 	}
 }
