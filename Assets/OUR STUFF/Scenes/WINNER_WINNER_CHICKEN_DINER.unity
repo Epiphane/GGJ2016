@@ -1988,6 +1988,7 @@ MonoBehaviour:
   displayed_second: 0
   displayed_third: 0
   currState: grow3
+  confetti: {fileID: 1791940670}
 --- !u!4 &1951510085
 Transform:
   m_ObjectHideFlags: 0
