@@ -234,7 +234,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 409008, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
       propertyPath: m_RootOrder
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 442312, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
       propertyPath: m_LocalScale.x
@@ -381,8 +381,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1808697650}
   - {fileID: 160495843}
+  - {fileID: 1148871985}
+  - {fileID: 1808697650}
   m_Father: {fileID: 933662996}
   m_RootOrder: 2
 --- !u!1 &688289537
@@ -888,6 +889,10 @@ Transform:
 Transform:
   m_PrefabParentObject: {fileID: 467594, guid: b8b9019efd979402ab7e2ae2a7bf31f2, type: 2}
   m_PrefabInternal: {fileID: 1230814822}
+--- !u!4 &1148871985 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 409008, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
+  m_PrefabInternal: {fileID: 1839596370}
 --- !u!1 &1163111481
 GameObject:
   m_ObjectHideFlags: 0
@@ -1250,7 +1255,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 414022, guid: 3498a50a74bb94ebca5205153513e9c7, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 21255386, guid: 3498a50a74bb94ebca5205153513e9c7, type: 2}
       propertyPath: m_Sprite
@@ -1264,6 +1269,10 @@ Prefab:
     - target: {fileID: 414022, guid: 3498a50a74bb94ebca5205153513e9c7, type: 2}
       propertyPath: m_LocalScale.y
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 21255386, guid: 3498a50a74bb94ebca5205153513e9c7, type: 2}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6150104, guid: 3498a50a74bb94ebca5205153513e9c7, type: 2}
@@ -1515,7 +1524,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 409008, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8294460, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
       propertyPath: Loop
