@@ -182,8 +182,26 @@ MonoBehaviour:
   buttParticles: {fileID: 0}
   collision: {fileID: 0}
   death: {fileID: 0}
+  kill2: {fileID: 0}
+  kill3: {fileID: 0}
+  kill4: {fileID: 0}
+  kill5: {fileID: 0}
+  kill6: {fileID: 0}
+  kill7: {fileID: 0}
+  kill8: {fileID: 0}
+  kill9: {fileID: 0}
+  kill10: {fileID: 0}
   collisionClip: {fileID: 8300000, guid: 0a5d4848c3a8944d3ab9abeecdd084cd, type: 3}
   deathClip: {fileID: 8300000, guid: 773341cb393f84b44a1773b4309acfea, type: 3}
+  kill2Clip: {fileID: 8300000, guid: c210325de3617423db10139f5b171398, type: 3}
+  kill3Clip: {fileID: 8300000, guid: 25971854790e14f83a73d8eaed9273ae, type: 3}
+  kill4Clip: {fileID: 8300000, guid: 9111ab49d746d48b18f2d9661c036db9, type: 3}
+  kill5Clip: {fileID: 8300000, guid: cf1258b34768346ed9a30cd3154a7c2c, type: 3}
+  kill6Clip: {fileID: 8300000, guid: e870ddc3cbe124638b2ce317090fe1a6, type: 3}
+  kill7Clip: {fileID: 8300000, guid: 22c8d7a64612a4dc389992231d10a783, type: 3}
+  kill8Clip: {fileID: 8300000, guid: 44641925b6c044f8f98f84d0a31da498, type: 3}
+  kill9Clip: {fileID: 8300000, guid: ecbcc03b5f91c44d38eb71e4de69d934, type: 3}
+  kill10Clip: {fileID: 8300000, guid: cf5285231ee4244f187216917268a0ad, type: 3}
   tether: {fileID: 154046}
 --- !u!114 &11485254
 MonoBehaviour:

@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/OUR STUFF/Animation/rune_bottom.anim.meta
 guid: 6aa5c6a7826474f9f97cfe1e949d0b31
 timeCreated: 1454274162
+=======
+guid: bcca9e412331b4399b81e13602d2bbba
+timeCreated: 1454272400
+>>>>>>> eeace9c6d18ff9dd5857b1fa5934ef9b8368260f:Assets/OUR STUFF/Sprites/rune_bottom.meta
 licenseType: Free
 NativeFormatImporter:
   userData: 
