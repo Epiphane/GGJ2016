@@ -29,9 +29,31 @@ public class PlayerMovement : MonoBehaviour {
 
 	public PlayerGhost captive;
 
+
 	public bool debug_wizz = false;
 
 	public ParticleSystem buttParticles;
+	private float stunned = 0;
+
+	public AudioSource collision;
+	public AudioSource death;
+
+	public AudioClip collisionClip;
+	public AudioClip deathClip;
+
+	public AudioSource AddAudio(AudioClip clip, bool loop, bool playAwake, float vol) { 
+		AudioSource newAudio = gameObject.AddComponent<AudioSource>();
+		newAudio.clip = clip; 
+		newAudio.loop = loop;
+		newAudio.playOnAwake = playAwake;
+		newAudio.volume = vol; 
+		return newAudio; 
+	}
+
+	void Awake () {
+		collision = AddAudio (collisionClip, false, false, 1.0f);
+		death = AddAudio (deathClip, false, false, 1.0f);
+	}
 
 	void Start() {
 		arrow = transform.Find ("arrow_parent").gameObject;
@@ -53,6 +75,13 @@ public class PlayerMovement : MonoBehaviour {
 		}
 
 		ghost.captor = null;
+	}
+
+	public void Stun(float t) {
+		stunned = t;
+
+		player_img.GetComponent<SpriteRenderer> ().sprite = wizardSprite;
+		dashing = false;
 	}
 
 	public void StartDashing() {
@@ -91,7 +120,7 @@ public class PlayerMovement : MonoBehaviour {
 
 		GetComponent<Rigidbody2D> ().velocity = vel;
 
-		cooldown = 0.3f;
+		cooldown = 0.05f;
 		dashing = true;
 	}
 
@@ -107,12 +136,31 @@ public class PlayerMovement : MonoBehaviour {
 		var newQuat = Quaternion.Slerp (new Quaternion (0, 0, 0, 0), arrow.transform.rotation * flipQuat, howMuch);
 
 		player_img.transform.rotation = newQuat;
-
-//		print ("How much " + howMuch);
 	}
 
 	// Update is called once per frame
 	void Update () {
+//		if (dashing) {
+			GetComponent<CircleCollider2D> ().isTrigger = false;
+//		} else {
+//			GetComponent<CircleCollider2D> ().isTrigger = true;
+//		}
+
+		if (stunned > 0) {
+			stunned -= Time.deltaTime;
+
+			player_img.transform.rotation = new Quaternion (0, 0, 0, 0);
+
+			if (Mathf.Ceil(stunned * 8) % 2 == 1) {
+				playerColor.a = 0.25f;
+			}
+			else {
+				playerColor.a = 1.0f;
+			}
+			player_img.GetComponent<SpriteRenderer> ().color = playerColor;
+
+			return;
+		}
 
 		if (debug_wizz) {
 			if (Input.GetKey (movementKey)) {
@@ -121,11 +169,11 @@ public class PlayerMovement : MonoBehaviour {
 		}
 
 		if (wantsToDash) {
-			Dash();
+			Dash ();
 		}
 
 		if (cooldown <= 0.0f) {
-			arrow.transform.RotateAround (arrow.transform.position, Vector3.forward, 3.0f);
+			arrow.transform.RotateAround (arrow.transform.position, Vector3.forward, 4.0f);
 		}
 
 		if (GetComponent<Rigidbody2D> ().velocity.sqrMagnitude < 20) {
@@ -145,13 +193,6 @@ public class PlayerMovement : MonoBehaviour {
 		if (cooldown >= 0.0f && !dashing) {
 			player_img.GetComponent<SpriteRenderer> ().color = new Color (0.0f, 0.0f, 1.0f);
 		}
-			
-		if (dashing) {
-			GetComponent<CircleCollider2D> ().isTrigger = false;
-		} else {
-			GetComponent<CircleCollider2D> ().isTrigger = true;
-		}
-
 
 		if (dashAnim >= 0.0f && dashing) { // Transitioning TO a fireball
 			if (dashAnim <= DASH_ANIM_LENGTH / 2.0f) {
@@ -177,55 +218,56 @@ public class PlayerMovement : MonoBehaviour {
 
 	public void CollectPoints() {
 		while (captive != null) {
-			/* Get them sweet points duuuuude */
-			Debug.Log ("Point!");
+			GetComponent<PlayerScore> ().GainPoint ();
 
 			captive.Respawn ();
 			// This will set captive to something else
 		}
 	}
 
-	void OnTriggerEnter2D(Collider2D coll) {
-		if (coll.tag == "Player") {
-			if (dashing) {
+	void OnCollisionEnter2D(Collision2D coll) {
+		if (coll.collider.tag == "Wall") {
+			arrow.transform.RotateAround (arrow.transform.position, Vector3.forward, 180.0f);
+		}
 
-				// Collided with player...
-				if (coll.GetComponent<PlayerMovement> ().dashing) {
-					// They were dashing! Bounce away.
-					var diffX = coll.transform.position.x - transform.position.x;
-					var diffY = coll.transform.position.y - transform.position.y;
+		if (coll.collider.tag == "Player" && dashing) {
+			// Collided wi;th player...
+			PlayerMovement movement = coll.collider.GetComponent<PlayerMovement> ();
+			if (movement.dashing) {
+				movement.Stun (1);
+				Stun (1);
 
-					GetComponent<Rigidbody2D>().velocity = new Vector2 (diffX, diffY) * speed;
-					coll.GetComponent<Rigidbody2D>().velocity = new Vector2 (diffX, diffY) * -speed;
-				} else {
-					// They weren't dashing! DESTROY THEM
+				collision.Play ();
+			} else {
+				// They weren't dashing! DESTROY THEM
 
-					// Go to the last element in the list
-					PlayerMovement cursor = this;
-					while (cursor.captive != null) {
-						cursor = cursor.captive.GetComponent<PlayerMovement> ();
+				// Go to the last element in the list
+				PlayerMovement cursor = this;
+				while (cursor.captive != null) {
+					cursor = cursor.captive.GetComponent<PlayerMovement> ();
 
-						// Abort if we already have this guy captive
-						if (cursor == coll.GetComponent<PlayerMovement> ()) {
-							return;
-						}
+					// Abort if we already have this guy captive
+					if (cursor == coll.collider.GetComponent<PlayerMovement> ()) {
+						return;
 					}
-						
-					PlayerGhost ghost = coll.GetComponent<PlayerGhost> ();
-					cursor.captive = ghost;
-					if (ghost.captor != null) {
-						ghost.captor.GetComponent<PlayerMovement> ().captive = null;
-					}
-					ghost.captor = cursor.gameObject;
-
-					ghost.enabled = true;
-
-					// Disable movement
-					GameObject.Find("AirConsoleLogic").GetComponent<AirconsoleLogic>().Lock(coll.GetComponent<PlayerMovement> ());
-
-					var new_particles = GameObject.Instantiate(particles);
-					new_particles.transform.position = coll.transform.position;;
 				}
+
+				PlayerGhost ghost = coll.collider.GetComponent<PlayerGhost> ();
+				cursor.captive = ghost;
+				if (ghost.captor != null) {
+					ghost.captor.GetComponent<PlayerMovement> ().captive = null;
+				}
+				ghost.captor = cursor.gameObject;
+
+				ghost.enabled = true;
+
+				// Disable movement
+				GameObject.Find ("AirConsoleLogic").GetComponent<AirconsoleLogic> ().Lock (coll.collider.GetComponent<PlayerMovement> ());
+
+				var new_particles = GameObject.Instantiate (particles);
+				new_particles.transform.position = coll.transform.position;
+
+				death.Play ();
 			}
 		}
 	}

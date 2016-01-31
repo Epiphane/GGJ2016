@@ -45,6 +45,7 @@ GameObject:
   - 58: {fileID: 5834512}
   - 114: {fileID: 11422994}
   - 114: {fileID: 11485254}
+  - 114: {fileID: 11494086}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -204,6 +205,10 @@ MonoBehaviour:
   captive: {fileID: 0}
   debug_wizz: 1
   buttParticles: {fileID: 0}
+  collision: {fileID: 0}
+  death: {fileID: 0}
+  collisionClip: {fileID: 8300000, guid: 0a5d4848c3a8944d3ab9abeecdd084cd, type: 3}
+  deathClip: {fileID: 8300000, guid: 773341cb393f84b44a1773b4309acfea, type: 3}
 --- !u!114 &11485254
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1748,6 +1753,18 @@ ParticleSystemRenderer:
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
+--- !u!114 &11494086
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 160828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f57966e9bc9d4f0b91a2ea868accba7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  score: 0
 --- !u!212 &21202480
 SpriteRenderer:
   m_ObjectHideFlags: 1

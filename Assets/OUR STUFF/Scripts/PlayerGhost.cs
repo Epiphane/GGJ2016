@@ -14,6 +14,8 @@ public class PlayerGhost : MonoBehaviour {
 	}
 
 	void Update() {
+		GetComponent<CircleCollider2D> ().isTrigger = true;
+
 		Color c = GetComponent<PlayerMovement>().playerColor;
 		c.a = 0.5f;
 

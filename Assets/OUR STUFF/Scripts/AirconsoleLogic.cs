@@ -110,12 +110,7 @@ public class AirconsoleLogic : MonoBehaviour {
 
 	void StartGame() {
 		AirConsole.instance.SetActivePlayers (2);
-		ResetBall (true);
 		UpdateScoreUI();
-	}
-
-	void ResetBall(bool move) {
-		
 	}
 
 	void UpdateScoreUI() {
