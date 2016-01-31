@@ -169,7 +169,7 @@ public class PlayerMovement : MonoBehaviour {
 		}
 
 		if (cooldown <= 0.0f) {
-			arrow.transform.RotateAround (arrow.transform.position, Vector3.forward, 4.0f);
+			arrow.transform.RotateAround (arrow.transform.position, Vector3.forward, 3.5f);
 		}
 
 		if (GetComponent<Rigidbody2D> ().velocity.sqrMagnitude < 20) {
