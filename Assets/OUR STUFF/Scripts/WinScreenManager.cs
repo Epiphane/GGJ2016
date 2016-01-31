@@ -158,9 +158,9 @@ public class WinScreenManager : MonoBehaviour {
 			cd -= Time.deltaTime;
 
 			if (cd < 0.0f) {
-				if (losers.Length > loserNum-3 && scores.Count > loserNum) {
-					losers [loserNum - 3].gameObject.SetActive (true);
-					losers [loserNum-3].color = colors[loserNum-3];
+				if (losers.Length > loserNum && scores.Count > loserNum) {
+					losers [loserNum].gameObject.SetActive (true);
+					losers [loserNum].color = colors[loserNum];
 					cd = 0.2f;
 					loserNum++;
 				}
