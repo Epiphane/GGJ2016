@@ -4,10 +4,12 @@ using System.Collections;
 using System.Collections.Generic;
 using NDream.AirConsole;
 using Newtonsoft.Json.Linq;
+using System.Linq;
 
 public class AirconsoleLogic : MonoBehaviour {
 
 	public GameObject playerTemplate;
+	public GameObject scoreUITemplate;
 
 	public List<Color> possibleColors = new List<Color>();
 	private List<Color> usedColors = new List<Color>();
@@ -16,6 +18,7 @@ public class AirconsoleLogic : MonoBehaviour {
 	private List<Transform> usedSpawns = new List<Transform>();
 
 	Dictionary<int, PlayerMovement> activePlayers = new Dictionary<int, PlayerMovement>();
+	Dictionary<int, GameObject> activeScoreUI = new Dictionary<int, GameObject>();
 
 	void Awake() {
 		AirConsole.instance.onMessage += OnMessage;
@@ -41,6 +44,8 @@ public class AirconsoleLogic : MonoBehaviour {
 	/// </summary>
 	/// <param name="device_id">The device_id that connected</param>
 	void OnConnect(int device_id) {
+		Color coolColor = possibleColors [0];
+
 		var newFriend = GameObject.Instantiate (playerTemplate);
 		var newPlayer = newFriend.GetComponent<PlayerMovement> ();
 
@@ -57,6 +62,47 @@ public class AirconsoleLogic : MonoBehaviour {
 		possibleSpawns.RemoveAt (0);
 		newFriend.transform.position = spawn.position;
 		newFriend.GetComponent<PlayerGhost> ().spawn = spawn;
+
+		var newUI = GameObject.Instantiate (scoreUITemplate);
+
+		coolColor.a = 1.0f;
+		newUI.GetComponent<Image> ().color = coolColor;
+		activeScoreUI [device_id] = newUI;
+
+		newUI.transform.parent = FindObjectOfType<Canvas> ().transform;
+
+		ReorderScoreList ();
+	}
+
+	// Put the Score Tabs on the side in order of score
+	public void ReorderScoreList() {
+		List<PlayerMovement> scoreList = activePlayers.Values.ToList ();
+
+		scoreList = scoreList.OrderBy (score => score.GetComponent<PlayerScore> ().score).ToList ();
+
+		float increment = 1.0f / 8.0f;
+		float top = 1.0f;
+		float bottom = top - increment;
+
+		foreach (var score in scoreList) {
+			var device_id = score.GetComponent<PlayerMovement> ().related_device_id;
+			var rect_transform = activeScoreUI [device_id].GetComponent<RectTransform> ();
+			rect_transform.offsetMin = Vector2.zero;
+			rect_transform.offsetMax = Vector2.zero;
+
+			var amax = rect_transform.anchorMax;
+			amax.y = top;
+			rect_transform.anchorMax = amax;
+
+			var amin = rect_transform.anchorMin;
+			amin.y = bottom;
+			rect_transform.anchorMin = amin;
+
+			top -= increment;
+			bottom = top - increment;
+
+			rect_transform.sizeDelta = Vector2.zero;
+		}
 	}
 
 	public void Lock(PlayerMovement victim) {
