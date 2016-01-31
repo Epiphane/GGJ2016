@@ -43,6 +43,7 @@ public class PlayerGhost : MonoBehaviour {
 			} else {
 				Respawn ();
 
+				runeDude.GetComponent<GateScript> ().GainSoul ();
 				sacrificing = false;
 			}
 		}

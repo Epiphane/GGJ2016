@@ -203,7 +203,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	}
 
-	public void CollectPoints() {
+	public int CollectPoints() {
 		var count = 0;
 
 		while (captive != null) {
@@ -214,8 +214,6 @@ public class PlayerMovement : MonoBehaviour {
 			captive.Sacrifice ();
 			// This will set captive to something else
 		}
-
-		print ("Count is " + count);
 
 		if (count == 2)
 			kill2.Play ();
@@ -235,6 +233,8 @@ public class PlayerMovement : MonoBehaviour {
 			kill9.Play ();
 		else if (count >= 10)
 			kill10.Play ();
+
+		return count;
 	}
 
 	void ClaimSoul(GameObject victim) {

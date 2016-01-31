@@ -3,7 +3,7 @@ using System.Collections;
 
 public class GateScript : MonoBehaviour {
 
-
+	public RuneTopScript runeTop;
 
 	void OnTriggerEnter2D (Collider2D other) {
 		if (other.tag == "Player" && other.GetComponent<PlayerMovement>().enabled) {
@@ -12,6 +12,11 @@ public class GateScript : MonoBehaviour {
 
 			other.GetComponent<PlayerMovement> ().CollectPoints ();
 		}
+	}
+
+	public void GainSoul() {
+		Debug.Log ("Got a soul");
+		bool didCoolThing = runeTop.Gain (1);
 	}
 
 	// Use this for initialization
