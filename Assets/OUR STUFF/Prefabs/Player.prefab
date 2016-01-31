@@ -191,7 +191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementKey: 32
-  speed: 14
+  speed: 9
   particles: {fileID: 124334, guid: c4465c324cded4bc89b2ecddfbd38108, type: 2}
   related_device_id: 0
   cooldown: 0
@@ -200,6 +200,9 @@ MonoBehaviour:
   fireballSprite: {fileID: 21300000, guid: 4771273e64f9040c6b2e1dd7d01b6542, type: 3}
   wizardSprite: {fileID: 21300000, guid: a7eff72e893d447f2ade106a19c80366, type: 3}
   dashing: 0
+  turningLeft: 0
+  turningRight: 0
+  input: {x: 0, y: 0}
   playerColor: {r: 1, g: 1, b: 1, a: 1}
   player_img: {fileID: 0}
   captive: {fileID: 0}

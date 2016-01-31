@@ -20,6 +20,8 @@ public class AirconsoleLogic : MonoBehaviour {
 	Dictionary<int, PlayerMovement> activePlayers = new Dictionary<int, PlayerMovement>();
 	public static Dictionary<int, GameObject> activeScoreUI = new Dictionary<int, GameObject>();
 
+	public Transform playerParent;
+
 	void Awake() {
 		AirConsole.instance.onMessage += OnMessage;
 		AirConsole.instance.onConnect += OnConnect;
@@ -48,6 +50,8 @@ public class AirconsoleLogic : MonoBehaviour {
 
 		var newFriend = GameObject.Instantiate (playerTemplate);
 		var newPlayer = newFriend.GetComponent<PlayerMovement> ();
+
+		newFriend.transform.parent = playerParent;
 
 		activePlayers [device_id] = newPlayer;
 		newPlayer.related_device_id = device_id;
@@ -143,6 +147,21 @@ public class AirconsoleLogic : MonoBehaviour {
 	void OnMessage(int device_id, JToken data) {
 		int active_player = AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id);
 
+		if (data ["joystick-right"] != null) {
+			Vector2 direction;
+			if ((bool) data ["joystick-right"] ["pressed"] == true) {
+				direction = new Vector2 ((float)data ["joystick-right"] ["message"] ["x"], (float)data ["joystick-right"] ["message"] ["y"]);
+			} else {
+				direction = new Vector2 (0, 0);
+			}
+
+			activePlayers [device_id].input = direction;
+
+//			Debug.Log (data ["joystick-right"] ["message"] ["x"]);
+//			Debug.Log (data ["joystick-right"] ["message"] ["y"]);
+//			Debug.Log ();
+		}
+		/*
 		if (data ["color"] != null) {
 			AirConsole.instance.Message (device_id, ColorToJSONMessage(activePlayers [device_id].playerColor));
 		}
@@ -158,6 +177,18 @@ public class AirconsoleLogic : MonoBehaviour {
 		if (data["unlock"] != null) {
 			activePlayers [device_id].Unlock ();
 		}
+		if (data ["start_left"] != null) {
+			activePlayers [device_id].turningLeft = true;
+		}
+		if (data ["start_right"] != null) {
+			activePlayers [device_id].turningRight = true;
+		}
+		if (data ["stop_left"] != null) {
+			activePlayers [device_id].turningLeft = false;
+		}
+		if (data ["stop_right"] != null) {
+			activePlayers [device_id].turningRight = false;
+		}*/
 	}
 
 	void StartGame() {
