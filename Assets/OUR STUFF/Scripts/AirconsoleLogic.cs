@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using NDream.AirConsole;
@@ -17,7 +18,7 @@ public class AirconsoleLogic : MonoBehaviour {
 	public List<Transform> possibleSpawns = new List<Transform>();
 	private List<Transform> usedSpawns = new List<Transform>();
 
-	Dictionary<int, PlayerMovement> activePlayers = new Dictionary<int, PlayerMovement>();
+	public Dictionary<int, PlayerMovement> activePlayers = new Dictionary<int, PlayerMovement>();
 	public static Dictionary<int, GameObject> activeScoreUI = new Dictionary<int, GameObject>();
 
 	void Awake() {
@@ -73,6 +74,8 @@ public class AirconsoleLogic : MonoBehaviour {
 		newUI.transform.Find ("player_name").GetComponent<Text> ().text = AirConsole.instance.GetNickname (device_id);
 
 		AirconsoleLogic.ReorderScoreList ();
+
+		GameObject.DontDestroyOnLoad (this);
 	}
 
 	// Put the Score Tabs on the side in order of score
@@ -171,6 +174,9 @@ public class AirconsoleLogic : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
+		if (Input.GetKeyDown (KeyCode.Z)) { 
+			SceneManager.LoadScene ("WINNER_WINNER_CHICKEN_DINER");
+		}
 	}
 
 	void OnDestroy() {
