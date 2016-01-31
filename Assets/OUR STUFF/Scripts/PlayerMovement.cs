@@ -221,7 +221,6 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D coll) {
-		Debug.Log ("AUBD");
 		if (coll.collider.tag == "Wall") {
 			arrow.transform.RotateAround (arrow.transform.position, Vector3.forward, 180.0f);
 		}
