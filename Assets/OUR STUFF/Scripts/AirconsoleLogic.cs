@@ -126,6 +126,8 @@ public class AirconsoleLogic : MonoBehaviour {
 		var oldFriend = activePlayers [device_id];
 		if (oldFriend) {
 			activePlayers.Remove (device_id);
+			AirconsoleLogic.activeScoreUI.Remove (device_id);
+			ReorderScoreList ();
 		}
 		usedColors.Remove (oldFriend.playerColor);
 		usedSpawns.Remove (oldFriend.GetComponent<PlayerGhost>().spawn);
