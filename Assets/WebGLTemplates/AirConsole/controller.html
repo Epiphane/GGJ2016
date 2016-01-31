@@ -938,14 +938,10 @@ function init() {
 
   // Custom Thomas Script begins here
   airconsole.onMessage = function(from, data) {
-    // output.innerHTML = output.innerHTML + ' | From ' + from;
     if (from == AirConsole.SCREEN) {
-      output.innerHTML = output.innerHTML + ' | ' + data;
       data = JSON.parse(data);
       if (data.vibrate) {
-        output.innerHTML = output.innerHTML + ' | Vibrate ' + data.vibrate;
         navigator.vibrate(data.vibrate);
-        navigator.vibrate(1000);
       }
       if (data.color) {
         document.body.style.background = playerColor = 'rgb(' + data.color + ')';
@@ -957,9 +953,5 @@ function init() {
   airconsole.onReady = function() {
   }
 }
-
-setInterval(function() {
-        navigator.vibrate(1000);
-}, 1000);
 
 </script></body></html>
