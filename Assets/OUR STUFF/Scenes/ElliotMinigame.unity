@@ -1274,21 +1274,13 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 8294460, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
-      propertyPath: Loop
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 21251500, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
-      propertyPath: m_SortingOrder
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 477790, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -2
+      value: 0.013
       objectReference: {fileID: 0}
     - target: {fileID: 477790, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -0.6
+      value: 0.042
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
