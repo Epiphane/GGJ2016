@@ -18,10 +18,24 @@ public class PlayerScore : MonoBehaviour {
 				scoreUI.transform.Find ("score_text").GetComponent<Text> ().text = score + " SOUL";
 			}
 		}
+
+		AirconsoleLogic.ReorderScoreList ();
 	}
 
 	public void LosePoint() {
 		score--;
+		var device_id = GetComponent<PlayerMovement> ().related_device_id;
+
+		var scoreUI = AirconsoleLogic.activeScoreUI [device_id];
+		if (scoreUI) {
+			scoreUI.transform.Find ("score_text").GetComponent<Text> ().text = score + " SOULS";
+
+			if (score == 1) {
+				scoreUI.transform.Find ("score_text").GetComponent<Text> ().text = score + " SOUL";
+			}
+		}
+
+		AirconsoleLogic.ReorderScoreList ();
 	}
 
 	// Use this for initialization

@@ -72,14 +72,14 @@ public class AirconsoleLogic : MonoBehaviour {
 		newUI.transform.parent = FindObjectOfType<Canvas> ().transform;
 		newUI.transform.Find ("player_name").GetComponent<Text> ().text = AirConsole.instance.GetNickname (device_id);
 
-		ReorderScoreList ();
+		AirconsoleLogic.ReorderScoreList ();
 	}
 
 	// Put the Score Tabs on the side in order of score
-	public void ReorderScoreList() {
-		List<PlayerMovement> scoreList = activePlayers.Values.ToList ();
+	public static void ReorderScoreList() {
+		List<PlayerMovement> scoreList = FindObjectOfType<AirconsoleLogic>().activePlayers.Values.ToList ();
 
-		scoreList = scoreList.OrderBy (score => score.GetComponent<PlayerScore> ().score).ToList ();
+		scoreList = scoreList.OrderBy (score => -score.GetComponent<PlayerScore> ().score).ToList ();
 
 		float increment = 1.0f / 8.0f;
 		float top = 1.0f;
