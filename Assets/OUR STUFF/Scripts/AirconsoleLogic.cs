@@ -62,6 +62,11 @@ public class AirconsoleLogic : MonoBehaviour {
 	/// </summary>
 	/// <param name="device_id">The device_id that connected</param>
 	void OnConnect(int device_id) {
+		if (possibleColors.Count == 0) {
+			// No more space! Gotta wait brooooo
+//			AirConsole.instance.Message (device_id, "{\"lobby\":true}");
+		}
+
 		Color coolColor = possibleColors [0];
 
 		var newFriend = GameObject.Instantiate (playerTemplate);
@@ -75,7 +80,8 @@ public class AirconsoleLogic : MonoBehaviour {
 //		newPlayer.buttParticles.startColor = possibleColors [0];
 		usedColors.Add (possibleColors [0]);
 
-		AirConsole.instance.Message (device_id, ColorToJSONMessage(possibleColors[0]));
+//		AirConsole.instance.Message (device_id, ColorToJSONMessage(possibleColors[0]));
+//		AirConsole.instance.Message (device_id, "{\"controller\":true}");
 		possibleColors.RemoveAt (0);
 
 		Transform spawn = possibleSpawns [0];
@@ -183,6 +189,23 @@ public class AirconsoleLogic : MonoBehaviour {
 
 			activePlayers [device_id].input = direction;
 		}
+		if (data ["color"] != null) {
+			
+			if (activePlayers.ContainsKey(device_id)) {
+				AirConsole.instance.Message (device_id, ColorToJSONMessage(activePlayers[device_id].playerColor));
+			}
+			else {
+				AirConsole.instance.Message (device_id, "{\"color\":\"153, 13, 226\"}");
+			}
+		}
+		if (data ["state"] != null) {
+			if (activePlayers.ContainsKey(device_id)) {
+				AirConsole.instance.Message (device_id, "{\"controller\":true}");
+			}
+			else {
+				AirConsole.instance.Message (device_id, "{\"lobby\":true}");
+			}
+		}
 	}
 
 	void StartGame() {
@@ -204,6 +227,8 @@ public class AirconsoleLogic : MonoBehaviour {
 		// unregister airconsole events on scene change
 		if (AirConsole.instance != null) {
 			AirConsole.instance.onMessage -= OnMessage;
+			AirConsole.instance.onDisconnect -= OnDisconnect;
+			AirConsole.instance.onConnect -= OnConnect;
 		}
 	}
 
