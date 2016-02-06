@@ -196,7 +196,10 @@ public class PlayerMovement : MonoBehaviour {
 		if (dashing) { // I am a fireball. Hear me roar!
 			var angle = -Mathf.Atan2(input.x, -input.y);
 
-			player_img.transform.rotation = Quaternion.AngleAxis (angle * 180 / Mathf.PI, Vector3.forward);
+			var targetRotation = Quaternion.AngleAxis (angle * 180 / Mathf.PI, Vector3.forward);
+			var zenoRotation = Quaternion.Slerp (player_img.transform.rotation, targetRotation, 0.5f);
+
+			player_img.transform.rotation = zenoRotation;
 		} else { // Normal, non-dashing wizard. reset rotation.
 			player_img.transform.rotation = new Quaternion(0, 0, 0, 0);
 		}
@@ -266,6 +269,7 @@ public class PlayerMovement : MonoBehaviour {
 
 		var new_particles = GameObject.Instantiate (particles);
 		new_particles.transform.position = victim.transform.position;
+		new_particles.GetComponent<ParticleSystem> ().startColor = victim.GetComponent<PlayerMovement> ().playerColor;
 
 		death.Play ();
 	}
