@@ -54,6 +54,8 @@ public class WinScreenManager : MonoBehaviour {
 	}
 
 	void SetDudeColor(GameObject dude, Color color) {
+		color.a = 1.0f;
+
 		if (dude.GetComponent<Image> ()) {
 			dude.GetComponent<Image> ().color = color;
 		}
