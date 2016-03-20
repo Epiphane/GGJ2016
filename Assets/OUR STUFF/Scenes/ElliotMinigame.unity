@@ -649,6 +649,7 @@ GameObject:
   - 222: {fileID: 603145143}
   - 114: {fileID: 603145142}
   - 114: {fileID: 603145141}
+  - 82: {fileID: 603145144}
   m_Layer: 5
   m_Name: Countdown
   m_TagString: Untagged
@@ -684,8 +685,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf68bed1ed35d479dae65cf2f2daa0db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  time: 180
+  time: 20
   nextScene: WINNER_WINNER_CHICKEN_DINER
+  beep: {fileID: 0}
 --- !u!114 &603145142
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -725,6 +727,80 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 603145139}
+--- !u!82 &603145144
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 603145139}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!1 &688289537
 GameObject:
   m_ObjectHideFlags: 0
@@ -1359,23 +1435,7 @@ MonoBehaviour:
   - {r: 1, g: 0.029411793, b: 0.933063, a: 0}
   - {r: 1, g: 0.6058824, b: 0.014705896, a: 0}
   - {r: 0, g: 1, b: 0.751724, a: 0}
-  - {r: 1, g: 1, b: 1, a: 0}
-  - {r: 0.9862069, g: 1, b: 0, a: 0}
-  - {r: 0.3455882, g: 0.3771804, b: 1, a: 0}
-  - {r: 0.10147069, g: 0.6397059, b: 0, a: 0}
-  - {r: 0.9264706, g: 0.34061417, b: 0.34061417, a: 0}
-  - {r: 1, g: 0.7241379, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0.6689656, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
   possibleSpawns:
-  - {fileID: 960981178}
-  - {fileID: 1897870100}
-  - {fileID: 1163111482}
-  - {fileID: 224113806}
-  - {fileID: 967878971}
-  - {fileID: 727965911}
-  - {fileID: 688289538}
-  - {fileID: 1931097845}
   - {fileID: 960981178}
   - {fileID: 1897870100}
   - {fileID: 1163111482}
