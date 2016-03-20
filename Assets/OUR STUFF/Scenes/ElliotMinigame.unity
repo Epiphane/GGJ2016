@@ -463,6 +463,8 @@ Transform:
   - {fileID: 1897870100}
   - {fileID: 1163111482}
   - {fileID: 224113806}
+  - {fileID: 610922740}
+  - {fileID: 1601576004}
   m_Father: {fileID: 933662996}
   m_RootOrder: 0
 --- !u!1 &417655460 stripped
@@ -577,8 +579,71 @@ Transform:
   m_Children:
   - {fileID: 160495843}
   - {fileID: 1148871985}
+  - {fileID: 1943238479}
   m_Father: {fileID: 933662996}
   m_RootOrder: 2
+--- !u!1001 &495077239
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 483235650}
+    m_Modifications:
+    - target: {fileID: 409008, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -1.1199999
+      objectReference: {fileID: 0}
+    - target: {fileID: 409008, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -2.576898
+      objectReference: {fileID: 0}
+    - target: {fileID: 409008, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 409008, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 409008, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 409008, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 409008, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 409008, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 160828, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
+      propertyPath: m_Name
+      value: goatbro
+      objectReference: {fileID: 0}
+    - target: {fileID: 11422994, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11485254, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11485254, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
+      propertyPath: spawn
+      value: 
+      objectReference: {fileID: 610922740}
+    - target: {fileID: 11485254, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
+      propertyPath: runeDude
+      value: 
+      objectReference: {fileID: 160495843}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1001 &557516323
 Prefab:
   m_ObjectHideFlags: 0
@@ -685,9 +750,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf68bed1ed35d479dae65cf2f2daa0db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  time: 20
+  time: 60
   nextScene: WINNER_WINNER_CHICKEN_DINER
-  beep: {fileID: 0}
+  beep: {fileID: 8300000, guid: 3a37debafb5f94d348ae5e96daa46990, type: 3}
 --- !u!114 &603145142
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -736,7 +801,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 3a37debafb5f94d348ae5e96daa46990, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -801,6 +866,33 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!1 &610922739
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 610922740}
+  m_Layer: 0
+  m_Name: start_goatbro_1
+  m_TagString: Untagged
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &610922740
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 610922739}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.82, y: -2.75, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 386734544}
+  m_RootOrder: 8
 --- !u!1 &688289537
 GameObject:
   m_ObjectHideFlags: 0
@@ -1935,6 +2027,33 @@ CanvasRenderer:
 Transform:
   m_PrefabParentObject: {fileID: 467594, guid: b8b9019efd979402ab7e2ae2a7bf31f2, type: 2}
   m_PrefabInternal: {fileID: 474590150}
+--- !u!1 &1601576003
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1601576004}
+  m_Layer: 0
+  m_Name: start_goatbro_2
+  m_TagString: Untagged
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1601576004
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1601576003}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.91, y: 2.23, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 386734544}
+  m_RootOrder: 9
 --- !u!1001 &1608466164
 Prefab:
   m_ObjectHideFlags: 0
@@ -3940,7 +4059,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
 --- !u!1 &1782330002
 GameObject:
   m_ObjectHideFlags: 0
@@ -4302,6 +4421,10 @@ Transform:
   m_Children: []
   m_Father: {fileID: 386734544}
   m_RootOrder: 3
+--- !u!4 &1943238479 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 409008, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
+  m_PrefabInternal: {fileID: 495077239}
 --- !u!1 &1983028655
 GameObject:
   m_ObjectHideFlags: 0

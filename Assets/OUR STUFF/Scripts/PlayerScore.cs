@@ -6,7 +6,7 @@ public class PlayerScore : MonoBehaviour {
 
 	public int score = 0;
 
-	public void GainPoint() {
+	public virtual void GainPoint() {
 		score++;
 		var device_id = GetComponent<PlayerMovement> ().related_device_id;
 
@@ -24,7 +24,7 @@ public class PlayerScore : MonoBehaviour {
 		GetComponent<PlayerMovement> ().SCORE_LOL = score;
 	}
 
-	public void LosePoint() {
+	public virtual void LosePoint() {
 		score--;
 		var device_id = GetComponent<PlayerMovement> ().related_device_id;
 
