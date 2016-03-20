@@ -4411,30 +4411,6 @@ Prefab:
       propertyPath: runeDude
       value: 
       objectReference: {fileID: 160495843}
-    - target: {fileID: 477046, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
-      propertyPath: m_LocalScale.x
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 477046, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
-      propertyPath: m_LocalScale.y
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 21260096, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 10294298, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
-      propertyPath: m_Text
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 477046, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0.283
-      objectReference: {fileID: 0}
-    - target: {fileID: 477046, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0.253
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
   m_IsPrefabParent: 0

@@ -103,6 +103,10 @@ public class AirconsoleLogic : MonoBehaviour {
 		newUI.transform.parent = GameObject.Find ("Scoreboard").transform;
 		newUI.transform.Find ("player_name").GetComponent<Text> ().text = AirConsole.instance.GetNickname (device_id);
 
+		ProfilePicScript picScript = newUI.transform.Find ("profile_pic").GetComponent<ProfilePicScript> ();
+		string url = AirConsole.instance.GetProfilePicture (device_id);
+		StartCoroutine(picScript.LoadProfilePic (url));
+
 		AirconsoleLogic.ReorderScoreList ();
 	}
 
@@ -204,8 +208,6 @@ public class AirconsoleLogic : MonoBehaviour {
 	/// <param name="from">From.</param>
 	/// <param name="data">Data.</param>
 	void OnMessage(int device_id, JToken data) {
-		int active_player = AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id);
-
 		if (data ["joystick-right"] != null) {
 			Vector2 direction;
 			if ((bool) data ["joystick-right"] ["pressed"] == true) {
