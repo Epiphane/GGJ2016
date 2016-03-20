@@ -66,6 +66,11 @@ public class AirconsoleLogic : MonoBehaviour {
 	/// </summary>
 	/// <param name="device_id">The device_id that connected</param>
 	void OnConnect(int device_id) {
+		GameObject log = GameObject.Find ("Log");
+		if (log != null) {
+			log.GetComponent<Text> ().text += "Connected " + device_id + "\n";
+		}
+
 		if (possibleColors.Count == 0) {
 			// No more space! Gotta wait brooooo
 //			AirConsole.instance.Message (device_id, "{\"lobby\":true}");

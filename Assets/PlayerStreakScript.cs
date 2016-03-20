@@ -42,8 +42,9 @@ public class PlayerStreakScript : MonoBehaviour {
 
 	public void Add(int amount) {
 		streak_official += amount;
-		
-		streakSprite.enabled = true;
+
+		if (streak_official > 0)
+			streakSprite.enabled = true;
 	}
 
 	public void Reset() {

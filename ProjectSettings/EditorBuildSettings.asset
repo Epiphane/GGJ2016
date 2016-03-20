@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/OUR STUFF/Scenes/Intro.unity
+  - enabled: 1
     path: Assets/OUR STUFF/Scenes/ElliotMinigame.unity
   - enabled: 1
     path: Assets/OUR STUFF/Scenes/WINNER_WINNER_CHICKEN_DINER.unity
-  - enabled: 1
-    path: Assets/OUR STUFF/Scenes/Intro.unity
