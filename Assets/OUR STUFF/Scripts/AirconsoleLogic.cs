@@ -105,7 +105,9 @@ public class AirconsoleLogic : MonoBehaviour {
 
 		ProfilePicScript picScript = newUI.transform.Find ("profile_pic").GetComponent<ProfilePicScript> ();
 		string url = AirConsole.instance.GetProfilePicture (device_id);
-		StartCoroutine(picScript.LoadProfilePic (url));
+//		StartCoroutine(
+		picScript.LoadProfilePic (url);
+//		);
 
 		AirconsoleLogic.ReorderScoreList ();
 	}
