@@ -26,6 +26,9 @@ public class AirconsoleLobby : MonoBehaviour {
 	public static List<int> winningScores;
 	public static List<Color> winningColors;
 
+	private int skipVotes = 0;
+	private int[] skipVoters;
+
 	void Awake() {
 		AirConsole.instance.onMessage += OnMessage;
 	}
@@ -36,9 +39,12 @@ public class AirconsoleLobby : MonoBehaviour {
 
 			Debug.Log (ids.Count);
 			ids.ForEach ((device_id) => {
-				AirConsole.instance.Message(device_id, "{\"lobby\":true}");
+				AirConsole.instance.Message(device_id, "{\"lobby\":true,\"skip\":true}");
 			});
 		}
+
+		skipVotes = 0;
+		skipVoters = new int[] {0, 0, 0};
 	}
 
 	string ColorToRGB(Color c) {
@@ -59,7 +65,20 @@ public class AirconsoleLobby : MonoBehaviour {
 			AirConsole.instance.Message (device_id, "{\"color\":\"153, 13, 226\"}");
 		}
 		if (data ["state"] != null) {
-			AirConsole.instance.Message (device_id, "{\"lobby\":true}");
+			AirConsole.instance.Message (device_id, "{\"lobby\":true,\"skip\":true}");
+		}
+		if (data ["skip"] != null) {
+			for (int i = 0; i < skipVotes; i++) {
+				// TODO BLECH
+				if (skipVoters [i] == device_id)
+					return;
+			}
+
+			skipVoters [skipVotes++] = device_id;
+			AirConsole.instance.Message (device_id, "{\"skip\":false}");
+
+			if (skipVotes == skipVoters.Length)
+				SceneManager.LoadScene ("ElliotMinigame");
 		}
 	}
 

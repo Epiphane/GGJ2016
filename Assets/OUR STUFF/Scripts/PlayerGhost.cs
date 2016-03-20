@@ -74,6 +74,10 @@ public class PlayerGhost : MonoBehaviour {
 		movement.tether.GetComponent<SpriteRenderer> ().enabled = false;
 		movement.bubble.GetComponent<SpriteRenderer> ().enabled = false;
 
+		if (movement.streak) {
+			movement.streak.Reset ();
+		}
+
 		if (movement.captive) {
 			movement.captive.captor = captor;
 		}

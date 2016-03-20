@@ -138,18 +138,21 @@ public class AirconsoleLogic : MonoBehaviour {
 	}
 
 	public void Lock(PlayerMovement victim) {
-		AirConsole.instance.Message (victim.related_device_id, "{\"lock\":200}");
+		Message (victim, "{\"lock\":200}");
 
 		victim.enabled = false;
 	}
 
 	public void Unlock(PlayerMovement player) {
-		AirConsole.instance.Message (player.related_device_id, "{\"unlock\":true}");
+		Message (player, "{\"unlock\":true}");
 
 		player.enabled = true;
 	}
 
 	public void Message(PlayerMovement player, string message) {
+		if (player.related_device_id == 0)
+			return;
+		
 		AirConsole.instance.Message (player.related_device_id, message);
 	}
 
