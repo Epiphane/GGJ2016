@@ -11,10 +11,19 @@ public class IntroWizardWalker : MonoBehaviour {
 	
 	}
 
+	public static bool done_it = false;
+
 	public void WizardWalkEnded() {
+		this.gameObject.SetActive (false);
+
+		if (done_it)
+			return;
+
+		done_it = true;
+
 		GameObject.Find("bg").GetComponent<SpriteRenderer>().sprite = second_bg;
 		GameObject.Find ("mountains").SetActive (false);
-		this.gameObject.SetActive (false);
+
 		WizWalkToArena.IsWalking = true;
 
 		GameObject.Find ("wizz_red").GetComponent<Animator> ().SetTrigger ("do_drama");
@@ -22,5 +31,7 @@ public class IntroWizardWalker : MonoBehaviour {
 
 		GameObject.Find ("TITLE").GetComponent<Animator> ().SetTrigger ("title_start");
 		GameObject.Find ("TITLE").GetComponent<Text> ().color = Color.white;
+
+		Flowey.kill_me = true;
 	}
 }
