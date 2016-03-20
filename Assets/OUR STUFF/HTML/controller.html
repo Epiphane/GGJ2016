@@ -69,6 +69,13 @@ body {
   background-size: 840px 1080px;
 }
 
+#skip {
+	padding: 20px;
+    background: white;
+    border-radius: 5px;
+    border: 4px solid black;
+}
+
 /*.rune_bg {
   background: background: #3b3b3b;
   background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJo…oZWlnaHQ9IjEwMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+');
@@ -98,6 +105,9 @@ body {
       <h4>Please wait for the next game to begin.</h4>
       <div class="rune_bg">
         <div id="rune"></div>
+      </div>
+      <div id="skip">
+      	Skip!
       </div>
     </div>
   
@@ -986,11 +996,18 @@ function randomRune() {
   rune.style.backgroundPosition = (168 * Math.floor(Math.random() * 5)) + 'px ' + (216 * Math.floor(Math.random() * 5)) + 'px';
 }
 
+document.getElementById('skip').onmouseup = function() {
+  airconsole.message(AirConsole.SCREEN, {
+    skip: true
+  });
+};
+
 function init() {
   var output = document.getElementById('output');
   output.innerHTML = '';
 
   var lobby = document.getElementById('lobby');
+  var skip = document.getElementById('skip');
   var controller = document.getElementById('controller');
 
   var hasReceivedColor = false;
@@ -1037,6 +1054,12 @@ function init() {
         lobby.style.display = 'none';
         controller.style.display = 'block';
         clearInterval(pollState);
+      }
+      if (data.skip) {
+      	skip.style.display = 'block';
+      }
+      else {
+      	skip.style.display = 'none';
       }
     }
   }
