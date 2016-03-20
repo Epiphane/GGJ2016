@@ -228,7 +228,7 @@ MonoBehaviour:
   dashAnim: 0
   DASH_ANIM_LENGTH: 0.2
   fireballSprite: {fileID: 21300000, guid: 4771273e64f9040c6b2e1dd7d01b6542, type: 3}
-  wizardSprite: {fileID: 21300000, guid: a7eff72e893d447f2ade106a19c80366, type: 3}
+  wizardSprite: {fileID: 21300000, guid: ebcd881cb908e4fcf8616c8b8198aafe, type: 3}
   soulSprite: {fileID: 0}
   dashing: 0
   input: {x: 0, y: 0}
@@ -260,6 +260,7 @@ MonoBehaviour:
   kill8Clip: {fileID: 8300000, guid: 44641925b6c044f8f98f84d0a31da498, type: 3}
   kill9Clip: {fileID: 8300000, guid: ecbcc03b5f91c44d38eb71e4de69d934, type: 3}
   kill10Clip: {fileID: 8300000, guid: cf5285231ee4244f187216917268a0ad, type: 3}
+  streak: {fileID: 0}
   tether: {fileID: 176708}
   bubble: {fileID: 137372}
 --- !u!114 &11447076
@@ -1876,7 +1877,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: a7eff72e893d447f2ade106a19c80366, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ebcd881cb908e4fcf8616c8b8198aafe, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
