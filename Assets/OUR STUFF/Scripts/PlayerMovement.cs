@@ -60,6 +60,8 @@ public class PlayerMovement : MonoBehaviour {
 	public AudioClip kill9Clip;
 	public AudioClip kill10Clip;
 
+	public PlayerStreakScript streak;
+
 	public AudioSource AddAudio(AudioClip clip, bool loop, bool playAwake, float vol) { 
 		AudioSource newAudio = gameObject.AddComponent<AudioSource>();
 		newAudio.clip = clip; 
@@ -236,6 +238,10 @@ public class PlayerMovement : MonoBehaviour {
 			kill9.Play ();
 		else if (count >= 10)
 			kill10.Play ();
+
+		if (streak != null) {
+			streak.Add (count);
+		}
 
 		return count;
 	}
