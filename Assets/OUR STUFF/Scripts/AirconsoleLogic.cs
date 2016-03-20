@@ -158,14 +158,21 @@ public class AirconsoleLogic : MonoBehaviour {
 	/// </summary>
 	/// <param name="device_id">The device_id that has left.</param>
 	void OnDisconnect(int device_id) {
-		var oldFriend = activePlayers [device_id];
-		if (oldFriend) {
-			activePlayers.Remove (device_id);
-			GameObject oldScore = activeScoreUI [device_id];
-			activeScoreUI.Remove (device_id);
-			Destroy (oldScore);
-			ReorderScoreList ();
+		// If they weren't even playing we don't care
+		if (!activePlayers.ContainsKey (device_id)) {
+			return;
 		}
+
+		var oldFriend = activePlayers [device_id];
+
+		// Remove score UI
+		activePlayers.Remove (device_id);
+		GameObject oldScore = activeScoreUI [device_id];
+		activeScoreUI.Remove (device_id);
+		Destroy (oldScore);
+		ReorderScoreList ();
+
+		// Add color back to options
 		usedColors.Remove (oldFriend.playerColor);
 		usedSpawns.Remove (oldFriend.GetComponent<PlayerGhost>().spawn);
 		possibleColors.Add (oldFriend.playerColor);
@@ -178,7 +185,7 @@ public class AirconsoleLogic : MonoBehaviour {
 		// Add a new player maybe
 		List<int> ids = AirConsole.instance.GetControllerDeviceIds ();
 
-		if (ids.Count >= 16) {
+		if (ids.Count >= 8) {
 			for (int i = 0; i < ids.Count; i++) {
 				if (!activePlayers.ContainsKey(ids[i])) {
 					OnConnect (ids [i]);
