@@ -291,7 +291,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 101572, guid: 5fbd17d82534841b08382438b5f31420, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5fbd17d82534841b08382438b5f31420, type: 2}
@@ -299,6 +299,10 @@ Prefab:
 --- !u!4 &181127669 stripped
 Transform:
   m_PrefabParentObject: {fileID: 497254, guid: 5fbd17d82534841b08382438b5f31420, type: 2}
+  m_PrefabInternal: {fileID: 181127668}
+--- !u!1 &181127670 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 101572, guid: 5fbd17d82534841b08382438b5f31420, type: 2}
   m_PrefabInternal: {fileID: 181127668}
 --- !u!1 &224113805
 GameObject:
@@ -695,6 +699,10 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5fbd17d82534841b08382438b5f31420, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &495077240 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 101572, guid: 5fbd17d82534841b08382438b5f31420, type: 2}
+  m_PrefabInternal: {fileID: 495077239}
 --- !u!1001 &557516323
 Prefab:
   m_ObjectHideFlags: 0
@@ -1570,6 +1578,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerTemplate: {fileID: 160828, guid: d6c234c31a6244f27bdbe9ee758c29d6, type: 2}
   scoreUITemplate: {fileID: 166966, guid: 48f2729001a884dc1ae88e44d5af153b, type: 2}
+  goatbro1: {fileID: 495077240}
+  goatbro2: {fileID: 181127670}
   possibleColors:
   - {r: 1, g: 0, b: 0, a: 0}
   - {r: 0.03676468, g: 0.56156194, b: 1, a: 0}
@@ -4194,7 +4204,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textField: {fileID: 1845899930}
-  numNeeded: 3
+  numNeeded: 2
 --- !u!1 &1808849934
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,6 +11,8 @@ public class AirconsoleLogic : MonoBehaviour {
 
 	public GameObject playerTemplate;
 	public GameObject scoreUITemplate;
+	public GameObject goatbro1;
+	public GameObject goatbro2;
 
 	public List<Color> possibleColors = new List<Color>();
 	private List<Color> usedColors = new List<Color>();
@@ -109,6 +111,11 @@ public class AirconsoleLogic : MonoBehaviour {
 		newUI.transform.Find ("player_name").GetComponent<Text> ().text = AirConsole.instance.GetNickname (device_id);
 
 		AirconsoleLogic.ReorderScoreList ();
+
+		if (AirConsole.instance.GetControllerDeviceIds().Count > 3 && goatbro2 != null)
+			goatbro2.SetActive (false);
+		if (AirConsole.instance.GetControllerDeviceIds().Count > 4 && goatbro1 != null)
+			goatbro1.SetActive (false);
 	}
 
 	// Put the Score Tabs on the side in order of score
@@ -201,6 +208,11 @@ public class AirconsoleLogic : MonoBehaviour {
 				}
 			}
 		}
+
+		if (ids.Count < 4 && goatbro2 != null)
+			goatbro2.SetActive (true);
+		if (ids.Count < 5 && goatbro1 != null)
+			goatbro1.SetActive (true);
 	}
 
 	/// <summary>
