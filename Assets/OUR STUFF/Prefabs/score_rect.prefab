@@ -44,6 +44,7 @@ GameObject:
   - 224: {fileID: 22437018}
   - 222: {fileID: 22224620}
   - 114: {fileID: 11429292}
+  - 114: {fileID: 11493256}
   m_Layer: 5
   m_Name: score_rect
   m_TagString: Untagged
@@ -188,6 +189,18 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Elliot
+--- !u!114 &11493256
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 166966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e5a78b80370a48c0a1afe2688d17db3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profilePicture: {fileID: 22200688}
 --- !u!222 &22200688
 CanvasRenderer:
   m_ObjectHideFlags: 1

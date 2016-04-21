@@ -103,6 +103,8 @@ public class AirconsoleLogic : MonoBehaviour {
 
 		var newUI = GameObject.Instantiate (scoreUITemplate);
 
+		StartCoroutine(newUI.GetComponent<ScoreRectScript> ().DisplayUrlPicture (AirConsole.instance.GetProfilePicture (device_id)));
+
 		coolColor.a = 1.0f;
 		newUI.GetComponent<Image> ().color = coolColor;
 		AirconsoleLogic.activeScoreUI [device_id] = newUI;
