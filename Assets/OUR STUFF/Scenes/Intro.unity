@@ -3364,7 +3364,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: (Press Any Key)
+  m_Text: (Press Skip on Your Phone)
 --- !u!222 &712200277
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5091,7 +5091,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e37d83ebce05ad74683fd3228dde9e7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  browserStartMode: 2
+  browserStartMode: 1
   controllerHtml: {fileID: 4900000, guid: 7c5fcdd6f83f347ce82b82eb8323bb9e, type: 3}
   autoScaleCanvas: 1
 --- !u!4 &1278475287

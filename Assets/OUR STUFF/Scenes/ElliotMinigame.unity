@@ -809,7 +809,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf68bed1ed35d479dae65cf2f2daa0db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  time: 120
+  time: 90
   nextScene: WINNER_WINNER_CHICKEN_DINER
   beep: {fileID: 8300000, guid: 3a37debafb5f94d348ae5e96daa46990, type: 3}
 --- !u!114 &603145142
